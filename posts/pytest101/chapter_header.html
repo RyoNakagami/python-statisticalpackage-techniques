@@ -269,14 +269,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nottest_passing():</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>) <span class="op">==</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>というpytest用のファイルを用意します．これを実行すると</p>
-<div id="fed8d211" class="cell" data-execution_count="1">
+<div id="0ec5c257" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>bash</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pytest <span class="op">-</span>v .<span class="op">/</span>pytest_scripts<span class="op">/</span>test_script_001.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>============================= test session starts ==============================
-platform linux -- Python 3.11.8, pytest-8.3.3, pluggy-1.5.0 -- /home/ryo_billiken/Desktop/gh_pages_repo/python-statisticalpackage-techniques/.venv/bin/python
+platform linux -- Python 3.11.10, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.11.10/x64/bin/python
 cachedir: .pytest_cache
-rootdir: /home/ryo_billiken/Desktop/gh_pages_repo/python-statisticalpackage-techniques
+rootdir: /home/runner/work/python-statisticalpackage-techniques/python-statisticalpackage-techniques
 configfile: pyproject.toml
 plugins: anyio-4.6.2.post1
 collecting ... collected 2 items
@@ -294,36 +294,6 @@ pytest_scripts/test_script_001.py::test_passing2 PASSED                  [100%]
 </ul>
 <p>という情報が表示されています．</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pytest</span> <span class="at">-v</span> ./pytest_scripts/test_script_002.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">=============================</span> test session starts ==============================</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">platform</span> linux <span class="at">--</span> Python 3.11.8, pytest-8.3.3, pluggy-1.5.0 <span class="at">--</span> /home/ryo_billiken/Desktop/gh_pages_repo/python-statisticalpackage-techniques/.venv/bin/python</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">cachedir:</span> .pytest_cache</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">rootdir:</span> /home/ryo_billiken/Desktop/gh_pages_repo/python-statisticalpackage-techniques</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ex">configfile:</span> pyproject.toml</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ex">plugins:</span> anyio-4.6.2.post1</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="ex">collecting</span> ... collected 1 item</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="ex">pytest_scripts/test_script_002.py::test_failing</span> FAILED                   <span class="pp">[</span><span class="ss">100%</span><span class="pp">]</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="ex">===================================</span> FAILURES ===================================</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="ex">_________________________________</span> test_failing _________________________________</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="ex">def</span> test_failing<span class="er">(</span><span class="kw">)</span><span class="bu">:</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span>       assert <span class="kw">(</span><span class="ex">1,</span> 2<span class="kw">)</span> <span class="ex">==</span> <span class="er">(</span><span class="ex">1,</span> 1<span class="kw">)</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="ex">E</span>       AssertionError: assert <span class="er">(</span><span class="ex">1,</span> 2<span class="kw">)</span> <span class="ex">==</span> <span class="er">(</span><span class="ex">1,</span> 1<span class="kw">)</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="ex">E</span>         </span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="ex">E</span>         At index 1 diff: 2 != 1</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="ex">E</span>         </span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="ex">E</span>         Full diff:</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="ex">E</span>           <span class="er">(</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="ex">E</span>               1,</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="ex">E</span>         <span class="at">-</span>     1,...</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="ex">E</span>         </span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="ex">E</span>         ...Full output truncated <span class="er">(</span><span class="ex">4</span> lines hidden<span class="kw">)</span><span class="ex">,</span> use <span class="st">'-vv'</span> to show</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="ex">pytest_scripts/test_script_002.py:2:</span> AssertionError</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="ex">===========================</span> short test summary info ============================</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="ex">FAILED</span> pytest_scripts/test_script_002.py::test_failing <span class="at">-</span> AssertionError: assert <span class="er">(</span><span class="ex">1,</span> 2<span class="kw">)</span> <span class="ex">==</span> <span class="er">(</span><span class="ex">1,</span> 1<span class="kw">)</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="ex">==============================</span> 1 failed in 0.04s ===============================</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
