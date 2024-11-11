@@ -1,7 +1,7 @@
 ---
 jupyter: python3
 author: "Ryo Nakagami"
-date: "2024-07-20"
+date: "2024-11-11"
 date-modified: last-modified
 number_sections: false
 code-fold: true
@@ -21,21 +21,17 @@ listing:
 |:---:|:---|
 |[Ryo's Tech Blog](https://ryonakagami.github.io/)|日々の徒然日記，Linuxまわりや開発お作法を主に取り扱う|
 |[Statistics for Regression Monkeys](https://ryonakagami.github.io/statistics-for-regression-monkey/)|数理統計学入門ノート|
+|[cmdstanpy for Regression Monkeys](https://ryonakagami.github.io/cmdstan_for_regression_monkey/)|Bayesian Statistical Analysisノート|
 |[OhGoshGit!?!](https://ohgoshgit.github.io/)|Git trouble-shooting note|
 |[statistics dojo](https://ryonakagami.github.io/statistics_dojo/)|統計学基礎問題練習ノート, Rを主に扱う|
 
 ### What is it about?
 
-データ分析を学ぶ及び実践するにあたって５つの観点があると考えています：
-
-1. 
-
-このQuarto Bookではチャプターごとに各事項にフォーカスしてノートをまとめています．
+統計分析用パッケージをPythonで作成する際に用いるテストフレームワーク `pytest` のまとめノートです．
 
 <strong > &#9654;&nbsp; プログラミング言語</strong>
 
-- 主にPython 3.11.8 + [poetry](https://python-poetry.org/) を用います
-- ケースに応じて，Rを用いる場合もあります
+- 主にPython 3.11.8 + [poetry](https://python-poetry.org/) + `pytest` を用います
 - 分析コードは[Repository](<repository url>)のqmdファイルがそのままソースコードとなっています
 
 参考として以下のようにコードブロックと合わせて出力されます．

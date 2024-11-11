@@ -3,9 +3,9 @@ project:
   output-dir: _book
 
 book:
-  title: "Sample for Regression Monkeys"
-  # repo-url: https://github.com/RyoNakagami/statistics-for-regression-monkey
-  # site-url: https://ryonakagami.github.io/statistics-for-regression-monkey/
+  title: "pytest techniques for regmonkeys"
+  repo-url: https://github.com/RyoNakagami/python-statisticalpackage-techniques
+  site-url: https://ryonakagami.github.io/python-statisticalpackage-techniques/
   # google-analytics: 
   #   tracking-id: "G-QEFX7FVCDM"
   favicon: ./img/favicon.ico
@@ -38,6 +38,7 @@ book:
         href: LICENSE
   chapters:
     - index.qmd
+    - part: posts/pytest101/chapter_header.qmd
 
   # appendices: 
     # - 

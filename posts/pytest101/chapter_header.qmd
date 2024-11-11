@@ -1,0 +1,68 @@
+---
+title: "はじめてのpytest"
+author: "Ryo Nakagami"
+date: "2024-11-11"
+date-modified: last-modified
+number_sections: false
+code-fold: true
+comments:
+    utterances:
+         repo: RyoNakagami/statistics-for-regression-monkey
+         label: discussion
+---
+
+## `assert`文
+
+`pytest`を用いたunit testの基本構文を理解するために以下のコードを見てみます．
+
+```{.python}
+def test_passing():
+    assert (1, 2, 3) == (1, 2, 3)
+```
+
+`assert`文はテストの成否を判断するPythonの組み込みコマンドです．`assert`以下が`False`と評価されると，`AssertionError`を発生させます．
+
+`test_passing`という関数の名前は`test_`から始まってますが，`pytest`は`test_`で始まる関数をテスト関数として検出しテストを実行します．
+
+::: {#exm-pytest101 .custom_problem }
+**: test_script_001.py**
+<br>
+
+```{.python}
+def test_passing():
+    assert (1, 2, 3) == (1, 2, 3)
+
+
+def test_passing2():
+    assert (2, 3, 4) == (2, 3, 4)
+
+
+def nottest_passing():
+    assert (1, 2, 3) == (1, 2, 3)
+```
+
+というpytest用のファイルを用意します．これを実行すると
+
+```{python}
+#| code-fold: false
+#| error: true
+%%bash
+pytest -v ./pytest_scripts/test_script_001.py
+```
+
+上記の例では，
+
+- `collecting ... collected 2 items`よりテスト関数が2つ検出された
+- `test_passing`, `test_passing2` が問題なくテストパスした
+
+という情報が表示されています．
+
+```{.bash}
+pytest -v ./pytest_scripts/test_script_002.py
+```
+
+
+
+
+
+:::
