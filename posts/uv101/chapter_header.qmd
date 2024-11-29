@@ -1,0 +1,171 @@
+---
+title: "はじめてのuv"
+author: "Ryo Nakagami"
+date: "2024-11-21"
+date-modified: last-modified
+number_sections: false
+code-fold: true
+comments:
+    utterances:
+         repo: RyoNakagami/statistics-for-regression-monkey
+         label: discussion
+engine: knitr
+---
+
+## Python project managerのuvとは？
+
+uvとはRustで書かれたPython package/project managerのことです．
+
+<strong > &#9654;&nbsp; 特徴</strong>
+
+- `poetry`と類似したコマンドで操作可能
+- `poetry add` より高速なパッケージインストール
+- `pyproject.toml`を用いてパッケージの依存関係，Pythonのバージョンなどのプロジェクトの情報を管理
+- `uv.lock`というロックファイルにより依存関係を厳密に管理
+
+### Installation
+
+
+::: {.panel-tabset}
+
+## Linux
+
+<strong > &#9654;&nbsp; with `curl`</strong>
+
+```{.bash}
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+<strong > &#9654;&nbsp; with `wget`</strong>
+
+```{.bash}
+wget -qO- https://astral.sh/uv/install.sh | sh
+```
+
+## MacOS
+
+<strong > &#9654;&nbsp; with `curl`</strong>
+
+```{.bash}
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+<strong > &#9654;&nbsp; with `wget`</strong>
+
+```{.bash}
+wget -qO- https://astral.sh/uv/install.sh | sh
+```
+
+<strong > &#9654;&nbsp; with `brew`</strong>
+
+```{.bash}
+brew install uv
+```
+
+## Windows
+
+```{.powershell}
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+## PyPI
+
+```{.bash}
+pipx install uv
+```
+
+:::
+
+Ubuntu 24.04 LTS にて`curl`を用いてインストールすると，以下のような結果が標準出力されます
+
+```{.zsh}
+% curl -LsSf https://astral.sh/uv/install.sh | sh
+downloading uv 0.5.４ x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /home/ryo_billiken/.local/bin
+  uv
+  uvx
+everything's installed! 
+
+% which uv
+/home/hogehoge/.local/bin/uv
+
+% uv version
+uv 0.5.４
+```
+
+### Uninstallation
+
+::: {.panel-tabset}
+
+## Linux/macOS
+
+```{.bash}
+rm ~/.local/bin/uv ~/.local/bin/uvx
+```
+
+## Windows
+
+```{.bash}
+$ rm $HOME\.local\bin\uv.exe
+$ rm $HOME\.local\bin\uvx.exe
+```
+
+:::
+
+<strong > &#9654;&nbsp; cache dataの削除</strong>
+
+上記コマンドでは`uv`の実行コマンドを消去しますが，cacheは削除されないのでcacheを削除したい場合は以下のコマンドを実行します
+
+```{.bash}
+uv cache clean
+rm -r "$(uv python dir)"
+rm -r "$(uv tool dir)"
+```
+
+### Update
+
+2024-11-21段階ではまだ `v0.5.４` なので以下のコマンドを用いて頻繁に更新することを推奨します．
+
+```{.bash}
+uv self update
+info: Checking for updates...
+success: You're on the latest version of uv (v0.5.４)
+```
+
+### Auto-completion Setup
+
+
+::: {.panel-tabset}
+
+## bash
+
+`~/.bashrc`に以下のラインを記載
+
+```{.zsh}
+# for uv
+eval "$(uv generate-shell-completion bash)"
+
+# for uvx
+eval "$(uvx --generate-shell-completion bash)"
+```
+
+
+## zsh
+
+`~/.zshrc`に以下のラインを記載
+
+```{.zsh}
+# for uv
+eval "$(uv generate-shell-completion zsh)"
+
+# for uvx
+eval "$(uvx --generate-shell-completion zsh)"
+```
+
+:::
+
+
+References
+----------
+- [Installing uv](https://docs.astral.sh/uv/getting-started/installation/)

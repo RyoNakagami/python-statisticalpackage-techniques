@@ -3,7 +3,7 @@ project:
   output-dir: _book
 
 book:
-  title: "pytest techniques for regmonkeys"
+  title: "Python package building techniques for regmonkeys"
   repo-url: https://github.com/RyoNakagami/python-statisticalpackage-techniques
   site-url: https://ryonakagami.github.io/python-statisticalpackage-techniques/
   # google-analytics: 
@@ -38,6 +38,9 @@ book:
         href: LICENSE
   chapters:
     - index.qmd
+    - part: posts/uv101/chapter_header.qmd
+      chapters: 
+        - posts/uv101/getting-started-with-uv.qmd
     - part: posts/pytest101/chapter_header.qmd
 
   # appendices: 

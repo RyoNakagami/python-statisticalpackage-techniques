@@ -1,0 +1,426 @@
+---
+title: "uv walk-through"
+author: "Ryo Nakagami"
+date: "2024-11-22"
+date-modified: last-modified
+number_sections: false
+code-fold: true
+comments:
+    utterances:
+         repo: RyoNakagami/statistics-for-regression-monkey
+         label: discussion
+engine: knitr
+---
+
+## python install
+
+uvではprojectで利用するpython versionを`uv`コマンドを用いて，インストール及び指定することができます．
+
+<strong > &#9654;&nbsp; Check available Python version</strong>
+
+
+```{.bash}
+uv python list
+```
+
+出力結果は以下
+
+```{.bash}
+cpython-3.13.0+freethreaded-linux-x86_64-gnu    <download available>
+cpython-3.13.0-linux-x86_64-gnu                 /home/hoshinokirby/.local/share/uv/python/cpython-3.13.0-linux-x86_64-gnu/bin/python3.13
+cpython-3.12.7-linux-x86_64-gnu                 /home/hoshinokirby/.local/share/uv/python/cpython-3.12.7-linux-x86_64-gnu/bin/python3.12
+cpython-3.11.10-linux-x86_64-gnu                <download available>
+cpython-3.11.8-linux-x86_64-gnu                 /home/hoshinokirby/.pyenv/versions/3.11.8/bin/python3.11
+cpython-3.11.8-linux-x86_64-gnu                 /home/hoshinokirby/.pyenv/versions/3.11.8/bin/python3 -> python3.11
+cpython-3.11.8-linux-x86_64-gnu                 /home/hoshinokirby/.pyenv/versions/3.11.8/bin/python -> python3.11
+cpython-3.10.15-linux-x86_64-gnu                <download available>
+cpython-3.10.12-linux-x86_64-gnu                /usr/bin/python3.10
+cpython-3.10.12-linux-x86_64-gnu                /usr/bin/python3 -> python3.10
+cpython-3.10.12-linux-x86_64-gnu                /bin/python3.10
+cpython-3.10.12-linux-x86_64-gnu                /bin/python3 -> python3.10
+cpython-3.9.20-linux-x86_64-gnu                 <download available>
+cpython-3.8.20-linux-x86_64-gnu                 <download available>
+cpython-3.7.9-linux-x86_64-gnu                  <download available>
+pypy-3.10.14-linux-x86_64-gnu                   <download available>
+pypy-3.9.19-linux-x86_64-gnu                    <download available>
+pypy-3.8.16-linux-x86_64-gnu                    <download available>
+pypy-3.7.13-linux-x86_64-gnu                    <download available>
+```
+
+`uv`コマンド経由でインストールしたpython versionは `~/.local/share/uv/python/` 以下に格納されます．
+一方，systemや`pyenv`経由でインストールされたpythonも参照することができることがわかります．
+
+<strong > &#9654;&nbsp; uv経由installed pythonの格納先</strong>
+
+上の例では`~/.local/share/uv/python/`にuv経由installed pythonが格納されていましたが，自分が今利用している環境での格納先は次のコマンドで確認することができます．
+
+```{.bash}
+uv python dir
+```
+
+<strong > &#9654;&nbsp; `uv python install`のデフォルト挙動 </strong>
+
+```{.bash}
+uv python install
+```
+
+のコマンドを用いることでprojectで利用するpythonのversionを
+
+`uv`コマンドを利用するprojectにおいて，`.python-version`の指定がない場合
+
+```{.bash}
+uv python install
+```
+
+とするとavailable listのうち，最新版のPythonをinstallします．
+
+```{.bash}
+uv install 3.12.7
+```
+
+とすることでインストールするpython versionを指定することもできます．
+
+
+<strong > &#9654;&nbsp; `.python-version` が指定されているディレクトリでのinstall </strong>
+
+```{.bash filename=".python-version"}
+3.9.19
+```
+
+と指定されているディレクトリを考えます．このとき `uv python install` を実行すると `3.9.19` がインストールされます．
+基本的には `uv python list` っで表示されているversionを対象にインストールが実行されます．
+
+`uv python list`で表示されていないpython versionを利用したい場合は，予め `.pyenv` コマンドでインストール
+しておくと`uv python list`にそのversionが利用可能なversionとして表示されます．
+
+この場合のインストールの挙動は以下のような順序となります
+
+<div class="blog-custom-border">
+<strong >Steps </strong> <br>
+
+1. `pyenv install 3.10.9` -> `~/.pyenv/versions/`以下に指定されたversionのpythonがインストール
+2. `pyenv local 3.10.9` -> `.python-version` の設定
+3. `uv python install` -> `~/.pyenv/versions/3.10.9/`のpythonファイルを`.local/share/uv/python/`以下にコピーする
+
+</div>
+
+`.pyenv`と`uv`で参照されるPythonがそれぞれ作られてしまいますが，
+
+```{.bash}
+du -hx ~/.local/share/uv/python/cpython-3.9.6-linux-x86_64-gnu/bin/python3.9
+```
+
+で合計ファイルサイズを確認すると `24KB` 程度だったのでストーレージ容量圧迫はあまり心配しなくて良いと思われます．
+
+## uv-managed projectの作成
+
+基本的な操作方法はPoetryと同じです．まず，スクラッチの状態からuv-managed projectを作成する方法をwalk-throughします．
+
+### `uv init`を用いたproject作成
+
+まずcurrent directoryを確認します．
+
+```{.bash}
+$ pwd
+>>> ~/Desktop/sandbox/
+```
+
+次に`uv init`します．
+
+```{.bash}
+# projectの作成
+$ uv init test_uv
+>>> Initialized project `test-uv` at `~/Desktop/sandbox/test_uv`
+```
+
+`uv init`のあとに入力した引数に従ってディレクトリが新たに作成されます．このときデフォルトで作成されるファイルを以下となります．
+
+```{.bash}
+$ tree -a -L 1
+.
+├── .git
+├── .gitignore
+├── hello.py
+├── pyproject.toml
+├── .python-version
+└── README.md
+```
+
+uv-managedされているか確認するため，`hello.py` を実行してみます．
+
+```{.bash}
+$ uv run hello.py
+Using CPython 3.13.0
+Creating virtual environment at: .venv
+Hello from test-uv!
+```
+
+`.venv`がこのタイミングで作成されていることがわかります．再び`tree`コマンドでファイル構成を確認してみると
+
+```{.bash}
+$ tree -a -L 1   
+.
+├── .git
+├── .gitignore
+├── hello.py
+├── pyproject.toml
+├── .python-version
+├── README.md
+├── uv.lock
+└── .venv
+```
+
+### `uv.lock`とは？
+
+<div class="blog-custom-border">
+<strong>Def: `uv.lock` ファイル</strong> <br>
+
+- プロジェクトの依存関係に関する正確な情報を含むクロスプラットフォーム対応の lockfile のこと
+- オペレーティングシステム、アーキテクチャ、Pythonバージョンなどに応じてインストールすべきパッケージバージョンを記録している
+
+`pyproject.toml`がプロジェクトの大まかな要件を指定するのに対し，lockfile はプロジェクト環境にインストールされるバージョンを記録するという違いがあります．
+lockfileが存在することでマシン間で一貫性のある再現可能なインストールが可能になります.
+
+</div>
+
+`uv.lock` は以下のようにhuman-readableな形で記載されています．
+
+```{.lock filename="uv.lock"}
+version = 1
+requires-python = ">=3.11, <4.0"
+resolution-markers = [
+    "python_full_version < '3.12'",
+    "python_full_version >= '3.12'",
+]
+
+[[package]]
+name = "annotated-types"
+version = "0.7.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ee/67/531ea369ba64dcff5ec9c3402f9f51bf748cec26dde048a2f973a4eea7f5/annotated_types-0.7.0.tar.gz", hash = "sha256:aff07c09a53a08bc8cfccb9c85b05f1aa9a2a6f23728d790723543408344ce89", size = 16081 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/78/b6/6307fbef88d9b5ee7421e68d78a9f162e0da4900bc5f5793f6d3d0e34fb8/annotated_types-0.7.0-py3-none-any.whl", hash = "sha256:1f02e8b43a8fbbc3f3e0d4f0f4bfc8131bcb4eebe8849b8e5c773f3a1c582a53", size = 13643 },
+]
+```
+
+`uv sync`，`uv add`，`uv remove`といったuvコマンド呼び出しに合わせて自動的に編集されます．[公式ドキュメント](https://docs.astral.sh/uv/guides/projects/#uvlock)にも注意がありますが，基本的にはマニュアルで編集することは非推奨です．
+
+<div style='padding-left: 2em; padding-right: 2em; border-radius: 0em; border-style:solid; border-color:#ffa657;'>
+<strong style="color:#ffa657">警告 !</strong> <br> 
+
+現在のところPython標準のロックファイル仕様は存在しません．そのため`uv.lock`の形式はuvに特有のため，Poetryなどの他のツールでは使用できません．
+
+</div>
+
+
+## 仮想環境の作成: `uv venv`
+
+`pyproject.toml`, `uv.lock`の内容に従って python開発仮想環境`.venv` を作成する場合は
+
+- `uv venv`
+- `uv sync`
+- `uv run`
+
+のいずれかのコマンドを実行すると作成できます．`.venv` 作成後のプロジェクト構成例は以下となります．
+
+```{.bash}
+$ tree -a -L 2
+.
+├── .git
+│   ├── branches
+│   ├── config
+│   ├── description
+│   ├── HEAD
+│   ├── hooks
+│   ├── info
+│   ├── objects
+│   └── refs
+├── .gitignore
+├── hello.py
+├── pyproject.toml
+├── .python-version
+├── README.md
+├── uv.lock
+└── .venv
+    ├── bin
+    ├── CACHEDIR.TAG
+    ├── .gitignore
+    ├── lib
+    ├── lib64 -> lib
+    └── pyvenv.cfg
+```
+
+### 仮想環境の起動
+
+`.venv` 作成後に仮想環境を起動したい場合は `source .venv/bin/activate` を実行します．
+停止したい場合は，`deactivate` or ショートカット `ctrl + d` で仮想環境外に戻ることができます．
+
+<strong > &#9654;&nbsp; `pyenv-virtualenv`が有効化された環境での不具合</strong>
+
+`pyenv`経由でインストールしていないpython versionに基づいて `.venv` が作成された場合，
+`pyenv-virtualenv init`が設定されたターミナル環境下では上手く起動できない可能性があります．
+
+対処方法としては，`.zshrc`, `.zshenv`, `.bashrc`などで
+
+```{.bash}
+eval "$(pyenv virtualenv-init -)" # this line could cause a conflict with uv setup
+```
+
+という設定がなされている箇所を
+
+```{.bash}
+#eval "$(pyenv virtualenv-init -)" # this line could cause a conflict with uv setup
+```
+
+とコメントアウトすることで対処することができます．
+`pyenv-virtualenv`を有効化し続けた上で`uv venv`で作成した`.venv`を利用したい場合は，`pyenv install <python version>`を実行しておくことを推奨します．
+
+## package management
+
+`pyproject.toml`，`uv.lock`にパッケージを追加/削除したい場合は，`uv add`，`uv remove`を実行します
+
+
+::: {.panel-tabset}
+
+## uv add
+
+パッケージを追加する場合は
+
+```{.bash}
+uv add httpx
+```
+
+特定のversionで指定したい場合は
+
+```{.bash}
+# version 2.31.0指定の場合
+uv add 'requests==2.31.0'
+
+# version 2.31.0以上の場合
+uv add 'requests>=2.31.0'
+```
+
+指定したversionが利用できない場合は以下のようなエラーが表示されます
+
+```{.bash}
+uv add 'httpx>9999'
+  × No solution found when resolving dependencies for split
+  │ (python_full_version == '3.11.*'):
+  ╰─▶ Because only httpx<=1.0.0b0 is available and your
+      project depends on httpx>9999, we can conclude that
+      your project's requirements are unsatisfiable.
+  help: If you want to add the package regardless of the
+        failed resolution, provide the `--frozen` flag to
+        skip locking and syncing.
+```
+
+
+## uv add from other source
+
+package registry以外のsourceから取得したい場合は，以下のようにentryを`@`以後に指定します 
+
+```{.bash}
+# From github repository
+uv add "httpx @ git+https://github.com/encode/httpx"
+```
+
+このとき，`pyproject.toml`に以下のように記録されます
+
+```{.toml filename="pyproject.toml"}
+[project]
+name = "example"
+version = "0.1.0"
+dependencies = [
+    "httpx",
+]
+
+[tool.uv.sources]
+httpx = { git = "https://github.com/encode/httpx" }
+```
+
+## uv add from Git
+
+Git repositoryのパッケージを取得したい場合は
+
+```{.bash}
+# Basic
+uv add git+https://github.com/encode/httpx
+
+# tag version
+uv add git+https://github.com/encode/httpx --tag 0.27.0
+
+# branch
+uv add git+https://github.com/encode/httpx --branch main
+
+# commit
+uv add git+https://github.com/encode/httpx --rev 326b9431c761e1ef1e00b9f760d1f654c8db48c6
+```
+
+:::
+
+
+### uv add --group & sys_platform
+
+特定の開発グループのみにパッケージをインストールしたい場合は，`poetry`と同様に `--group` を以下のように指定します
+
+```{.bash}
+uv add numpy --group mac
+```
+
+特定のプラットフォーム用にパッケージをインストールしたい場合は `sys_platform` を以下のように指定します
+
+```{.bash}
+uv add 'jax; sys_platform == "linux"'
+```
+
+特定のPythonのバージョンに紐付けて管理したい場合は
+
+```{.bash}
+uv add 'pandas; python_version >= "3.11"'
+```
+
+
+このとき，`pyproject.toml`に以下のように記録されます
+
+```{.toml filename="pyproject.toml"}
+[project]
+name = "test-uv"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "jax>=0.4.30 ; sys_platform == 'linux'",
+    "pandas>=2.2.3 ; python_full_version >= '3.11'",
+]
+
+[dependency-groups]
+mac = [
+    "numpy>=2.0.2 ; sys_platform == 'darwin'",
+]
+
+```
+
+### uv remove
+
+パッケージを削除したい場合は
+
+```{.bash}
+uv remove requests
+```
+
+### upgrade pakcages
+
+packageのupgradeは`uv.lock`のupgrade→`.venv`のsyncという手順を踏んでおこわなれます．
+
+```{.bash}
+uv lock --upgrade
+uv sync
+```
+
+特定のpackageのみversionを挙げたい場合は
+
+```{.bash}
+uv lock --upgrade-package requests
+uv sync
+```

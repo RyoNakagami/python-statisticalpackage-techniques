@@ -9,7 +9,18 @@ comments:
     utterances:
          repo: RyoNakagami/statistics-for-regression-monkey
          label: discussion
+engine: knitr
 ---
+
+## なぜpytestを使うのか？
+
+Pythonが提供するユニットテストフレームワークとして, `unittest`がありますが，`unittest`と比べ`pytest`は以下のようなメリットがあります．
+
+- command-line tool
+- Classは必要に応じて作成すれば良く，小規模なテストについてはテスト関数の定義のみで十分
+- `assert` 文がシンプル
+- traceback機能が充実しており，また不必要ならばoffすることができる
+
 
 ## `assert`文
 
@@ -43,10 +54,9 @@ def nottest_passing():
 
 というpytest用のファイルを用意します．これを実行すると
 
-```{python}
+```{bash}
 #| code-fold: false
 #| error: true
-%%bash
 pytest -v ./pytest_scripts/test_script_001.py
 ```
 
@@ -57,12 +67,61 @@ pytest -v ./pytest_scripts/test_script_001.py
 
 という情報が表示されています．
 
-```{.bash}
+:::
+
+<strong > &#9654;&nbsp; テストが失敗する場合</strong>
+
+```{.python}
+def test_failing():
+    assert (1, 2) == (1, 1)
+```
+
+という関数を準備し，あえて失敗させてみます．
+
+```{bash}
+#| code-fold: false
+#| error: true
 pytest -v ./pytest_scripts/test_script_002.py
 ```
 
+`At index 1 diff: 2 != 1` とあるように index 1が一致していないと教えてくれます．pytestが表示するテストが失敗した場所とその周囲のコードのセクションのことを**トレースバック(traceback)**と呼びます．これの表示をoffにしたい場合は
+
+```{bash}
+#| code-fold: false
+#| error: true
+pytest --tb=no ./pytest_scripts/
+```
+
+### Pytest assert
+
+`pytest`が利用する`assert`はPythonの組み込みstatementと同じですが，`unittest`などの他のフレームワークの`assert`ヘルパー関数と比べシンプルに利用することができます．
+例として，
+
+|pytest|unittest|
+|---|---|
+|`assert something`|`assertTrue(something)`|
+|`assert a == b`|`assertEqual(a, b)`|
+|`assert a != b`|`assertNotEqual(a, b)`|
+|`assert a <= b`|`assertLessEual(a, b)`|
+|`assert a is None`|`assertIsNone(a)`|
+|`assert a is not None`|`assertIsNotNone(a)`|
 
 
 
+## テスト結果
 
-:::
+```{.bash}
+pytest_scripts/test_script_001.py ..                                     [ 66%]
+pytest_scripts/test_script_002.py F                                      [100%]
+```
+
+に着目すると `..`, `F` といった文字列が確認できます．これは`pytest`のテスト結果を表しています．
+
+|結果|表示|説明|
+|---|---|---|
+|PASSED|`.`|正常に実行された個数を`.`の個数で示す|
+|FAILED|`F`|正常に実行されなかった個数を`F`の個数で示す|
+|SKIPPED|`s`|スキップされたテストを示す|
+|XFAIL|`x`|想定通り失敗したテストを示す．`@pytest.mark.xfail()`で`pytest`に教える|
+|XPASS|`X`|`xfail`マーカーを設定したのに成功したテストを示す|
+|ERROR|`E`|例外が想定通り発生したことを示す|
