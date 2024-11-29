@@ -2,7 +2,7 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "pytest techniques for regmonkeys",
+    "title": "Python package building techniques for regmonkeys",
     "section": "",
     "text": "Welcome\nこのQuarto Bookは以下のシリーズと連動して運用されています:",
     "crumbs": [
@@ -12,7 +12,7 @@
   {
     "objectID": "index.html#references",
     "href": "index.html#references",
-    "title": "pytest techniques for regmonkeys",
+    "title": "Python package building techniques for regmonkeys",
     "section": "References",
     "text": "References",
     "crumbs": [
@@ -20,11 +20,106 @@
     ]
   },
   {
+    "objectID": "posts/uv101/chapter_header.html",
+    "href": "posts/uv101/chapter_header.html",
+    "title": "はじめてのuv",
+    "section": "",
+    "text": "Python project managerのuvとは？\nuvとはRustで書かれたPython package/project managerのことです．\n▶  特徴",
+    "crumbs": [
+      "はじめてのuv"
+    ]
+  },
+  {
+    "objectID": "posts/uv101/chapter_header.html#python-project-managerのuvとは",
+    "href": "posts/uv101/chapter_header.html#python-project-managerのuvとは",
+    "title": "はじめてのuv",
+    "section": "",
+    "text": "poetryと類似したコマンドで操作可能\npoetry add より高速なパッケージインストール\npyproject.tomlを用いてパッケージの依存関係，Pythonのバージョンなどのプロジェクトの情報を管理\nuv.lockというロックファイルにより依存関係を厳密に管理\n\n\nInstallation\n\nLinuxMacOSWindowsPyPI\n\n\n ▶  with curl\ncurl -LsSf https://astral.sh/uv/install.sh | sh\n ▶  with wget\nwget -qO- https://astral.sh/uv/install.sh | sh\n\n\n ▶  with curl\ncurl -LsSf https://astral.sh/uv/install.sh | sh\n ▶  with wget\nwget -qO- https://astral.sh/uv/install.sh | sh\n ▶  with brew\nbrew install uv\n\n\npowershell -c \"irm https://astral.sh/uv/install.ps1 | iex\"\n\n\npipx install uv\n\n\n\nUbuntu 24.04 LTS にてcurlを用いてインストールすると，以下のような結果が標準出力されます\n% curl -LsSf https://astral.sh/uv/install.sh | sh\ndownloading uv 0.5.４ x86_64-unknown-linux-gnu\nno checksums to verify\ninstalling to /home/ryo_billiken/.local/bin\n  uv\n  uvx\neverything's installed! \n\n% which uv\n/home/hogehoge/.local/bin/uv\n\n% uv version\nuv 0.5.４\n\n\nUninstallation\n\nLinux/macOSWindows\n\n\nrm ~/.local/bin/uv ~/.local/bin/uvx\n\n\n$ rm $HOME\\.local\\bin\\uv.exe\n$ rm $HOME\\.local\\bin\\uvx.exe\n\n\n\n ▶  cache dataの削除\n上記コマンドではuvの実行コマンドを消去しますが，cacheは削除されないのでcacheを削除したい場合は以下のコマンドを実行します\nuv cache clean\nrm -r \"$(uv python dir)\"\nrm -r \"$(uv tool dir)\"\n\n\nUpdate\n2024-11-21段階ではまだ v0.5.４ なので以下のコマンドを用いて頻繁に更新することを推奨します．\nuv self update\ninfo: Checking for updates...\nsuccess: You're on the latest version of uv (v0.5.４)\n\n\nAuto-completion Setup\n\nbashzsh\n\n\n~/.bashrcに以下のラインを記載\n# for uv\neval \"$(uv generate-shell-completion bash)\"\n\n# for uvx\neval \"$(uvx --generate-shell-completion bash)\"\n\n\n~/.zshrcに以下のラインを記載\n# for uv\neval \"$(uv generate-shell-completion zsh)\"\n\n# for uvx\neval \"$(uvx --generate-shell-completion zsh)\"",
+    "crumbs": [
+      "はじめてのuv"
+    ]
+  },
+  {
+    "objectID": "posts/uv101/chapter_header.html#references",
+    "href": "posts/uv101/chapter_header.html#references",
+    "title": "はじめてのuv",
+    "section": "References",
+    "text": "References\n\nInstalling uv",
+    "crumbs": [
+      "はじめてのuv"
+    ]
+  },
+  {
+    "objectID": "posts/uv101/getting-started-with-uv.html",
+    "href": "posts/uv101/getting-started-with-uv.html",
+    "title": "1  uv walk-through",
+    "section": "",
+    "text": "python install\nuvではprojectで利用するpython versionをuvコマンドを用いて，インストール及び指定することができます．\n▶  Check available Python version\n出力結果は以下\nuvコマンド経由でインストールしたpython versionは ~/.local/share/uv/python/ 以下に格納されます． 一方，systemやpyenv経由でインストールされたpythonも参照することができることがわかります．\n▶  uv経由installed pythonの格納先\n上の例では~/.local/share/uv/python/にuv経由installed pythonが格納されていましたが，自分が今利用している環境での格納先は次のコマンドで確認することができます．\n▶  uv python installのデフォルト挙動\nのコマンドを用いることでprojectで利用するpythonのversionを\nuvコマンドを利用するprojectにおいて，.python-versionの指定がない場合\nとするとavailable listのうち，最新版のPythonをinstallします．\nとすることでインストールするpython versionを指定することもできます．\n▶  .python-version が指定されているディレクトリでのinstall\nと指定されているディレクトリを考えます．このとき uv python install を実行すると 3.9.19 がインストールされます． 基本的には uv python list っで表示されているversionを対象にインストールが実行されます．\nuv python listで表示されていないpython versionを利用したい場合は，予め .pyenv コマンドでインストール しておくとuv python listにそのversionが利用可能なversionとして表示されます．\nこの場合のインストールの挙動は以下のような順序となります\n.pyenvとuvで参照されるPythonがそれぞれ作られてしまいますが，\nで合計ファイルサイズを確認すると 24KB 程度だったのでストーレージ容量圧迫はあまり心配しなくて良いと思われます．",
+    "crumbs": [
+      "はじめてのuv",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>uv walk-through</span>"
+    ]
+  },
+  {
+    "objectID": "posts/uv101/getting-started-with-uv.html#python-install",
+    "href": "posts/uv101/getting-started-with-uv.html#python-install",
+    "title": "1  uv walk-through",
+    "section": "",
+    "text": "uv python list\n\ncpython-3.13.0+freethreaded-linux-x86_64-gnu    &lt;download available&gt;\ncpython-3.13.0-linux-x86_64-gnu                 /home/hoshinokirby/.local/share/uv/python/cpython-3.13.0-linux-x86_64-gnu/bin/python3.13\ncpython-3.12.7-linux-x86_64-gnu                 /home/hoshinokirby/.local/share/uv/python/cpython-3.12.7-linux-x86_64-gnu/bin/python3.12\ncpython-3.11.10-linux-x86_64-gnu                &lt;download available&gt;\ncpython-3.11.8-linux-x86_64-gnu                 /home/hoshinokirby/.pyenv/versions/3.11.8/bin/python3.11\ncpython-3.11.8-linux-x86_64-gnu                 /home/hoshinokirby/.pyenv/versions/3.11.8/bin/python3 -&gt; python3.11\ncpython-3.11.8-linux-x86_64-gnu                 /home/hoshinokirby/.pyenv/versions/3.11.8/bin/python -&gt; python3.11\ncpython-3.10.15-linux-x86_64-gnu                &lt;download available&gt;\ncpython-3.10.12-linux-x86_64-gnu                /usr/bin/python3.10\ncpython-3.10.12-linux-x86_64-gnu                /usr/bin/python3 -&gt; python3.10\ncpython-3.10.12-linux-x86_64-gnu                /bin/python3.10\ncpython-3.10.12-linux-x86_64-gnu                /bin/python3 -&gt; python3.10\ncpython-3.9.20-linux-x86_64-gnu                 &lt;download available&gt;\ncpython-3.8.20-linux-x86_64-gnu                 &lt;download available&gt;\ncpython-3.7.9-linux-x86_64-gnu                  &lt;download available&gt;\npypy-3.10.14-linux-x86_64-gnu                   &lt;download available&gt;\npypy-3.9.19-linux-x86_64-gnu                    &lt;download available&gt;\npypy-3.8.16-linux-x86_64-gnu                    &lt;download available&gt;\npypy-3.7.13-linux-x86_64-gnu                    &lt;download available&gt;\n\n\n\nuv python dir\n\nuv python install\n\n\nuv python install\n\nuv install 3.12.7\n\n\n\n\n.python-version\n\n3.9.19\n\n\n\n\n\nSteps  \n\npyenv install 3.10.9 -&gt; ~/.pyenv/versions/以下に指定されたversionのpythonがインストール\npyenv local 3.10.9 -&gt; .python-version の設定\nuv python install -&gt; ~/.pyenv/versions/3.10.9/のpythonファイルを.local/share/uv/python/以下にコピーする\n\n\n\ndu -hx ~/.local/share/uv/python/cpython-3.9.6-linux-x86_64-gnu/bin/python3.9",
+    "crumbs": [
+      "はじめてのuv",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>uv walk-through</span>"
+    ]
+  },
+  {
+    "objectID": "posts/uv101/getting-started-with-uv.html#uv-managed-projectの作成",
+    "href": "posts/uv101/getting-started-with-uv.html#uv-managed-projectの作成",
+    "title": "1  uv walk-through",
+    "section": "uv-managed projectの作成",
+    "text": "uv-managed projectの作成\n基本的な操作方法はPoetryと同じです．まず，スクラッチの状態からuv-managed projectを作成する方法をwalk-throughします．\n\nuv initを用いたproject作成\nまずcurrent directoryを確認します．\n$ pwd\n&gt;&gt;&gt; ~/Desktop/sandbox/\n次にuv initします．\n# projectの作成\n$ uv init test_uv\n&gt;&gt;&gt; Initialized project `test-uv` at `~/Desktop/sandbox/test_uv`\nuv initのあとに入力した引数に従ってディレクトリが新たに作成されます．このときデフォルトで作成されるファイルを以下となります．\n$ tree -a -L 1\n.\n├── .git\n├── .gitignore\n├── hello.py\n├── pyproject.toml\n├── .python-version\n└── README.md\nuv-managedされているか確認するため，hello.py を実行してみます．\n$ uv run hello.py\nUsing CPython 3.13.0\nCreating virtual environment at: .venv\nHello from test-uv!\n.venvがこのタイミングで作成されていることがわかります．再びtreeコマンドでファイル構成を確認してみると\n$ tree -a -L 1   \n.\n├── .git\n├── .gitignore\n├── hello.py\n├── pyproject.toml\n├── .python-version\n├── README.md\n├── uv.lock\n└── .venv\n\n\nuv.lockとは？\n\nDef: uv.lock ファイル \n\nプロジェクトの依存関係に関する正確な情報を含むクロスプラットフォーム対応の lockfile のこと\nオペレーティングシステム、アーキテクチャ、Pythonバージョンなどに応じてインストールすべきパッケージバージョンを記録している\n\npyproject.tomlがプロジェクトの大まかな要件を指定するのに対し，lockfile はプロジェクト環境にインストールされるバージョンを記録するという違いがあります． lockfileが存在することでマシン間で一貫性のある再現可能なインストールが可能になります.\n\nuv.lock は以下のようにhuman-readableな形で記載されています．\n\n\nuv.lock\n\nversion = 1\nrequires-python = \"&gt;=3.11, &lt;4.0\"\nresolution-markers = [\n    \"python_full_version &lt; '3.12'\",\n    \"python_full_version &gt;= '3.12'\",\n]\n\n[[package]]\nname = \"annotated-types\"\nversion = \"0.7.0\"\nsource = { registry = \"https://pypi.org/simple\" }\nsdist = { url = \"https://files.pythonhosted.org/packages/ee/67/531ea369ba64dcff5ec9c3402f9f51bf748cec26dde048a2f973a4eea7f5/annotated_types-0.7.0.tar.gz\", hash = \"sha256:aff07c09a53a08bc8cfccb9c85b05f1aa9a2a6f23728d790723543408344ce89\", size = 16081 }\nwheels = [\n    { url = \"https://files.pythonhosted.org/packages/78/b6/6307fbef88d9b5ee7421e68d78a9f162e0da4900bc5f5793f6d3d0e34fb8/annotated_types-0.7.0-py3-none-any.whl\", hash = \"sha256:1f02e8b43a8fbbc3f3e0d4f0f4bfc8131bcb4eebe8849b8e5c773f3a1c582a53\", size = 13643 },\n]\n\nuv sync，uv add，uv removeといったuvコマンド呼び出しに合わせて自動的に編集されます．公式ドキュメントにも注意がありますが，基本的にはマニュアルで編集することは非推奨です．\n\n警告 ! \n現在のところPython標準のロックファイル仕様は存在しません．そのためuv.lockの形式はuvに特有のため，Poetryなどの他のツールでは使用できません．",
+    "crumbs": [
+      "はじめてのuv",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>uv walk-through</span>"
+    ]
+  },
+  {
+    "objectID": "posts/uv101/getting-started-with-uv.html#仮想環境の作成-uv-venv",
+    "href": "posts/uv101/getting-started-with-uv.html#仮想環境の作成-uv-venv",
+    "title": "1  uv walk-through",
+    "section": "仮想環境の作成: uv venv",
+    "text": "仮想環境の作成: uv venv\npyproject.toml, uv.lockの内容に従って python開発仮想環境.venv を作成する場合は\n\nuv venv\nuv sync\nuv run\n\nのいずれかのコマンドを実行すると作成できます．.venv 作成後のプロジェクト構成例は以下となります．\n$ tree -a -L 2\n.\n├── .git\n│   ├── branches\n│   ├── config\n│   ├── description\n│   ├── HEAD\n│   ├── hooks\n│   ├── info\n│   ├── objects\n│   └── refs\n├── .gitignore\n├── hello.py\n├── pyproject.toml\n├── .python-version\n├── README.md\n├── uv.lock\n└── .venv\n    ├── bin\n    ├── CACHEDIR.TAG\n    ├── .gitignore\n    ├── lib\n    ├── lib64 -&gt; lib\n    └── pyvenv.cfg\n\n仮想環境の起動\n.venv 作成後に仮想環境を起動したい場合は source .venv/bin/activate を実行します． 停止したい場合は，deactivate or ショートカット ctrl + d で仮想環境外に戻ることができます．\n ▶  pyenv-virtualenvが有効化された環境での不具合\npyenv経由でインストールしていないpython versionに基づいて .venv が作成された場合， pyenv-virtualenv initが設定されたターミナル環境下では上手く起動できない可能性があります．\n対処方法としては，.zshrc, .zshenv, .bashrcなどで\neval \"$(pyenv virtualenv-init -)\" # this line could cause a conflict with uv setup\nという設定がなされている箇所を\n#eval \"$(pyenv virtualenv-init -)\" # this line could cause a conflict with uv setup\nとコメントアウトすることで対処することができます． pyenv-virtualenvを有効化し続けた上でuv venvで作成した.venvを利用したい場合は，pyenv install &lt;python version&gt;を実行しておくことを推奨します．",
+    "crumbs": [
+      "はじめてのuv",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>uv walk-through</span>"
+    ]
+  },
+  {
+    "objectID": "posts/uv101/getting-started-with-uv.html#package-management",
+    "href": "posts/uv101/getting-started-with-uv.html#package-management",
+    "title": "1  uv walk-through",
+    "section": "package management",
+    "text": "package management\npyproject.toml，uv.lockにパッケージを追加/削除したい場合は，uv add，uv removeを実行します\n\nuv adduv add from other sourceuv add from Git\n\n\nパッケージを追加する場合は\nuv add httpx\n特定のversionで指定したい場合は\n# version 2.31.0指定の場合\nuv add 'requests==2.31.0'\n\n# version 2.31.0以上の場合\nuv add 'requests&gt;=2.31.0'\n指定したversionが利用できない場合は以下のようなエラーが表示されます\nuv add 'httpx&gt;9999'\n  × No solution found when resolving dependencies for split\n  │ (python_full_version == '3.11.*'):\n  ╰─▶ Because only httpx&lt;=1.0.0b0 is available and your\n      project depends on httpx&gt;9999, we can conclude that\n      your project's requirements are unsatisfiable.\n  help: If you want to add the package regardless of the\n        failed resolution, provide the `--frozen` flag to\n        skip locking and syncing.\n\n\npackage registry以外のsourceから取得したい場合は，以下のようにentryを@以後に指定します\n# From github repository\nuv add \"httpx @ git+https://github.com/encode/httpx\"\nこのとき，pyproject.tomlに以下のように記録されます\n\n\npyproject.toml\n\n[project]\nname = \"example\"\nversion = \"0.1.0\"\ndependencies = [\n    \"httpx\",\n]\n\n[tool.uv.sources]\nhttpx = { git = \"https://github.com/encode/httpx\" }\n\n\n\nGit repositoryのパッケージを取得したい場合は\n# Basic\nuv add git+https://github.com/encode/httpx\n\n# tag version\nuv add git+https://github.com/encode/httpx --tag 0.27.0\n\n# branch\nuv add git+https://github.com/encode/httpx --branch main\n\n# commit\nuv add git+https://github.com/encode/httpx --rev 326b9431c761e1ef1e00b9f760d1f654c8db48c6\n\n\n\n\nuv add –group & sys_platform\n特定の開発グループのみにパッケージをインストールしたい場合は，poetryと同様に --group を以下のように指定します\nuv add numpy --group mac\n特定のプラットフォーム用にパッケージをインストールしたい場合は sys_platform を以下のように指定します\nuv add 'jax; sys_platform == \"linux\"'\n特定のPythonのバージョンに紐付けて管理したい場合は\nuv add 'pandas; python_version &gt;= \"3.11\"'\nこのとき，pyproject.tomlに以下のように記録されます\n\n\npyproject.toml\n\n[project]\nname = \"test-uv\"\nversion = \"0.1.0\"\ndescription = \"Add your description here\"\nreadme = \"README.md\"\nrequires-python = \"&gt;=3.9\"\ndependencies = [\n    \"jax&gt;=0.4.30 ; sys_platform == 'linux'\",\n    \"pandas&gt;=2.2.3 ; python_full_version &gt;= '3.11'\",\n]\n\n[dependency-groups]\nmac = [\n    \"numpy&gt;=2.0.2 ; sys_platform == 'darwin'\",\n]\n\n\n\nuv remove\nパッケージを削除したい場合は\nuv remove requests\n\n\nupgrade pakcages\npackageのupgradeはuv.lockのupgrade→.venvのsyncという手順を踏んでおこわなれます．\nuv lock --upgrade\nuv sync\n特定のpackageのみversionを挙げたい場合は\nuv lock --upgrade-package requests\nuv sync",
+    "crumbs": [
+      "はじめてのuv",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>uv walk-through</span>"
+    ]
+  },
+  {
     "objectID": "posts/pytest101/chapter_header.html",
     "href": "posts/pytest101/chapter_header.html",
     "title": "はじめてのpytest",
     "section": "",
-    "text": "assert文\npytestを用いたunit testの基本構文を理解するために以下のコードを見てみます．\nassert文はテストの成否を判断するPythonの組み込みコマンドです．assert以下がFalseと評価されると，AssertionErrorを発生させます．\ntest_passingという関数の名前はtest_から始まってますが，pytestはtest_で始まる関数をテスト関数として検出しテストを実行します．",
+    "text": "なぜpytestを使うのか？\nPythonが提供するユニットテストフレームワークとして, unittestがありますが，unittestと比べpytestは以下のようなメリットがあります．",
+    "crumbs": [
+      "はじめてのpytest"
+    ]
+  },
+  {
+    "objectID": "posts/pytest101/chapter_header.html#なぜpytestを使うのか",
+    "href": "posts/pytest101/chapter_header.html#なぜpytestを使うのか",
+    "title": "はじめてのpytest",
+    "section": "",
+    "text": "command-line tool\nClassは必要に応じて作成すれば良く，小規模なテストについてはテスト関数の定義のみで十分\nassert 文がシンプル\ntraceback機能が充実しており，また不必要ならばoffすることができる",
     "crumbs": [
       "はじめてのpytest"
     ]
@@ -33,8 +128,18 @@
     "objectID": "posts/pytest101/chapter_header.html#assert文",
     "href": "posts/pytest101/chapter_header.html#assert文",
     "title": "はじめてのpytest",
-    "section": "",
-    "text": "def test_passing():\n    assert (1, 2, 3) == (1, 2, 3)\n\n\n\nExample 1 : test_script_001.py \ndef test_passing():\n    assert (1, 2, 3) == (1, 2, 3)\n\n\ndef test_passing2():\n    assert (2, 3, 4) == (2, 3, 4)\n\n\ndef nottest_passing():\n    assert (1, 2, 3) == (1, 2, 3)\nというpytest用のファイルを用意します．これを実行すると\n\n%%bash\npytest -v ./pytest_scripts/test_script_001.py\n\n============================= test session starts ==============================\nplatform linux -- Python 3.11.10, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.11.10/x64/bin/python\ncachedir: .pytest_cache\nrootdir: /home/runner/work/python-statisticalpackage-techniques/python-statisticalpackage-techniques\nconfigfile: pyproject.toml\nplugins: anyio-4.6.2.post1\ncollecting ... collected 2 items\n\npytest_scripts/test_script_001.py::test_passing PASSED                   [ 50%]\npytest_scripts/test_script_001.py::test_passing2 PASSED                  [100%]\n\n============================== 2 passed in 0.01s ===============================\n\n\n上記の例では，\n\ncollecting ... collected 2 itemsよりテスト関数が2つ検出された\ntest_passing, test_passing2 が問題なくテストパスした\n\nという情報が表示されています．\npytest -v ./pytest_scripts/test_script_002.py",
+    "section": "assert文",
+    "text": "assert文\npytestを用いたunit testの基本構文を理解するために以下のコードを見てみます．\ndef test_passing():\n    assert (1, 2, 3) == (1, 2, 3)\nassert文はテストの成否を判断するPythonの組み込みコマンドです．assert以下がFalseと評価されると，AssertionErrorを発生させます．\ntest_passingという関数の名前はtest_から始まってますが，pytestはtest_で始まる関数をテスト関数として検出しテストを実行します．\n\nExample 1 : test_script_001.py \ndef test_passing():\n    assert (1, 2, 3) == (1, 2, 3)\n\n\ndef test_passing2():\n    assert (2, 3, 4) == (2, 3, 4)\n\n\ndef nottest_passing():\n    assert (1, 2, 3) == (1, 2, 3)\nというpytest用のファイルを用意します．これを実行すると\n\npytest -v ./pytest_scripts/test_script_001.py\n\n============================= test session starts ==============================\nplatform linux -- Python 3.12.7, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.12.7/x64/bin/python\ncachedir: .pytest_cache\nrootdir: /home/runner/work/python-statisticalpackage-techniques/python-statisticalpackage-techniques\nconfigfile: pyproject.toml\nplugins: anyio-4.6.2.post1\ncollecting ... collected 2 items\n\npytest_scripts/test_script_001.py::test_passing PASSED                   [ 50%]\npytest_scripts/test_script_001.py::test_passing2 PASSED                  [100%]\n\n============================== 2 passed in 0.02s ===============================\n\n\n上記の例では，\n\ncollecting ... collected 2 itemsよりテスト関数が2つ検出された\ntest_passing, test_passing2 が問題なくテストパスした\n\nという情報が表示されています．\n\n ▶  テストが失敗する場合\ndef test_failing():\n    assert (1, 2) == (1, 1)\nという関数を準備し，あえて失敗させてみます．\n\npytest -v ./pytest_scripts/test_script_002.py\n\n============================= test session starts ==============================\nplatform linux -- Python 3.12.7, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.12.7/x64/bin/python\ncachedir: .pytest_cache\nrootdir: /home/runner/work/python-statisticalpackage-techniques/python-statisticalpackage-techniques\nconfigfile: pyproject.toml\nplugins: anyio-4.6.2.post1\ncollecting ... collected 1 item\n\npytest_scripts/test_script_002.py::test_failing FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________________ test_failing _________________________________\n\n    def test_failing():\n&gt;       assert (1, 2) == (1, 1)\nE       assert (1, 2) == (1, 1)\nE         \nE         At index 1 diff: 2 != 1\nE         \nE         Full diff:\nE           (\nE               1,\nE         -     1,\nE         ?     ^\nE         +     2,\nE         ?     ^\nE           )\n\npytest_scripts/test_script_002.py:2: AssertionError\n=========================== short test summary info ============================\nFAILED pytest_scripts/test_script_002.py::test_failing - assert (1, 2) == (1, 1)\n  \n  At index 1 diff: 2 != 1\n  \n  Full diff:\n    (\n        1,\n  -     1,\n  ?     ^\n  +     2,\n  ?     ^\n    )\n============================== 1 failed in 0.03s ===============================\n\n\nAt index 1 diff: 2 != 1 とあるように index 1が一致していないと教えてくれます．pytestが表示するテストが失敗した場所とその周囲のコードのセクションのことをトレースバック(traceback)と呼びます．これの表示をoffにしたい場合は\n\npytest --tb=no ./pytest_scripts/\n\n============================= test session starts ==============================\nplatform linux -- Python 3.12.7, pytest-8.3.3, pluggy-1.5.0\nrootdir: /home/runner/work/python-statisticalpackage-techniques/python-statisticalpackage-techniques\nconfigfile: pyproject.toml\nplugins: anyio-4.6.2.post1\ncollected 3 items\n\npytest_scripts/test_script_001.py ..                                     [ 66%]\npytest_scripts/test_script_002.py F                                      [100%]\n\n=========================== short test summary info ============================\nFAILED pytest_scripts/test_script_002.py::test_failing - assert (1, 2) == (1, 1)\n  \n  At index 1 diff: 2 != 1\n  \n  Full diff:\n    (\n        1,\n  -     1,\n  ?     ^\n  +     2,\n  ?     ^\n    )\n========================= 1 failed, 2 passed in 0.02s ==========================\n\n\n\nPytest assert\npytestが利用するassertはPythonの組み込みstatementと同じですが，unittestなどの他のフレームワークのassertヘルパー関数と比べシンプルに利用することができます． 例として，\n\n\n\npytest\nunittest\n\n\n\n\nassert something\nassertTrue(something)\n\n\nassert a == b\nassertEqual(a, b)\n\n\nassert a != b\nassertNotEqual(a, b)\n\n\nassert a &lt;= b\nassertLessEual(a, b)\n\n\nassert a is None\nassertIsNone(a)\n\n\nassert a is not None\nassertIsNotNone(a)",
+    "crumbs": [
+      "はじめてのpytest"
+    ]
+  },
+  {
+    "objectID": "posts/pytest101/chapter_header.html#テスト結果",
+    "href": "posts/pytest101/chapter_header.html#テスト結果",
+    "title": "はじめてのpytest",
+    "section": "テスト結果",
+    "text": "テスト結果\npytest_scripts/test_script_001.py ..                                     [ 66%]\npytest_scripts/test_script_002.py F                                      [100%]\nに着目すると .., F といった文字列が確認できます．これはpytestのテスト結果を表しています．\n\n\n\n\n\n\n\n\n結果\n表示\n説明\n\n\n\n\nPASSED\n.\n正常に実行された個数を.の個数で示す\n\n\nFAILED\nF\n正常に実行されなかった個数をFの個数で示す\n\n\nSKIPPED\ns\nスキップされたテストを示す\n\n\nXFAIL\nx\n想定通り失敗したテストを示す．@pytest.mark.xfail()でpytestに教える\n\n\nXPASS\nX\nxfailマーカーを設定したのに成功したテストを示す\n\n\nERROR\nE\n例外が想定通り発生したことを示す",
     "crumbs": [
       "はじめてのpytest"
     ]

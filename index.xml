@@ -5,12 +5,1113 @@
       xmlns:dc="http://purl.org/dc/elements/1.1/" 
       version="2.0">
 <channel>
-<title>pytest techniques for regmonkeys</title>
+<title>Python package building techniques for regmonkeys</title>
 <link>https://ryonakagami.github.io/python-statisticalpackage-techniques/</link>
 <atom:link href="https://ryonakagami.github.io/python-statisticalpackage-techniques/index.xml" rel="self" type="application/rss+xml"/>
 <description></description>
-<generator>quarto-1.5.57</generator>
-<lastBuildDate>Mon, 11 Nov 2024 00:00:00 GMT</lastBuildDate>
+<generator>quarto-1.6.39</generator>
+<lastBuildDate>Fri, 22 Nov 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>1  uv walk-through</title>
+  <dc:creator>Ryo Nakagami</dc:creator>
+  <link>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/uv101/getting-started-with-uv.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="python-install" class="level2">
+<h2 class="anchored" data-anchor-id="python-install">python install</h2>
+<p>uvではprojectで利用するpython versionを<code>uv</code>コマンドを用いて，インストール及び指定することができます．</p>
+<p><strong> ▶&nbsp; Check available Python version</strong></p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> python list</span></code></pre></div>
+<p>出力結果は以下</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">cpython-3.13.0+freethreaded-linux-x86_64-gnu</span>    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>download available<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">cpython-3.13.0-linux-x86_64-gnu</span>                 /home/hoshinokirby/.local/share/uv/python/cpython-3.13.0-linux-x86_64-gnu/bin/python3.13</span>
+<span id="cb2-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">cpython-3.12.7-linux-x86_64-gnu</span>                 /home/hoshinokirby/.local/share/uv/python/cpython-3.12.7-linux-x86_64-gnu/bin/python3.12</span>
+<span id="cb2-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">cpython-3.11.10-linux-x86_64-gnu</span>                <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>download available<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">cpython-3.11.8-linux-x86_64-gnu</span>                 /home/hoshinokirby/.pyenv/versions/3.11.8/bin/python3.11</span>
+<span id="cb2-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">cpython-3.11.8-linux-x86_64-gnu</span>                 /home/hoshinokirby/.pyenv/versions/3.11.8/bin/python3 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> python3.11</span>
+<span id="cb2-7"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">cpython-3.11.8-linux-x86_64-gnu</span>                 /home/hoshinokirby/.pyenv/versions/3.11.8/bin/python <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> python3.11</span>
+<span id="cb2-8"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">cpython-3.10.15-linux-x86_64-gnu</span>                <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>download available<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-9"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">cpython-3.10.12-linux-x86_64-gnu</span>                /usr/bin/python3.10</span>
+<span id="cb2-10"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">cpython-3.10.12-linux-x86_64-gnu</span>                /usr/bin/python3 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> python3.10</span>
+<span id="cb2-11"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">cpython-3.10.12-linux-x86_64-gnu</span>                /bin/python3.10</span>
+<span id="cb2-12"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">cpython-3.10.12-linux-x86_64-gnu</span>                /bin/python3 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> python3.10</span>
+<span id="cb2-13"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">cpython-3.9.20-linux-x86_64-gnu</span>                 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>download available<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-14"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">cpython-3.8.20-linux-x86_64-gnu</span>                 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>download available<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-15"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">cpython-3.7.9-linux-x86_64-gnu</span>                  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>download available<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-16"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pypy-3.10.14-linux-x86_64-gnu</span>                   <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>download available<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-17"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pypy-3.9.19-linux-x86_64-gnu</span>                    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>download available<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-18"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pypy-3.8.16-linux-x86_64-gnu</span>                    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>download available<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-19"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pypy-3.7.13-linux-x86_64-gnu</span>                    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>download available<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+<p><code>uv</code>コマンド経由でインストールしたpython versionは <code>~/.local/share/uv/python/</code> 以下に格納されます． 一方，systemや<code>pyenv</code>経由でインストールされたpythonも参照することができることがわかります．</p>
+<p><strong> ▶&nbsp; uv経由installed pythonの格納先</strong></p>
+<p>上の例では<code>~/.local/share/uv/python/</code>にuv経由installed pythonが格納されていましたが，自分が今利用している環境での格納先は次のコマンドで確認することができます．</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> python dir</span></code></pre></div>
+<p><strong> ▶&nbsp; <code>uv python install</code>のデフォルト挙動 </strong></p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> python install</span></code></pre></div>
+<p>のコマンドを用いることでprojectで利用するpythonのversionを</p>
+<p><code>uv</code>コマンドを利用するprojectにおいて，<code>.python-version</code>の指定がない場合</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> python install</span></code></pre></div>
+<p>とするとavailable listのうち，最新版のPythonをinstallします．</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> install 3.12.7</span></code></pre></div>
+<p>とすることでインストールするpython versionを指定することもできます．</p>
+<p><strong> ▶&nbsp; <code>.python-version</code> が指定されているディレクトリでのinstall </strong></p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>.python-version</strong></pre>
+</div>
+<div class="sourceCode" id="cb7" data-filename=".python-version" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">3.9.19</span></span></code></pre></div>
+</div>
+<p>と指定されているディレクトリを考えます．このとき <code>uv python install</code> を実行すると <code>3.9.19</code> がインストールされます． 基本的には <code>uv python list</code> っで表示されているversionを対象にインストールが実行されます．</p>
+<p><code>uv python list</code>で表示されていないpython versionを利用したい場合は，予め <code>.pyenv</code> コマンドでインストール しておくと<code>uv python list</code>にそのversionが利用可能なversionとして表示されます．</p>
+<p>この場合のインストールの挙動は以下のような順序となります</p>
+<div class="blog-custom-border">
+<p><strong>Steps </strong> <br></p>
+<ol type="1">
+<li><code>pyenv install 3.10.9</code> -&gt; <code>~/.pyenv/versions/</code>以下に指定されたversionのpythonがインストール</li>
+<li><code>pyenv local 3.10.9</code> -&gt; <code>.python-version</code> の設定</li>
+<li><code>uv python install</code> -&gt; <code>~/.pyenv/versions/3.10.9/</code>のpythonファイルを<code>.local/share/uv/python/</code>以下にコピーする</li>
+</ol>
+</div>
+<p><code>.pyenv</code>と<code>uv</code>で参照されるPythonがそれぞれ作られてしまいますが，</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">du</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-hx</span> ~/.local/share/uv/python/cpython-3.9.6-linux-x86_64-gnu/bin/python3.9</span></code></pre></div>
+<p>で合計ファイルサイズを確認すると <code>24KB</code> 程度だったのでストーレージ容量圧迫はあまり心配しなくて良いと思われます．</p>
+</section>
+<section id="uv-managed-projectの作成" class="level2">
+<h2 class="anchored" data-anchor-id="uv-managed-projectの作成">uv-managed projectの作成</h2>
+<p>基本的な操作方法はPoetryと同じです．まず，スクラッチの状態からuv-managed projectを作成する方法をwalk-throughします．</p>
+<section id="uv-initを用いたproject作成" class="level3">
+<h3 class="anchored" data-anchor-id="uv-initを用いたproject作成"><code>uv init</code>を用いたproject作成</h3>
+<p>まずcurrent directoryを確認します．</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">$</span> pwd</span>
+<span id="cb9-2"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;&gt;&gt;</span> ~/Desktop/sandbox/</span></code></pre></div>
+<p>次に<code>uv init</code>します．</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># projectの作成</span></span>
+<span id="cb10-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">$</span> uv init test_uv</span>
+<span id="cb10-3"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;&gt;&gt;</span> Initialized <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">project</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">`</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">test-uv</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">`</span> at <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">`</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">~/Desktop/sandbox/test_uv</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">`</span></span></code></pre></div>
+<p><code>uv init</code>のあとに入力した引数に従ってディレクトリが新たに作成されます．このときデフォルトで作成されるファイルを以下となります．</p>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">$</span> tree <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-a</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-L</span> 1</span>
+<span id="cb11-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">.</span></span>
+<span id="cb11-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> .git</span>
+<span id="cb11-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> .gitignore</span>
+<span id="cb11-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> hello.py</span>
+<span id="cb11-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> pyproject.toml</span>
+<span id="cb11-7"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> .python-version</span>
+<span id="cb11-8"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">└──</span> README.md</span></code></pre></div>
+<p>uv-managedされているか確認するため，<code>hello.py</code> を実行してみます．</p>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">$</span> uv run hello.py</span>
+<span id="cb12-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Using</span> CPython 3.13.0</span>
+<span id="cb12-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Creating</span> virtual environment at: .venv</span>
+<span id="cb12-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Hello</span> from test-uv!</span></code></pre></div>
+<p><code>.venv</code>がこのタイミングで作成されていることがわかります．再び<code>tree</code>コマンドでファイル構成を確認してみると</p>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">$</span> tree <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-a</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-L</span> 1   </span>
+<span id="cb13-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">.</span></span>
+<span id="cb13-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> .git</span>
+<span id="cb13-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> .gitignore</span>
+<span id="cb13-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> hello.py</span>
+<span id="cb13-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> pyproject.toml</span>
+<span id="cb13-7"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> .python-version</span>
+<span id="cb13-8"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> README.md</span>
+<span id="cb13-9"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> uv.lock</span>
+<span id="cb13-10"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">└──</span> .venv</span></code></pre></div>
+</section>
+<section id="uv.lockとは" class="level3">
+<h3 class="anchored" data-anchor-id="uv.lockとは"><code>uv.lock</code>とは？</h3>
+<div class="blog-custom-border">
+<p><strong>Def: <code>uv.lock</code> ファイル</strong> <br></p>
+<ul>
+<li>プロジェクトの依存関係に関する正確な情報を含むクロスプラットフォーム対応の lockfile のこと</li>
+<li>オペレーティングシステム、アーキテクチャ、Pythonバージョンなどに応じてインストールすべきパッケージバージョンを記録している</li>
+</ul>
+<p><code>pyproject.toml</code>がプロジェクトの大まかな要件を指定するのに対し，lockfile はプロジェクト環境にインストールされるバージョンを記録するという違いがあります． lockfileが存在することでマシン間で一貫性のある再現可能なインストールが可能になります.</p>
+</div>
+<p><code>uv.lock</code> は以下のようにhuman-readableな形で記載されています．</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>uv.lock</strong></pre>
+</div>
+<pre class="lock" data-filename="uv.lock"><code>version = 1
+requires-python = "&gt;=3.11, &lt;4.0"
+resolution-markers = [
+    "python_full_version &lt; '3.12'",
+    "python_full_version &gt;= '3.12'",
+]
+
+[[package]]
+name = "annotated-types"
+version = "0.7.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ee/67/531ea369ba64dcff5ec9c3402f9f51bf748cec26dde048a2f973a4eea7f5/annotated_types-0.7.0.tar.gz", hash = "sha256:aff07c09a53a08bc8cfccb9c85b05f1aa9a2a6f23728d790723543408344ce89", size = 16081 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/78/b6/6307fbef88d9b5ee7421e68d78a9f162e0da4900bc5f5793f6d3d0e34fb8/annotated_types-0.7.0-py3-none-any.whl", hash = "sha256:1f02e8b43a8fbbc3f3e0d4f0f4bfc8131bcb4eebe8849b8e5c773f3a1c582a53", size = 13643 },
+]</code></pre>
+</div>
+<p><code>uv sync</code>，<code>uv add</code>，<code>uv remove</code>といったuvコマンド呼び出しに合わせて自動的に編集されます．<a href="https://docs.astral.sh/uv/guides/projects/#uvlock">公式ドキュメント</a>にも注意がありますが，基本的にはマニュアルで編集することは非推奨です．</p>
+<div style="padding-left: 2em; padding-right: 2em; border-radius: 0em; border-style:solid; border-color:#ffa657;">
+<p><strong style="color:#ffa657">警告 !</strong> <br></p>
+<p>現在のところPython標準のロックファイル仕様は存在しません．そのため<code>uv.lock</code>の形式はuvに特有のため，Poetryなどの他のツールでは使用できません．</p>
+</div>
+</section>
+</section>
+<section id="仮想環境の作成-uv-venv" class="level2">
+<h2 class="anchored" data-anchor-id="仮想環境の作成-uv-venv">仮想環境の作成: <code>uv venv</code></h2>
+<p><code>pyproject.toml</code>, <code>uv.lock</code>の内容に従って python開発仮想環境<code>.venv</code> を作成する場合は</p>
+<ul>
+<li><code>uv venv</code></li>
+<li><code>uv sync</code></li>
+<li><code>uv run</code></li>
+</ul>
+<p>のいずれかのコマンドを実行すると作成できます．<code>.venv</code> 作成後のプロジェクト構成例は以下となります．</p>
+<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">$</span> tree <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-a</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-L</span> 2</span>
+<span id="cb15-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">.</span></span>
+<span id="cb15-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> .git</span>
+<span id="cb15-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>   ├── branches</span>
+<span id="cb15-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>   ├── config</span>
+<span id="cb15-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>   ├── description</span>
+<span id="cb15-7"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>   ├── HEAD</span>
+<span id="cb15-8"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>   ├── hooks</span>
+<span id="cb15-9"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>   ├── info</span>
+<span id="cb15-10"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>   ├── objects</span>
+<span id="cb15-11"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>   └── refs</span>
+<span id="cb15-12"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> .gitignore</span>
+<span id="cb15-13"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> hello.py</span>
+<span id="cb15-14"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> pyproject.toml</span>
+<span id="cb15-15"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> .python-version</span>
+<span id="cb15-16"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> README.md</span>
+<span id="cb15-17"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> uv.lock</span>
+<span id="cb15-18"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">└──</span> .venv</span>
+<span id="cb15-19">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> bin</span>
+<span id="cb15-20">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> CACHEDIR.TAG</span>
+<span id="cb15-21">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> .gitignore</span>
+<span id="cb15-22">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> lib</span>
+<span id="cb15-23">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> lib64 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> lib</span>
+<span id="cb15-24">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">└──</span> pyvenv.cfg</span></code></pre></div>
+<section id="仮想環境の起動" class="level3">
+<h3 class="anchored" data-anchor-id="仮想環境の起動">仮想環境の起動</h3>
+<p><code>.venv</code> 作成後に仮想環境を起動したい場合は <code>source .venv/bin/activate</code> を実行します． 停止したい場合は，<code>deactivate</code> or ショートカット <code>ctrl + d</code> で仮想環境外に戻ることができます．</p>
+<p><strong> ▶&nbsp; <code>pyenv-virtualenv</code>が有効化された環境での不具合</strong></p>
+<p><code>pyenv</code>経由でインストールしていないpython versionに基づいて <code>.venv</code> が作成された場合， <code>pyenv-virtualenv init</code>が設定されたターミナル環境下では上手く起動できない可能性があります．</p>
+<p>対処方法としては，<code>.zshrc</code>, <code>.zshenv</code>, <code>.bashrc</code>などで</p>
+<div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">eval</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pyenv</span> virtualenv-init <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">)</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># this line could cause a conflict with uv setup</span></span></code></pre></div>
+<p>という設定がなされている箇所を</p>
+<div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#eval "$(pyenv virtualenv-init -)" # this line could cause a conflict with uv setup</span></span></code></pre></div>
+<p>とコメントアウトすることで対処することができます． <code>pyenv-virtualenv</code>を有効化し続けた上で<code>uv venv</code>で作成した<code>.venv</code>を利用したい場合は，<code>pyenv install &lt;python version&gt;</code>を実行しておくことを推奨します．</p>
+</section>
+</section>
+<section id="package-management" class="level2">
+<h2 class="anchored" data-anchor-id="package-management">package management</h2>
+<p><code>pyproject.toml</code>，<code>uv.lock</code>にパッケージを追加/削除したい場合は，<code>uv add</code>，<code>uv remove</code>を実行します</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">uv add</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" aria-controls="tabset-1-2" aria-selected="false">uv add from other source</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" aria-controls="tabset-1-3" aria-selected="false">uv add from Git</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" aria-labelledby="tabset-1-1-tab">
+<p>パッケージを追加する場合は</p>
+<div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> add httpx</span></code></pre></div>
+<p>特定のversionで指定したい場合は</p>
+<div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># version 2.31.0指定の場合</span></span>
+<span id="cb19-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> add <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'requests==2.31.0'</span></span>
+<span id="cb19-3"></span>
+<span id="cb19-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># version 2.31.0以上の場合</span></span>
+<span id="cb19-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> add <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'requests&gt;=2.31.0'</span></span></code></pre></div>
+<p>指定したversionが利用できない場合は以下のようなエラーが表示されます</p>
+<div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> add <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'httpx&gt;9999'</span></span>
+<span id="cb20-2">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">×</span> No solution found when resolving dependencies for split</span>
+<span id="cb20-3">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">python_full_version</span> == <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'3.11.*'</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb20-4">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">╰─▶</span> Because only httpx<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>=1.0.0b0 is available and your</span>
+<span id="cb20-5">      <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">project</span> depends on httpx<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span>9999, we can conclude that</span>
+<span id="cb20-6">      <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">your</span> project<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'s requirements are unsatisfiable.</span></span>
+<span id="cb20-7"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  help: If you want to add the package regardless of the</span></span>
+<span id="cb20-8"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        failed resolution, provide the `--frozen` flag to</span></span>
+<span id="cb20-9"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        skip locking and syncing.</span></span></code></pre></div>
+</div>
+<div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">
+<p>package registry以外のsourceから取得したい場合は，以下のようにentryを<code>@</code>以後に指定します</p>
+<div class="sourceCode" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># From github repository</span></span>
+<span id="cb21-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> add <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"httpx @ git+https://github.com/encode/httpx"</span></span></code></pre></div>
+<p>このとき，<code>pyproject.toml</code>に以下のように記録されます</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>pyproject.toml</strong></pre>
+</div>
+<div class="sourceCode" id="cb22" data-filename="pyproject.toml" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb22-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[project]</span></span>
+<span id="cb22-2"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">name</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"example"</span></span>
+<span id="cb22-3"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">version</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0.1.0"</span></span>
+<span id="cb22-4"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">dependencies</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb22-5">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"httpx"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb22-6"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb22-7"></span>
+<span id="cb22-8"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[tool.uv.sources]</span></span>
+<span id="cb22-9"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">httpx</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{ </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">git</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"> =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://github.com/encode/httpx"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"> }</span></span></code></pre></div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" aria-labelledby="tabset-1-3-tab">
+<p>Git repositoryのパッケージを取得したい場合は</p>
+<div class="sourceCode" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Basic</span></span>
+<span id="cb23-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> add git+https://github.com/encode/httpx</span>
+<span id="cb23-3"></span>
+<span id="cb23-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># tag version</span></span>
+<span id="cb23-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> add git+https://github.com/encode/httpx <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--tag</span> 0.27.0</span>
+<span id="cb23-6"></span>
+<span id="cb23-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># branch</span></span>
+<span id="cb23-8"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> add git+https://github.com/encode/httpx <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--branch</span> main</span>
+<span id="cb23-9"></span>
+<span id="cb23-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># commit</span></span>
+<span id="cb23-11"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> add git+https://github.com/encode/httpx <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--rev</span> 326b9431c761e1ef1e00b9f760d1f654c8db48c6</span></code></pre></div>
+</div>
+</div>
+</div>
+<section id="uv-add-group-sys_platform" class="level3">
+<h3 class="anchored" data-anchor-id="uv-add-group-sys_platform">uv add –group &amp; sys_platform</h3>
+<p>特定の開発グループのみにパッケージをインストールしたい場合は，<code>poetry</code>と同様に <code>--group</code> を以下のように指定します</p>
+<div class="sourceCode" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> add numpy <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--group</span> mac</span></code></pre></div>
+<p>特定のプラットフォーム用にパッケージをインストールしたい場合は <code>sys_platform</code> を以下のように指定します</p>
+<div class="sourceCode" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> add <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'jax; sys_platform == "linux"'</span></span></code></pre></div>
+<p>特定のPythonのバージョンに紐付けて管理したい場合は</p>
+<div class="sourceCode" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> add <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'pandas; python_version &gt;= "3.11"'</span></span></code></pre></div>
+<p>このとき，<code>pyproject.toml</code>に以下のように記録されます</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>pyproject.toml</strong></pre>
+</div>
+<div class="sourceCode" id="cb27" data-filename="pyproject.toml" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb27-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[project]</span></span>
+<span id="cb27-2"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">name</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"test-uv"</span></span>
+<span id="cb27-3"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">version</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0.1.0"</span></span>
+<span id="cb27-4"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">description</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Add your description here"</span></span>
+<span id="cb27-5"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">readme</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"README.md"</span></span>
+<span id="cb27-6"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">requires-python</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"&gt;=3.9"</span></span>
+<span id="cb27-7"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">dependencies</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb27-8">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"jax&gt;=0.4.30 ; sys_platform == 'linux'"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb27-9">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pandas&gt;=2.2.3 ; python_full_version &gt;= '3.11'"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb27-10"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb27-11"></span>
+<span id="cb27-12"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[dependency-groups]</span></span>
+<span id="cb27-13"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">mac</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb27-14">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"numpy&gt;=2.0.2 ; sys_platform == 'darwin'"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb27-15"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span></code></pre></div>
+</div>
+</section>
+<section id="uv-remove" class="level3">
+<h3 class="anchored" data-anchor-id="uv-remove">uv remove</h3>
+<p>パッケージを削除したい場合は</p>
+<div class="sourceCode" id="cb28" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> remove requests</span></code></pre></div>
+</section>
+<section id="upgrade-pakcages" class="level3">
+<h3 class="anchored" data-anchor-id="upgrade-pakcages">upgrade pakcages</h3>
+<p>packageのupgradeは<code>uv.lock</code>のupgrade→<code>.venv</code>のsyncという手順を踏んでおこわなれます．</p>
+<div class="sourceCode" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> lock <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--upgrade</span></span>
+<span id="cb29-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> sync</span></code></pre></div>
+<p>特定のpackageのみversionを挙げたい場合は</p>
+<div class="sourceCode" id="cb30" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> lock <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--upgrade-package</span> requests</span>
+<span id="cb30-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> sync</span></code></pre></div>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <guid>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/uv101/getting-started-with-uv.html</guid>
+  <pubDate>Fri, 22 Nov 2024 00:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>はじめてのuv</title>
+  <dc:creator>Ryo Nakagami</dc:creator>
+  <link>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/uv101/chapter_header.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="python-project-managerのuvとは" class="level2">
+<h2 class="anchored" data-anchor-id="python-project-managerのuvとは">Python project managerのuvとは？</h2>
+<p>uvとはRustで書かれたPython package/project managerのことです．</p>
+<p><strong> ▶&nbsp; 特徴</strong></p>
+<ul>
+<li><code>poetry</code>と類似したコマンドで操作可能</li>
+<li><code>poetry add</code> より高速なパッケージインストール</li>
+<li><code>pyproject.toml</code>を用いてパッケージの依存関係，Pythonのバージョンなどのプロジェクトの情報を管理</li>
+<li><code>uv.lock</code>というロックファイルにより依存関係を厳密に管理</li>
+</ul>
+<section id="installation" class="level3">
+<h3 class="anchored" data-anchor-id="installation">Installation</h3>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Linux</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" aria-controls="tabset-1-2" aria-selected="false">MacOS</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" aria-controls="tabset-1-3" aria-selected="false">Windows</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" aria-controls="tabset-1-4" aria-selected="false">PyPI</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" aria-labelledby="tabset-1-1-tab">
+<p><strong> ▶&nbsp; with <code>curl</code></strong></p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">curl</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-LsSf</span> https://astral.sh/uv/install.sh <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sh</span></span></code></pre></div>
+<p><strong> ▶&nbsp; with <code>wget</code></strong></p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">wget</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-qO-</span> https://astral.sh/uv/install.sh <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sh</span></span></code></pre></div>
+</div>
+<div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">
+<p><strong> ▶&nbsp; with <code>curl</code></strong></p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">curl</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-LsSf</span> https://astral.sh/uv/install.sh <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sh</span></span></code></pre></div>
+<p><strong> ▶&nbsp; with <code>wget</code></strong></p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">wget</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-qO-</span> https://astral.sh/uv/install.sh <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sh</span></span></code></pre></div>
+<p><strong> ▶&nbsp; with <code>brew</code></strong></p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">brew</span> install uv</span></code></pre></div>
+</div>
+<div id="tabset-1-3" class="tab-pane" aria-labelledby="tabset-1-3-tab">
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb6-1">powershell <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>c <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"irm https://astral.sh/uv/install.ps1 | iex"</span></span></code></pre></div>
+</div>
+<div id="tabset-1-4" class="tab-pane" aria-labelledby="tabset-1-4-tab">
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pipx</span> install uv</span></code></pre></div>
+</div>
+</div>
+</div>
+<p>Ubuntu 24.04 LTS にて<code>curl</code>を用いてインストールすると，以下のような結果が標準出力されます</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode zsh code-with-copy"><code class="sourceCode zsh"><span id="cb8-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">%</span> curl <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-LsSf</span> https://astral.sh/uv/install.sh <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sh</span></span>
+<span id="cb8-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">downloading</span> uv 0.5.４ x86_64-unknown-linux-gnu</span>
+<span id="cb8-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">no</span> checksums to verify</span>
+<span id="cb8-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">installing</span> to /home/ryo_billiken/.local/bin</span>
+<span id="cb8-5">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span></span>
+<span id="cb8-6">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uvx</span></span>
+<span id="cb8-7"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">everything</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'s installed! </span></span>
+<span id="cb8-8"></span>
+<span id="cb8-9"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">% which uv</span></span>
+<span id="cb8-10"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/home/hogehoge/.local/bin/uv</span></span>
+<span id="cb8-11"></span>
+<span id="cb8-12"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">% uv version</span></span>
+<span id="cb8-13"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">uv 0.5.４</span></span></code></pre></div>
+</section>
+<section id="uninstallation" class="level3">
+<h3 class="anchored" data-anchor-id="uninstallation">Uninstallation</h3>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" aria-controls="tabset-2-1" aria-selected="true">Linux/macOS</a></li><li class="nav-item"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" aria-controls="tabset-2-2" aria-selected="false">Windows</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" aria-labelledby="tabset-2-1-tab">
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rm</span> ~/.local/bin/uv ~/.local/bin/uvx</span></code></pre></div>
+</div>
+<div id="tabset-2-2" class="tab-pane" aria-labelledby="tabset-2-2-tab">
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">$</span> rm <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$HOME</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\.</span>local<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\b</span>in<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\u</span>v.exe</span>
+<span id="cb10-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">$</span> rm <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$HOME</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\.</span>local<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\b</span>in<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\u</span>vx.exe</span></code></pre></div>
+</div>
+</div>
+</div>
+<p><strong> ▶&nbsp; cache dataの削除</strong></p>
+<p>上記コマンドでは<code>uv</code>の実行コマンドを消去しますが，cacheは削除されないのでcacheを削除したい場合は以下のコマンドを実行します</p>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> cache clean</span>
+<span id="cb11-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rm</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-r</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> python dir<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">)</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb11-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rm</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-r</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> tool dir<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">)</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span></code></pre></div>
+</section>
+<section id="update" class="level3">
+<h3 class="anchored" data-anchor-id="update">Update</h3>
+<p>2024-11-21段階ではまだ <code>v0.5.４</code> なので以下のコマンドを用いて頻繁に更新することを推奨します．</p>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> self update</span>
+<span id="cb12-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">info:</span> Checking for updates...</span>
+<span id="cb12-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">success:</span> You<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'re on the latest version of uv (v0.5.４)</span></span></code></pre></div>
+</section>
+<section id="auto-completion-setup" class="level3">
+<h3 class="anchored" data-anchor-id="auto-completion-setup">Auto-completion Setup</h3>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" aria-controls="tabset-3-1" aria-selected="true">bash</a></li><li class="nav-item"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" aria-controls="tabset-3-2" aria-selected="false">zsh</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" aria-labelledby="tabset-3-1-tab">
+<p><code>~/.bashrc</code>に以下のラインを記載</p>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode zsh code-with-copy"><code class="sourceCode zsh"><span id="cb13-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># for uv</span></span>
+<span id="cb13-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">eval</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> generate-shell-completion bash<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">)</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb13-3"></span>
+<span id="cb13-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># for uvx</span></span>
+<span id="cb13-5"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">eval</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uvx</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--generate-shell-completion</span> bash<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">)</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span></code></pre></div>
+</div>
+<div id="tabset-3-2" class="tab-pane" aria-labelledby="tabset-3-2-tab">
+<p><code>~/.zshrc</code>に以下のラインを記載</p>
+<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode zsh code-with-copy"><code class="sourceCode zsh"><span id="cb14-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># for uv</span></span>
+<span id="cb14-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">eval</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uv</span> generate-shell-completion zsh<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">)</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb14-3"></span>
+<span id="cb14-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># for uvx</span></span>
+<span id="cb14-5"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">eval</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">uvx</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--generate-shell-completion</span> zsh<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">)</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span></code></pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li><a href="https://docs.astral.sh/uv/getting-started/installation/">Installing uv</a></li>
+</ul>
+
+
+</section>
+
+ ]]></description>
+  <guid>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/uv101/chapter_header.html</guid>
+  <pubDate>Thu, 21 Nov 2024 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>はじめてのpytest</title>
   <dc:creator>Ryo Nakagami</dc:creator>
@@ -20,6 +1121,16 @@
 
 
 
+<section id="なぜpytestを使うのか" class="level2">
+<h2 class="anchored" data-anchor-id="なぜpytestを使うのか">なぜpytestを使うのか？</h2>
+<p>Pythonが提供するユニットテストフレームワークとして, <code>unittest</code>がありますが，<code>unittest</code>と比べ<code>pytest</code>は以下のようなメリットがあります．</p>
+<ul>
+<li>command-line tool</li>
+<li>Classは必要に応じて作成すれば良く，小規模なテストについてはテスト関数の定義のみで十分</li>
+<li><code>assert</code> 文がシンプル</li>
+<li>traceback機能が充実しており，また不必要ならばoffすることができる</li>
+</ul>
+</section>
 <section id="assert文" class="level2">
 <h2 class="anchored" data-anchor-id="assert文"><code>assert</code>文</h2>
 <p><code>pytest</code>を用いたunit testの基本構文を理解するために以下のコードを見てみます．</p>
@@ -120,20 +1231,15 @@ font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">3</span>)</span></code></pre></div>
 <p>というpytest用のファイルを用意します．これを実行すると</p>
-<div id="0ec5c257" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="op" style="color: #5E5E5E;
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">%%</span>bash</span>
-<span id="cb3-2">pytest <span class="op" style="color: #5E5E5E;
+font-style: inherit;">pytest</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">-</span>v .<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span>pytest_scripts<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span>test_script_001.py</span></code></pre></div>
+font-style: inherit;">-v</span> ./pytest_scripts/test_script_001.py</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>============================= test session starts ==============================
-platform linux -- Python 3.11.10, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.11.10/x64/bin/python
+platform linux -- Python 3.12.7, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.12.7/x64/bin/python
 cachedir: .pytest_cache
 rootdir: /home/runner/work/python-statisticalpackage-techniques/python-statisticalpackage-techniques
 configfile: pyproject.toml
@@ -143,7 +1249,7 @@ collecting ... collected 2 items
 pytest_scripts/test_script_001.py::test_passing PASSED                   [ 50%]
 pytest_scripts/test_script_001.py::test_passing2 PASSED                  [100%]
 
-============================== 2 passed in 0.01s ===============================</code></pre>
+============================== 2 passed in 0.02s ===============================</code></pre>
 </div>
 </div>
 <p>上記の例では，</p>
@@ -152,12 +1258,215 @@ pytest_scripts/test_script_001.py::test_passing2 PASSED                  [100%]
 <li><code>test_passing</code>, <code>test_passing2</code> が問題なくテストパスした</li>
 </ul>
 <p>という情報が表示されています．</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
+</div>
+<p><strong> ▶&nbsp; テストが失敗する場合</strong></p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> test_failing():</span>
+<span id="cb5-2">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span></code></pre></div>
+<p>という関数を準備し，あえて失敗させてみます．</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">pytest</span> <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-v</span> ./pytest_scripts/test_script_002.py</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>============================= test session starts ==============================
+platform linux -- Python 3.12.7, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.12.7/x64/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/work/python-statisticalpackage-techniques/python-statisticalpackage-techniques
+configfile: pyproject.toml
+plugins: anyio-4.6.2.post1
+collecting ... collected 1 item
+
+pytest_scripts/test_script_002.py::test_failing FAILED                   [100%]
+
+=================================== FAILURES ===================================
+_________________________________ test_failing _________________________________
+
+    def test_failing():
+&gt;       assert (1, 2) == (1, 1)
+E       assert (1, 2) == (1, 1)
+E         
+E         At index 1 diff: 2 != 1
+E         
+E         Full diff:
+E           (
+E               1,
+E         -     1,
+E         ?     ^
+E         +     2,
+E         ?     ^
+E           )
+
+pytest_scripts/test_script_002.py:2: AssertionError
+=========================== short test summary info ============================
+FAILED pytest_scripts/test_script_002.py::test_failing - assert (1, 2) == (1, 1)
+  
+  At index 1 diff: 2 != 1
+  
+  Full diff:
+    (
+        1,
+  -     1,
+  ?     ^
+  +     2,
+  ?     ^
+    )
+============================== 1 failed in 0.03s ===============================</code></pre>
 </div>
+</div>
+<p><code>At index 1 diff: 2 != 1</code> とあるように index 1が一致していないと教えてくれます．pytestが表示するテストが失敗した場所とその周囲のコードのセクションのことを<strong>トレースバック(traceback)</strong>と呼びます．これの表示をoffにしたい場合は</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pytest</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--tb</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>no ./pytest_scripts/</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>============================= test session starts ==============================
+platform linux -- Python 3.12.7, pytest-8.3.3, pluggy-1.5.0
+rootdir: /home/runner/work/python-statisticalpackage-techniques/python-statisticalpackage-techniques
+configfile: pyproject.toml
+plugins: anyio-4.6.2.post1
+collected 3 items
+
+pytest_scripts/test_script_001.py ..                                     [ 66%]
+pytest_scripts/test_script_002.py F                                      [100%]
+
+=========================== short test summary info ============================
+FAILED pytest_scripts/test_script_002.py::test_failing - assert (1, 2) == (1, 1)
+  
+  At index 1 diff: 2 != 1
+  
+  Full diff:
+    (
+        1,
+  -     1,
+  ?     ^
+  +     2,
+  ?     ^
+    )
+========================= 1 failed, 2 passed in 0.02s ==========================</code></pre>
+</div>
+</div>
+<section id="pytest-assert" class="level3">
+<h3 class="anchored" data-anchor-id="pytest-assert">Pytest assert</h3>
+<p><code>pytest</code>が利用する<code>assert</code>はPythonの組み込みstatementと同じですが，<code>unittest</code>などの他のフレームワークの<code>assert</code>ヘルパー関数と比べシンプルに利用することができます． 例として，</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>pytest</th>
+<th>unittest</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>assert something</code></td>
+<td><code>assertTrue(something)</code></td>
+</tr>
+<tr class="even">
+<td><code>assert a == b</code></td>
+<td><code>assertEqual(a, b)</code></td>
+</tr>
+<tr class="odd">
+<td><code>assert a != b</code></td>
+<td><code>assertNotEqual(a, b)</code></td>
+</tr>
+<tr class="even">
+<td><code>assert a &lt;= b</code></td>
+<td><code>assertLessEual(a, b)</code></td>
+</tr>
+<tr class="odd">
+<td><code>assert a is None</code></td>
+<td><code>assertIsNone(a)</code></td>
+</tr>
+<tr class="even">
+<td><code>assert a is not None</code></td>
+<td><code>assertIsNotNone(a)</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="テスト結果" class="level2">
+<h2 class="anchored" data-anchor-id="テスト結果">テスト結果</h2>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pytest_scripts/test_script_001.py</span> ..                                     [ 66%]</span>
+<span id="cb10-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pytest_scripts/test_script_002.py</span> F                                      <span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">[</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">100%</span><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">]</span></span></code></pre></div>
+<p>に着目すると <code>..</code>, <code>F</code> といった文字列が確認できます．これは<code>pytest</code>のテスト結果を表しています．</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>結果</th>
+<th>表示</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>PASSED</td>
+<td><code>.</code></td>
+<td>正常に実行された個数を<code>.</code>の個数で示す</td>
+</tr>
+<tr class="even">
+<td>FAILED</td>
+<td><code>F</code></td>
+<td>正常に実行されなかった個数を<code>F</code>の個数で示す</td>
+</tr>
+<tr class="odd">
+<td>SKIPPED</td>
+<td><code>s</code></td>
+<td>スキップされたテストを示す</td>
+</tr>
+<tr class="even">
+<td>XFAIL</td>
+<td><code>x</code></td>
+<td>想定通り失敗したテストを示す．<code>@pytest.mark.xfail()</code>で<code>pytest</code>に教える</td>
+</tr>
+<tr class="odd">
+<td>XPASS</td>
+<td><code>X</code></td>
+<td><code>xfail</code>マーカーを設定したのに成功したテストを示す</td>
+</tr>
+<tr class="even">
+<td>ERROR</td>
+<td><code>E</code></td>
+<td>例外が想定通り発生したことを示す</td>
+</tr>
+</tbody>
+</table>
 
 
 </section>

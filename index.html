@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja_JP.UTF-8" xml:lang="ja_JP.UTF-8"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Ryo Nakagami">
 <meta name="dcterms.date" content="2024-11-11">
 
-<title>pytest techniques for regmonkeys</title>
+<title>Python package building techniques for regmonkeys</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -85,7 +85,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./posts/pytest101/chapter_header.html" rel="next">
+<link href="./posts/uv101/chapter_header.html" rel="next">
 <link href="././img/favicon.ico" rel="icon">
 <script src="site_libs/quarto-listing/list.min.js"></script>
 <script src="site_libs/quarto-listing/quarto-listing.js"></script>
@@ -94,12 +94,12 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-70207f8d3e68acf24cb1eac4b6867bc8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-3460d249130dc40ec67fc6f1a21e8660.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -197,7 +197,7 @@ window.Quarto = {
 };
 </script>
 
-<link rel="alternate" type="application/rss+xml" title="pytest techniques for regmonkeys" href="index.xml" data-external="1"></head>
+<link rel="alternate" type="application/rss+xml" title="Python package building techniques for regmonkeys" href="index.xml" data-external="1"></head>
 
 <body class="nav-sidebar floating">
 
@@ -223,7 +223,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">pytest techniques for regmonkeys</a> 
+      <a href="./">Python package building techniques for regmonkeys</a> 
         <div class="sidebar-tools-main tools-wide">
     <div class="dropdown">
       <a href="" title="Blog Series" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Blog Series"><i class="bi bi-book"></i></a>
@@ -271,6 +271,23 @@ window.Quarto = {
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./posts/uv101/chapter_header.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">はじめてのuv</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/uv101/getting-started-with-uv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">uv walk-through</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
  <span class="menu-text">はじめてのpytest</span></span>
   </li>
@@ -298,7 +315,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">pytest techniques for regmonkeys</h1>
+<h1 class="title">Python package building techniques for regmonkeys</h1>
 </div>
 
 
@@ -322,7 +339,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2024-11-11</p>
+      <p class="date-modified">2024-11-29</p>
     </div>
   </div>
     
@@ -375,7 +392,7 @@ window.Quarto = {
 <li>分析コードは<a href="repository url">Repository</a>のqmdファイルがそのままソースコードとなっています</li>
 </ul>
 <p>参考として以下のようにコードブロックと合わせて出力されます．</p>
-<div id="fce472ae" class="cell" data-execution_count="1">
+<div id="bddf2b6d" class="cell" data-execution_count="1">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Hallo World"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -406,7 +423,63 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1731283200000" data-listing-file-modified-sort="1731305686904" data-listing-date-modified-sort="1731305686000" data-listing-reading-time-sort="1" data-listing-word-count-sort="70">
+<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1732233600000" data-listing-file-modified-sort="1732856267873" data-listing-date-modified-sort="1732856267000" data-listing-reading-time-sort="5" data-listing-word-count-sort="930">
+<div class="thumbnail">
+<p><a href="./posts/uv101/getting-started-with-uv.html" class="no-external"></a></p><a href="./posts/uv101/getting-started-with-uv.html" class="no-external">
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+</a><p><a href="./posts/uv101/getting-started-with-uv.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/uv101/getting-started-with-uv.html" class="no-external">uv walk-through</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/uv101/getting-started-with-uv.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="./posts/uv101/getting-started-with-uv.html" class="no-external">uvではprojectで利用するpython versionを<code>uv</code>コマンドを用いて，インストール及び指定することができます．</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/uv101/getting-started-with-uv.html" class="no-external">
+<div class="listing-date">
+2024-11-22
+</div>
+<div class="listing-author">
+Ryo Nakagami
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1732147200000" data-listing-file-modified-sort="1732856267873" data-listing-date-modified-sort="1732856267000" data-listing-reading-time-sort="1" data-listing-word-count-sort="157">
+<div class="thumbnail">
+<p><a href="./posts/uv101/chapter_header.html" class="no-external"></a></p><a href="./posts/uv101/chapter_header.html" class="no-external">
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+</a><p><a href="./posts/uv101/chapter_header.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/uv101/chapter_header.html" class="no-external">はじめてのuv</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/uv101/chapter_header.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="./posts/uv101/chapter_header.html" class="no-external">uvとはRustで書かれたPython package/project managerのことです．</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/uv101/chapter_header.html" class="no-external">
+<div class="listing-date">
+2024-11-21
+</div>
+<div class="listing-author">
+Ryo Nakagami
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1731283200000" data-listing-file-modified-sort="1732856267873" data-listing-date-modified-sort="1732856267000" data-listing-reading-time-sort="2" data-listing-word-count-sort="214">
 <div class="thumbnail">
 <p><a href="./posts/pytest101/chapter_header.html" class="no-external"></a></p><a href="./posts/pytest101/chapter_header.html" class="no-external">
 <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
@@ -420,7 +493,7 @@ window.Quarto = {
 <a href="./posts/pytest101/chapter_header.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<a href="./posts/pytest101/chapter_header.html" class="no-external"><code>pytest</code>を用いたunit testの基本構文を理解するために以下のコードを見てみます．</a>
+<a href="./posts/pytest101/chapter_header.html" class="no-external">Pythonが提供するユニットテストフレームワークとして, <code>unittest</code>がありますが，<code>unittest</code>と比べ<code>pytest</code>は以下のようなメリットがあります．</a>
 </div>
 </div>
 <div class="metadata">
@@ -673,8 +746,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -785,7 +856,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -1015,8 +1085,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./posts/pytest101/chapter_header.html" class="pagination-link" aria-label="はじめてのpytest">
-        <span class="nav-page-text">はじめてのpytest</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./posts/uv101/chapter_header.html" class="pagination-link" aria-label="はじめてのuv">
+        <span class="nav-page-text">はじめてのuv</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
