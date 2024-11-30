@@ -1,0 +1,69 @@
+---
+title: "Resource not accessible by integration Error"
+author: "Ryo Nakagami"
+date: "2024-12-03"
+date-modified: last-modified
+number_sections: false
+code-fold: true
+comments:
+    utterances:
+         repo: RyoNakagami/statistics-for-regression-monkey
+         label: discussion
+engine: knitr
+---
+
+## GitHub ActionsにおけるResource not accessible by integration Error
+
+`Resource not accessible by integration` error とは，文字通り「integration時にリソースにアクセスできない」ことを指しています．
+つまり，ワークフローが特定のリソース（リポジトリ、シークレット、環境など）にアクセスするための必要な権限を持っていないのが原因となります，
+
+### Solutions 1: `secrets.GITHUB_TOKEN` のPermission範囲変更
+
+`${{ secrets.GITHUB_TOKEN }}`のデフォルトPermissionは，該当するリポジトリの `Settings > Actions > General > Workflow permissions`
+にて定められています．
+
+- `Read and write permissions`
+- `Reead repository contents permission`
+
+の２つのレベルが選択できます．ワークフロー内容に合わせて設定しますが，Git tag運用に合わせたRelease noteの自動作成の場合は前者を選択する必要があります．
+
+::: {#exm-gittag .custom_problem }
+**: git tagに応じたrelease note作成ワークフロー**
+<br>
+
+
+```{.yaml}
+name: git tag version update
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+    types:
+      - closed
+
+jobs:
+  build:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Extract PR Comment
+        id: pr_comment
+        run: |
+          TAG=$(echo "$PULL_REQUEST_BODY" | grep -Po '(?<=tag: )v\.\d+\.\d+\.\d+')
+          if [ -n "$TAG" ]; then
+            gh release create $TAG --generate-notes
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PULL_REQUEST_BODY: "${{ github.event.pull_request.body }}"
+```
+
+
+:::

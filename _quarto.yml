@@ -41,10 +41,14 @@ book:
     - part: posts/uv101/chapter_header.qmd
       chapters: 
         - posts/uv101/getting-started-with-uv.qmd
+    - part: posts/python-packaging-guide/chapter_header.qmd
+      chapters: 
+        - posts/python-packaging-guide/src-layout-vs-flat-layout.qmd
+        - posts/python-packaging-guide/versioning.qmd
     - part: posts/pytest101/chapter_header.qmd
 
-  # appendices: 
-    # - 
+  appendices: 
+    - posts/GitHubFAQ/Resource-not-accessible-by-integration.qmd
 
 format:
   html:

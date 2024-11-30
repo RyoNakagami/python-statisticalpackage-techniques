@@ -1,0 +1,125 @@
+---
+title: "src layout vs flat layout"
+author: "Ryo Nakagami"
+date: "2024-11-29"
+date-modified: last-modified
+number_sections: false
+code-fold: true
+comments:
+    utterances:
+         repo: RyoNakagami/statistics-for-regression-monkey
+         label: discussion
+engine: knitr
+---
+
+## src layoutと flat layout
+
+<strong > &#9654;&nbsp; Key Takeaways</strong>
+
+- `src/`以下にImport Packagesを配置するsrc layoutが一般的に推奨されている
+- 個人用 or クイックにプロトタイプを作成したい場合はflat layoutを利用しても良いと思いますが，パッケージ周りの利点を考えると基本としてはsrc layoutの利用が推奨されます
+
+::: {.panel-tabset}
+
+## src layout
+
+- Import Package(`package_layout_test`)を`src/`以下の格納するスタイル
+
+
+```{.bash}
+.
+├── README.md
+├── pyproject.toml
+├── poetry.lock
+├── src/
+│    └── package_layout_test/
+│       ├── __init__.py
+│       └── module.py
+└── tests/
+    └── check_instance_setup.py
+```
+
+Poetryで用いて開発する場合は，以下のように 
+
+```
+packages = [{ include = "*", from = "src" }]
+```
+
+を指定することで開発中のPATH及びImport Packageを明示するようにしています．
+
+```{.toml filename='pyproject.toml'}
+[tool.poetry]
+name = "package-layout-test"
+version = "0.1.0"
+description = "for package install test"
+authors = ["RyoNak <nakagamiryo0901@gmail.com>"]
+license = "MIT"
+readme = "README.md" 
+packages = [{ include = "*", from = "src" }]
+package-mode = true
+```
+
+
+
+
+## flat layout
+
+- Import Packageや設定ファイルをすべてプロジェクトのルート直下に配置するスタイル
+
+```{.bash}
+.
+├── README.md
+├── pyproject.toml
+├── poetry.lock
+├── package_layout_test/
+│   ├── __init__.py
+│   └── module.py
+└── tests/
+    └── check_instance_setup.py
+```
+
+Poetryで用いて開発する場合は，以下のように 
+
+```
+packages = [{ include = "package_layout_test"}]
+```
+
+を指定することで開発中のPATH及びImport Packageを明示するようにしています．
+
+```{.toml filename='pyproject.toml'}
+[tool.poetry]
+name = "package-layout-test"
+version = "0.1.0"
+description = "for package install test"
+authors = ["RyoNak <nakagamiryo0901@gmail.com>"]
+license = "MIT"
+readme = "README.md" 
+packages = [{ include = "package_layout_test"}]
+package-mode = true
+```
+
+:::
+
+### layout構成の違いに起因する挙動の差
+
+<strong > &#9654;&nbsp; Comparison</strong>
+
+||src layout|flat layout|
+|---|---|---|
+|コードの動作確認|install時にコードが動作するかどうか確認が入る|install時に動作確認されない|
+|Import挙動|installされたパッケージの使用を保証する|ビルド時に誤って開発中のコードが混入される可能性がある|
+|メンテナンス性|設定ファイルとパッケージソースコードの階層が異なり管理しやすい|プロジェクトが大きくなるにつれて，構成が複雑になる傾向がある．設定ファイルとの区別が分かりづらくなる|
+
+
+<strong > &#9654;&nbsp; コードの動作確認</strong>
+
+- ビルドに成功したとしても，実際にインストール可能であるとは限らない
+- PyPIなどでパッケージ公開したときに，モジュール不足や依存関係が壊れたディストリビューションをアップロードしてしまうリスクがある
+
+
+
+References
+----------
+- [Packaging a python library](https://blog.ionelmc.ro/2014/05/25/python-packaging/#the-structure%3E)
+- [pytest documentation > Good Integration Practices](https://docs.pytest.org/en/latest/explanation/goodpractices.html#choosing-a-test-layout-import-rules)
+- [Python Packaging User Guide > src layout vs flat layout](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/)

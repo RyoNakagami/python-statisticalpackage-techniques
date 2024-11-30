@@ -1,0 +1,234 @@
+---
+title: "versioning policy"
+author: "Ryo Nakagami"
+date: "2024-11-30"
+date-modified: last-modified
+number_sections: false
+code-fold: true
+comments:
+    utterances:
+         repo: RyoNakagami/statistics-for-regression-monkey
+         label: discussion
+engine: knitr
+---
+
+## Versioning policy
+
+<div class="blog-custom-border">
+<strong>Def: Versioning</strong> <br>
+
+- Versioningとは，パッケージの異なるバージョンにユニークな識別子を追加するプロセスのこと
+- 多くのPython packageでは[semantic versioning](https://semver.org/)が用いられる
+
+</div>
+
+
+
+ソースコードを変更すると，昔使えたmethodが使えなくなったり，他のパッケージとの互換性問題から動作しなくなったりする可能性があります．
+パッケージユーザーがプログラム動作や分析の再現性保証ができるように，開発者はパッケージの各ユニークな状態にユニークなバージョン番号を割り当て，
+それぞれの新しいバージョンを独立してリリースすることが求められます．
+
+<strong > &#9654;&nbsp; versioningのメリット</strong>
+
+- パッケージユーザーが特定のversionのパッケージを指定してインストールできるようになる
+- versioning infoを通して，バグ修正や新機能追加などパッケージの変更内容をユーザーに伝えることができる
+- 依存関係管理を容易にする
+
+`mypackage`という新しいパッケージを開発したとします．このパッケージは，`Agito`というパッケージを利用しており，
+また `Agito 3.0.0` で追加された機能を利用しているとします．このとき，`mypackage`を利用するプロジェクトでは，
+`< 3.0.0`の`Agito`が利用できないことになります．
+
+適切なversioning policyを用いてれば，`pyproject.toml`などの開発環境設定ファイルに
+
+```{.toml}
+dependencies = [
+    "Agito>=3.0.0,<4.0.0",
+]
+```
+
+と記載することで依存関係管理することができるようになります．
+
+### Version numbering
+
+<div class="blog-custom-border">
+<strong>📘 Summary</strong> <br>
+
+- semantic versioningに従ったversion numberは `MAJOR.MINOR.PATCH` の３つのint > 0から構成される
+- `MAJOR`: 後方互換性のない変更を入れた場合 
+- `MINOR`: 後方互換性のあるenhancementを入れた場合
+- `PATCH`: 後方互換性のあるBUG FIXを入れた場合
+- versioningされたパッケージがリリースされたされた場合，**そのバージョンの内容を変更してはならない**．変更を加える場合は，必ず新しいバージョンとしてリリースすること
+- `1.0.0`はパッケージの最初の安定版リリースに使用される
+
+</div>
+
+
+[semantic versioning](https://semver.org/)のVersion numberingをここでは取り扱います．
+一般的には，ソフトウェアの最初のバージョンは通常 `0.1.0` から始まり，開発進捗/リリースに合わせて`MAJOR.MINOR.PATCH`のインクリメントが行われます．
+ version numberを増加 = インクリメントさせることを，version bumpingと呼びます．
+
+<strong > &#9654;&nbsp; <u>Patch release (0.1.0 → 0.1.1)</u></strong>
+
+Patch releaseは後方互換性のあるBUG FIXを入れた場合に行われます．後方互換性とは，パッケージバージョンをアップグレードしても，
+以前に記述したコードがそのまま動作することを意味します．
+
+ユーザー目線で操作性に影響を与えないような，内部的なバグ変更がPatch releaseの対象となります．
+
+<strong > &#9654;&nbsp; <u>Minor release (0.1.0 -> 0.2.0)</u></strong>
+
+Minor releaseは，大規模なバグ修正や後方互換性を保ちながら追加される新機能（例: 新しいmethodの追加）を加えた場合に行われます．
+Minor releaseに伴うversion bumpingがなされる際，`PATCH` は `0` に戻る必要があります．
+
+<strong > &#9654;&nbsp; <u>Major release (0.1.0 -> 1.0.0)</u></strong>
+
+`1.0.0`はパッケージの最初の安定版リリースに使用されます．その後，後方互換性のない変更や多くのユーザーに影響を与える変更が行われた場合に，
+Major releaseが行われます．後方互換性のない変更は **breaking changes** と呼ばれます．
+
+パッケージ内のモジュール名を変更することはbreaking changesの一例です．この場合，ユーザーが新しいパッケージにアップグレードすると，
+古いモジュール名を使用していたコードが動作しなくなり，コードを修正する必要が生じます．
+
+
+## Python packageでの実装
+
+[Python Packaging User Guide > Single-sourcing the Project Version](https://packaging.python.org/en/latest/discussions/single-source-version/#single-source-version)
+にて
+
+> Many Python distribution packages publish a single Python import package where it is desired that the runtime __version__ attribute on the import package report the same version specifier as `importlib.metadata.version()` reports for the distribution package
+
+つまり，
+
+- package versionは `__version__` attributeで参照できるようにするのが望ましい
+- `__version__` attributeの内容は `importlib.metadata.version()` と一致するのが望ましい（つまり，`import_name.__version__`, `importlib.metadata.version("dist-name")`が一致する）
+
+とされています．しかし，git/GitHubを用いた開発ではversionをgit tagという形で格納していたりしますし，Poetryなどのpackage-management toolを用いている場合は
+`pyproject.toml`に記載されていたりします．これらをより考えるべき問題は，**version情報を格納したdata entryをどこにすべきなのか**，ということになります．
+
+
+### 非推奨: `__init__.py`でのハードコーディング
+
+`transformer`, `QuantEconpy`, `sckit-learn`などでは，ソースコード格納ディレクトリ直下の `__init__.py` に
+
+```{.py filename='__init__.py'}
+__version__ = "1.7.dev0"
+```
+
+といった形式でversion情報が記載されています．この方法は，**現在では非推奨**とされています．
+
+<strong > &#9654;&nbsp; 非推奨の理由</strong>
+
+- パッケージのバージョンを更新するたびに，`__init__.py`を手動で変更する必要があり，変更し忘れが発生しやすい
+- バージョン情報を`__init__.py`に直接記述していると，ビルドツールやCI/CDパイプラインでのバージョン管理や更新が難しくなる
+
+### 推奨: `pyproject.toml`による管理
+
+[PEP 621](https://peps.python.org/pep-0621/#version)で紹介されているように，現在では`pyproject.toml`を使ったメタデータ管理が推奨されます．
+ポイントは，
+
+- version情報はprojectメタ情報を記載する`pyproject.toml`で取り扱う
+- `__version__` attributeは`pyproject.toml`に記載されたversion情報を参照するようにする
+
+
+この場合，`pyproject.toml`, `__init__.py` にそれぞれのラインを記載します
+
+```{.toml filename=pyproject.toml}
+[project]
+name = "package_name"
+version = "1.0.0"
+```
+
+python runtime中でも`__version__`attribute経由で確認できるように
+
+```{.py filename=__init__.py__}
+from importlib.metadata import version
+
+__version__ = version("package_name")
+```
+
+も設定します．`importlib.metadata`はパッケージメタ情報についてのインターフェースを提供するモジュールです(Python 3.8以降に導入)．
+package versionを取得したい場合は，versionを取得したいパッケージ名を`importlib.metadata.version()`の引数に設定すると，
+`METADATA`ファイルのversion fieldよりversion infoを取得してくれます．
+
+`METADATA`ファイルは，build toolによって異なりますが，一般的には`<package_name>.<version>.dist-info`に格納されています．
+`<package_name>.<version>.dist-info`ディレクトリ内の `METADATA` ファイルは，
+パッケージがビルドされてインストールされる際に `pyproject.toml`（およびその他のビルド構成ファイル）から生成されるという関係性があります．
+
+なので，`importlib.metadata.version()` は `pyproject.toml` の内容を参照していると理解して良いと思います．
+
+
+::: {#exm- .custom_problem }
+**: `importlib.metadata`によりversion info取得**
+<br>
+
+```{.py}
+from importlib.metadata import version
+
+# Get the version of a package (e.g., 'requests')
+package_version = version('requests')
+print(f"The version of the 'requests' package is: {package_version}")
+```
+
+<strong > OutPut</strong>
+
+```{.bash}
+The version of the 'requests' package is: 2.28.1
+```
+
+:::
+
+### `Class.show_version()`: 継承を用いてClassからversion情報を表示する
+
+個人のプラクティスとなりますが，パッケージ開発にてClass開発をする場合，`BaseMetaInfo`クラスを定義 & 継承することで
+メインのClassから`show_version()` methodを叩くことでversion infoを実行環境と合わせて確認できるようにしています．
+
+```{.python}
+import importlib.metadata
+import os
+import platform
+import pprint
+import sys
+
+
+class BaseMetaInfo:
+    @classmethod
+    def show_version(cls):
+        cls.class_name = "synth_coremodel"
+        uname_result = platform.uname()
+        version_info = OrderedDict(
+            {
+                cls.class_name: importlib.metadata.version(cls.class_name),
+                "python-version": ".".join([str(i) for i in sys.version_info]),
+                "OS": uname_result.system,
+                "OS-release": uname_result.release,
+                "processor": uname_result.processor,
+                "number of available cpu": os.cpu_count(),
+            }
+        )
+        pprint.pprint(version_info)
+```
+
+例として，`regmonkey_analysis`パッケージで`LinearEstimator`というClassを実装した場合，
+
+```{.py}
+from regmonkey_analysis import LinearEstimator
+LinearEstimator.show_version()
+```
+
+<strong > OutPut</strong>
+
+```{.bash}
+OrderedDict([('regmonkey_analysis', '6.1.2'),
+             ('python-version', '3.11.8.final.0'),
+             ('OS', 'Linux'),
+             ('OS-release', '6.8.0-49-generic'),
+             ('processor', 'x86_64'),
+             ('number of available cpu', 32)])
+```
+
+と表示できるようにしています
+
+
+References
+----------
+- [semantic versioning](https://semver.org/)
+- [Python Packaging User Guide > Single-sourcing the Project Version](https://packaging.python.org/en/latest/discussions/single-source-version/#single-source-version)
+- [PEP 621](https://peps.python.org/pep-0621/#version)
