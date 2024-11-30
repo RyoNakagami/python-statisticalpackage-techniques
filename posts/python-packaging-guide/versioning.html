@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Ryo Nakagami">
-<meta name="dcterms.date" content="2024-11-21">
+<meta name="dcterms.date" content="2024-11-30">
 
-<title>はじめてのuv – Python package building techniques for regmonkeys</title>
+<title>3&nbsp; versioning policy – Python package building techniques for regmonkeys</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,8 +66,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../posts/uv101/getting-started-with-uv.html" rel="next">
-<link href="../../index.html" rel="prev">
+<link href="../../posts/pytest101/chapter_header.html" rel="next">
+<link href="../../posts/python-packaging-guide/src-layout-vs-flat-layout.html" rel="prev">
 <link href="../.././img/favicon.ico" rel="icon">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
@@ -130,7 +130,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../posts/uv101/chapter_header.html">はじめてのuv</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../posts/python-packaging-guide/chapter_header.html">Pythonパッケージ作成</a></li><li class="breadcrumb-item"><a href="../../posts/python-packaging-guide/versioning.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">versioning policy</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -194,7 +194,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../posts/uv101/chapter_header.html" class="sidebar-item-text sidebar-link active">
+            <a href="../../posts/uv101/chapter_header.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">はじめてのuv</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -226,7 +226,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/python-packaging-guide/versioning.html" class="sidebar-item-text sidebar-link">
+  <a href="../../posts/python-packaging-guide/versioning.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">versioning policy</span></span></a>
   </div>
 </li>
@@ -246,23 +246,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#python-project-managerのuvとは" id="toc-python-project-managerのuvとは" class="nav-link active" data-scroll-target="#python-project-managerのuvとは">Python project managerのuvとは？</a>
+  <li><a href="#versioning-policy" id="toc-versioning-policy" class="nav-link active" data-scroll-target="#versioning-policy">Versioning policy</a>
   <ul class="collapse">
-  <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
-  <li><a href="#uninstallation" id="toc-uninstallation" class="nav-link" data-scroll-target="#uninstallation">Uninstallation</a></li>
-  <li><a href="#update" id="toc-update" class="nav-link" data-scroll-target="#update">Update</a></li>
-  <li><a href="#auto-completion-setup" id="toc-auto-completion-setup" class="nav-link" data-scroll-target="#auto-completion-setup">Auto-completion Setup</a></li>
+  <li><a href="#version-numbering" id="toc-version-numbering" class="nav-link" data-scroll-target="#version-numbering">Version numbering</a></li>
   </ul></li>
+  <li><a href="#python-packageでの実装" id="toc-python-packageでの実装" class="nav-link" data-scroll-target="#python-packageでの実装">Python packageでの実装</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/RyoNakagami/python-statisticalpackage-techniques/edit/main/posts/uv101/chapter_header.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/RyoNakagami/python-statisticalpackage-techniques/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/RyoNakagami/python-statisticalpackage-techniques/edit/main/posts/python-packaging-guide/versioning.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/RyoNakagami/python-statisticalpackage-techniques/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../posts/python-packaging-guide/chapter_header.html">Pythonパッケージ作成</a></li><li class="breadcrumb-item"><a href="../../posts/python-packaging-guide/versioning.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">versioning policy</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">はじめてのuv</h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">versioning policy</span></h1>
 </div>
 
 
@@ -279,7 +277,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2024-11-21</p>
+      <p class="date">2024-11-30</p>
     </div>
   </div>
   
@@ -297,114 +295,59 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="python-project-managerのuvとは" class="level2">
-<h2 class="anchored" data-anchor-id="python-project-managerのuvとは">Python project managerのuvとは？</h2>
-<p>uvとはRustで書かれたPython package/project managerのことです．</p>
-<p><strong> ▶&nbsp; 特徴</strong></p>
+<section id="versioning-policy" class="level2">
+<h2 class="anchored" data-anchor-id="versioning-policy">Versioning policy</h2>
+<div class="blog-custom-border">
+<p><strong>Def: Versioning</strong> <br></p>
 <ul>
-<li><code>poetry</code>と類似したコマンドで操作可能</li>
-<li><code>poetry add</code> より高速なパッケージインストール</li>
-<li><code>pyproject.toml</code>を用いてパッケージの依存関係，Pythonのバージョンなどのプロジェクトの情報を管理</li>
-<li><code>uv.lock</code>というロックファイルにより依存関係を厳密に管理</li>
+<li>Versioningとは，パッケージの異なるバージョンにユニークな識別子を追加するプロセスのこと</li>
+<li>多くのPython packageでは<a href="https://semver.org/">semantic versioning</a>が用いられる</li>
 </ul>
-<section id="installation" class="level3">
-<h3 class="anchored" data-anchor-id="installation">Installation</h3>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Linux</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">MacOS</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Windows</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">PyPI</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<p><strong> ▶&nbsp; with <code>curl</code></strong></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-LsSf</span> https://astral.sh/uv/install.sh <span class="kw">|</span> <span class="fu">sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong> ▶&nbsp; with <code>wget</code></strong></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> <span class="at">-qO-</span> https://astral.sh/uv/install.sh <span class="kw">|</span> <span class="fu">sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<p><strong> ▶&nbsp; with <code>curl</code></strong></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-LsSf</span> https://astral.sh/uv/install.sh <span class="kw">|</span> <span class="fu">sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong> ▶&nbsp; with <code>wget</code></strong></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> <span class="at">-qO-</span> https://astral.sh/uv/install.sh <span class="kw">|</span> <span class="fu">sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong> ▶&nbsp; with <code>brew</code></strong></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install uv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>ソースコードを変更すると，昔使えたmethodが使えなくなったり，他のパッケージとの互換性問題から動作しなくなったりする可能性があります． パッケージユーザーがプログラム動作や分析の再現性保証ができるように，開発者はパッケージの各ユニークな状態にユニークなバージョン番号を割り当て， それぞれの新しいバージョンを独立してリリースすることが求められます．</p>
+<p><strong> ▶&nbsp; versioningのメリット</strong></p>
+<ul>
+<li>パッケージユーザーが特定のversionのパッケージを指定してインストールできるようになる</li>
+<li>versioning infoを通して，バグ修正や新機能追加などパッケージの変更内容をユーザーに伝えることができる</li>
+<li>依存関係管理を容易にする</li>
+</ul>
+<p><code>mypackage</code>という新しいパッケージを開発したとします．このパッケージは，<code>Agito</code>というパッケージを利用しており， また <code>Agito 3.0.0</code> で追加された機能を利用しているとします．このとき，<code>mypackage</code>を利用するプロジェクトでは， <code>&lt; 3.0.0</code>の<code>Agito</code>が利用できないことになります．</p>
+<p>適切なversioning policyを用いてれば，<code>pyproject.toml</code>などの開発環境設定ファイルに</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">dependencies</span> <span class="op">=</span> <span class="op">[</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Agito&gt;=3.0.0,&lt;4.0.0"</span><span class="op">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>と記載することで依存関係管理することができるようになります．</p>
+<section id="version-numbering" class="level3">
+<h3 class="anchored" data-anchor-id="version-numbering">Version numbering</h3>
+<div class="blog-custom-border">
+<p><strong>📘 Summary</strong> <br></p>
+<ul>
+<li>semantic versioningに従ったversion numberは <code>MAJOR.MINOR.PATCH</code> の３つのint &gt; 0から構成される</li>
+<li><code>MAJOR</code>: 後方互換性のない変更を入れた場合</li>
+<li><code>MINOR</code>: 後方互換性のあるenhancementを入れた場合</li>
+<li><code>PATCH</code>: 後方互換性のあるBUG FIXを入れた場合</li>
+<li>versioningされたパッケージがリリースされたされた場合，<strong>そのバージョンの内容を変更してはならない</strong>．変更を加える場合は，必ず新しいバージョンとしてリリースすること</li>
+<li><code>1.0.0</code>はパッケージの最初の安定版リリースに使用される</li>
+</ul>
 </div>
-<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div class="sourceCode" id="cb6"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>powershell <span class="op">-</span>c <span class="st">"irm https://astral.sh/uv/install.ps1 | iex"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pipx</span> install uv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-<p>Ubuntu 24.04 LTS にて<code>curl</code>を用いてインストールすると，以下のような結果が標準出力されます</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode zsh code-with-copy"><code class="sourceCode zsh"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">%</span> curl <span class="at">-LsSf</span> https://astral.sh/uv/install.sh <span class="kw">|</span> <span class="fu">sh</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">downloading</span> uv 0.5.４ x86_64-unknown-linux-gnu</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">no</span> checksums to verify</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">installing</span> to /home/ryo_billiken/.local/bin</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">uv</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">uvx</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">everything</span><span class="st">'s installed! </span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="st">% which uv</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="st">/home/hogehoge/.local/bin/uv</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="st">% uv version</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="st">uv 0.5.４</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><a href="https://semver.org/">semantic versioning</a>のVersion numberingをここでは取り扱います． 一般的には，ソフトウェアの最初のバージョンは通常 <code>0.1.0</code> から始まり，開発進捗/リリースに合わせて<code>MAJOR.MINOR.PATCH</code>のインクリメントが行われます． version numberを増加 = インクリメントさせることを，version bumpingと呼びます．</p>
+<p><strong> ▶&nbsp; <u>Patch release (0.1.0 → 0.1.1)</u></strong></p>
+<p>Patch releaseは後方互換性のあるBUG FIXを入れた場合に行われます．後方互換性とは，パッケージバージョンをアップグレードしても， 以前に記述したコードがそのまま動作することを意味します，</p>
+<p>ユーザー目線で操作性に影響を与えないような，内部的なバグ変更がPatch releaseの対象となります．</p>
+<p><strong> ▶&nbsp; <u>Minor release (0.1.0 -&gt; 0.2.0)</u></strong></p>
+<p>Minor releaseは，大規模なバグ修正や後方互換性を保ちながら追加される新機能（例: 新しいmethodの追加）を加えた場合に行われます． Minor releaseに伴うversion bumpingがなされる際，<code>PATCH</code> は <code>0</code> に戻る必要があります．</p>
+<p><strong> ▶&nbsp; <u>Major release (0.1.0 -&gt; 1.0.0)</u></strong></p>
+<p><code>1.0.0</code>はパッケージの最初の安定版リリースに使用されます．その後，後方互換性のない変更や多くのユーザーに影響を与える変更が行われた場合に， Major releaseが行われます．後方互換性のない変更は <strong>breaking changes</strong> と呼ばれます．</p>
+<p>パッケージ内のモジュール名を変更することはbreaking changesの一例です．この場合，ユーザーが新しいパッケージにアップグレードすると， 古いモジュール名を使用していたコードが動作しなくなり，コードを修正する必要が生じます．</p>
 </section>
-<section id="uninstallation" class="level3">
-<h3 class="anchored" data-anchor-id="uninstallation">Uninstallation</h3>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Linux/macOS</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Windows</a></li></ul>
-<div class="tab-content">
-<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> ~/.local/bin/uv ~/.local/bin/uvx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rm <span class="va">$HOME</span><span class="dt">\.</span>local<span class="dt">\b</span>in<span class="dt">\u</span>v.exe</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rm <span class="va">$HOME</span><span class="dt">\.</span>local<span class="dt">\b</span>in<span class="dt">\u</span>vx.exe</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-<p><strong> ▶&nbsp; cache dataの削除</strong></p>
-<p>上記コマンドでは<code>uv</code>の実行コマンドを消去しますが，cacheは削除されないのでcacheを削除したい場合は以下のコマンドを実行します</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> cache clean</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> <span class="st">"</span><span class="va">$(</span><span class="ex">uv</span> python dir<span class="va">)</span><span class="st">"</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> <span class="st">"</span><span class="va">$(</span><span class="ex">uv</span> tool dir<span class="va">)</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="update" class="level3">
-<h3 class="anchored" data-anchor-id="update">Update</h3>
-<p>2024-11-21段階ではまだ <code>v0.5.４</code> なので以下のコマンドを用いて頻繁に更新することを推奨します．</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> self update</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">info:</span> Checking for updates...</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">success:</span> You<span class="st">'re on the latest version of uv (v0.5.４)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="auto-completion-setup" class="level3">
-<h3 class="anchored" data-anchor-id="auto-completion-setup">Auto-completion Setup</h3>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">bash</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">zsh</a></li></ul>
-<div class="tab-content">
-<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<p><code>~/.bashrc</code>に以下のラインを記載</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode zsh code-with-copy"><code class="sourceCode zsh"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for uv</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="st">"</span><span class="va">$(</span><span class="ex">uv</span> generate-shell-completion bash<span class="va">)</span><span class="st">"</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># for uvx</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="st">"</span><span class="va">$(</span><span class="ex">uvx</span> <span class="at">--generate-shell-completion</span> bash<span class="va">)</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<p><code>~/.zshrc</code>に以下のラインを記載</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode zsh code-with-copy"><code class="sourceCode zsh"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for uv</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="st">"</span><span class="va">$(</span><span class="ex">uv</span> generate-shell-completion zsh<span class="va">)</span><span class="st">"</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># for uvx</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="st">"</span><span class="va">$(</span><span class="ex">uvx</span> <span class="at">--generate-shell-completion</span> zsh<span class="va">)</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</section>
+<section id="python-packageでの実装" class="level2">
+<h2 class="anchored" data-anchor-id="python-packageでの実装">Python packageでの実装</h2>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
 <ul>
-<li><a href="https://docs.astral.sh/uv/getting-started/installation/">Installing uv</a></li>
+<li><a href="https://semver.org/">semantic versioning</a></li>
 </ul>
 
 
@@ -984,13 +927,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../index.html" class="pagination-link" aria-label="Welcome">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Welcome</span>
+      <a href="../../posts/python-packaging-guide/src-layout-vs-flat-layout.html" class="pagination-link" aria-label="src layout vs flat layout">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">src layout vs flat layout</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../posts/uv101/getting-started-with-uv.html" class="pagination-link" aria-label="uv walk-through">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">uv walk-through</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../posts/pytest101/chapter_header.html" class="pagination-link" aria-label="はじめてのpytest">
+        <span class="nav-page-text">はじめてのpytest</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1011,7 +954,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </a>
   </li>  
 </ul>
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/RyoNakagami/python-statisticalpackage-techniques/edit/main/posts/uv101/chapter_header.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/RyoNakagami/python-statisticalpackage-techniques/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/RyoNakagami/python-statisticalpackage-techniques/edit/main/posts/python-packaging-guide/versioning.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/RyoNakagami/python-statisticalpackage-techniques/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       &nbsp;
     </div>

@@ -10,7 +10,418 @@
 <atom:link href="https://ryonakagami.github.io/python-statisticalpackage-techniques/index.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.6.39</generator>
-<lastBuildDate>Fri, 22 Nov 2024 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 30 Nov 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>3  versioning policy</title>
+  <dc:creator>Ryo Nakagami</dc:creator>
+  <link>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/python-packaging-guide/versioning.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="versioning-policy" class="level2">
+<h2 class="anchored" data-anchor-id="versioning-policy">Versioning policy</h2>
+<div class="blog-custom-border">
+<p><strong>Def: Versioning</strong> <br></p>
+<ul>
+<li>Versioningとは，パッケージの異なるバージョンにユニークな識別子を追加するプロセスのこと</li>
+<li>多くのPython packageでは<a href="https://semver.org/">semantic versioning</a>が用いられる</li>
+</ul>
+</div>
+<p>ソースコードを変更すると，昔使えたmethodが使えなくなったり，他のパッケージとの互換性問題から動作しなくなったりする可能性があります． パッケージユーザーがプログラム動作や分析の再現性保証ができるように，開発者はパッケージの各ユニークな状態にユニークなバージョン番号を割り当て， それぞれの新しいバージョンを独立してリリースすることが求められます．</p>
+<p><strong> ▶&nbsp; versioningのメリット</strong></p>
+<ul>
+<li>パッケージユーザーが特定のversionのパッケージを指定してインストールできるようになる</li>
+<li>versioning infoを通して，バグ修正や新機能追加などパッケージの変更内容をユーザーに伝えることができる</li>
+<li>依存関係管理を容易にする</li>
+</ul>
+<p><code>mypackage</code>という新しいパッケージを開発したとします．このパッケージは，<code>Agito</code>というパッケージを利用しており， また <code>Agito 3.0.0</code> で追加された機能を利用しているとします．このとき，<code>mypackage</code>を利用するプロジェクトでは， <code>&lt; 3.0.0</code>の<code>Agito</code>が利用できないことになります．</p>
+<p>適切なversioning policyを用いてれば，<code>pyproject.toml</code>などの開発環境設定ファイルに</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb1-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">dependencies</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb1-2">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Agito&gt;=3.0.0,&lt;4.0.0"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-3"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span></code></pre></div>
+<p>と記載することで依存関係管理することができるようになります．</p>
+<section id="version-numbering" class="level3">
+<h3 class="anchored" data-anchor-id="version-numbering">Version numbering</h3>
+<div class="blog-custom-border">
+<p><strong>📘 Summary</strong> <br></p>
+<ul>
+<li>semantic versioningに従ったversion numberは <code>MAJOR.MINOR.PATCH</code> の３つのint &gt; 0から構成される</li>
+<li><code>MAJOR</code>: 後方互換性のない変更を入れた場合</li>
+<li><code>MINOR</code>: 後方互換性のあるenhancementを入れた場合</li>
+<li><code>PATCH</code>: 後方互換性のあるBUG FIXを入れた場合</li>
+<li>versioningされたパッケージがリリースされたされた場合，<strong>そのバージョンの内容を変更してはならない</strong>．変更を加える場合は，必ず新しいバージョンとしてリリースすること</li>
+<li><code>1.0.0</code>はパッケージの最初の安定版リリースに使用される</li>
+</ul>
+</div>
+<p><a href="https://semver.org/">semantic versioning</a>のVersion numberingをここでは取り扱います． 一般的には，ソフトウェアの最初のバージョンは通常 <code>0.1.0</code> から始まり，開発進捗/リリースに合わせて<code>MAJOR.MINOR.PATCH</code>のインクリメントが行われます． version numberを増加 = インクリメントさせることを，version bumpingと呼びます．</p>
+<p><strong> ▶&nbsp; <u>Patch release (0.1.0 → 0.1.1)</u></strong></p>
+<p>Patch releaseは後方互換性のあるBUG FIXを入れた場合に行われます．後方互換性とは，パッケージバージョンをアップグレードしても， 以前に記述したコードがそのまま動作することを意味します，</p>
+<p>ユーザー目線で操作性に影響を与えないような，内部的なバグ変更がPatch releaseの対象となります．</p>
+<p><strong> ▶&nbsp; <u>Minor release (0.1.0 -&gt; 0.2.0)</u></strong></p>
+<p>Minor releaseは，大規模なバグ修正や後方互換性を保ちながら追加される新機能（例: 新しいmethodの追加）を加えた場合に行われます． Minor releaseに伴うversion bumpingがなされる際，<code>PATCH</code> は <code>0</code> に戻る必要があります．</p>
+<p><strong> ▶&nbsp; <u>Major release (0.1.0 -&gt; 1.0.0)</u></strong></p>
+<p><code>1.0.0</code>はパッケージの最初の安定版リリースに使用されます．その後，後方互換性のない変更や多くのユーザーに影響を与える変更が行われた場合に， Major releaseが行われます．後方互換性のない変更は <strong>breaking changes</strong> と呼ばれます．</p>
+<p>パッケージ内のモジュール名を変更することはbreaking changesの一例です．この場合，ユーザーが新しいパッケージにアップグレードすると， 古いモジュール名を使用していたコードが動作しなくなり，コードを修正する必要が生じます．</p>
+</section>
+</section>
+<section id="python-packageでの実装" class="level2">
+<h2 class="anchored" data-anchor-id="python-packageでの実装">Python packageでの実装</h2>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li><a href="https://semver.org/">semantic versioning</a></li>
+</ul>
+
+
+</section>
+
+ ]]></description>
+  <guid>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/python-packaging-guide/versioning.html</guid>
+  <pubDate>Sat, 30 Nov 2024 00:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Pythonパッケージ作成</title>
+  <dc:creator>Ryo Nakagami</dc:creator>
+  <link>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/python-packaging-guide/chapter_header.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+
+
+ ]]></description>
+  <guid>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/python-packaging-guide/chapter_header.html</guid>
+  <pubDate>Fri, 29 Nov 2024 00:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>2  src layout vs flat layout</title>
+  <dc:creator>Ryo Nakagami</dc:creator>
+  <link>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/python-packaging-guide/src-layout-vs-flat-layout.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="src-layoutと-flat-layout" class="level2">
+<h2 class="anchored" data-anchor-id="src-layoutと-flat-layout">src layoutと flat layout</h2>
+<p><strong> ▶&nbsp; Key Takeaways</strong></p>
+<ul>
+<li><code>src/</code>以下にImport Packagesを配置するsrc layoutが一般的に推奨されている</li>
+<li>個人用 or クイックにプロトタイプを作成したい場合はflat layoutを利用しても良いと思いますが，パッケージ周りの利点を考えると基本としてはsrc layoutの利用が推奨されます</li>
+</ul>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">src layout</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" aria-controls="tabset-1-2" aria-selected="false">flat layout</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" aria-labelledby="tabset-1-1-tab">
+<ul>
+<li>Import Package(<code>package_layout_test</code>)を<code>src/</code>以下の格納するスタイル</li>
+</ul>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">.</span></span>
+<span id="cb1-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> README.md</span>
+<span id="cb1-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> pyproject.toml</span>
+<span id="cb1-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> poetry.lock</span>
+<span id="cb1-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> src/</span>
+<span id="cb1-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>    └── package_layout_test/</span>
+<span id="cb1-7"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>       ├── __init__.py</span>
+<span id="cb1-8"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>       └── module.py</span>
+<span id="cb1-9"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">└──</span> tests/</span>
+<span id="cb1-10">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">└──</span> check_instance_setup.py</span></code></pre></div>
+<p>Poetryで用いて開発する場合は，以下のように</p>
+<pre><code>packages = [{ include = "*", from = "src" }]</code></pre>
+<p>を指定することで開発中のPATH及びImport Packageを明示するようにしています．</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>pyproject.toml</strong></pre>
+</div>
+<div class="sourceCode" id="cb3" data-filename="pyproject.toml" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb3-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[tool.poetry]</span></span>
+<span id="cb3-2"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">name</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"package-layout-test"</span></span>
+<span id="cb3-3"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">version</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0.1.0"</span></span>
+<span id="cb3-4"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">description</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"for package install test"</span></span>
+<span id="cb3-5"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">authors</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"RyoNak &lt;nakagamiryo0901@gmail.com&gt;"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb3-6"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">license</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"MIT"</span></span>
+<span id="cb3-7"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">readme</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"README.md"</span> </span>
+<span id="cb3-8"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">packages</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[{ </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">include</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"> =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"*"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">, </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">from</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"> =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"src"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"> }]</span></span>
+<span id="cb3-9"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">package-mode</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">true</span></span></code></pre></div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">
+<ul>
+<li>Import Packageや設定ファイルをすべてプロジェクトのルート直下に配置するスタイル</li>
+</ul>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">.</span></span>
+<span id="cb4-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> README.md</span>
+<span id="cb4-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> pyproject.toml</span>
+<span id="cb4-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> poetry.lock</span>
+<span id="cb4-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├──</span> package_layout_test/</span>
+<span id="cb4-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>   ├── __init__.py</span>
+<span id="cb4-7"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>   └── module.py</span>
+<span id="cb4-8"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">└──</span> tests/</span>
+<span id="cb4-9">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">└──</span> check_instance_setup.py</span></code></pre></div>
+<p>Poetryで用いて開発する場合は，以下のように</p>
+<pre><code>packages = [{ include = "package_layout_test"}]</code></pre>
+<p>を指定することで開発中のPATH及びImport Packageを明示するようにしています．</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>pyproject.toml</strong></pre>
+</div>
+<div class="sourceCode" id="cb6" data-filename="pyproject.toml" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb6-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[tool.poetry]</span></span>
+<span id="cb6-2"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">name</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"package-layout-test"</span></span>
+<span id="cb6-3"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">version</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0.1.0"</span></span>
+<span id="cb6-4"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">description</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"for package install test"</span></span>
+<span id="cb6-5"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">authors</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"RyoNak &lt;nakagamiryo0901@gmail.com&gt;"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb6-6"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">license</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"MIT"</span></span>
+<span id="cb6-7"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">readme</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"README.md"</span> </span>
+<span id="cb6-8"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">packages</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[{ </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">include</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"> =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"package_layout_test"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}]</span></span>
+<span id="cb6-9"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">package-mode</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">true</span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+<section id="layout構成の違いに起因する挙動の差" class="level3">
+<h3 class="anchored" data-anchor-id="layout構成の違いに起因する挙動の差">layout構成の違いに起因する挙動の差</h3>
+<p><strong> ▶&nbsp; Comparison</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>src layout</th>
+<th>flat layout</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>コードの動作確認</td>
+<td>install時にコードが動作するかどうか確認が入る</td>
+<td>install時に動作確認されない</td>
+</tr>
+<tr class="even">
+<td>Import挙動</td>
+<td>installされたパッケージの使用を保証する</td>
+<td>ビルド時に誤って開発中のコードが混入される可能性がある</td>
+</tr>
+<tr class="odd">
+<td>メンテナンス性</td>
+<td>設定ファイルとパッケージソースコードの階層が異なり管理しやすい</td>
+<td>プロジェクトが大きくなるにつれて，構成が複雑になる傾向がある．設定ファイルとの区別が分かりづらくなる</td>
+</tr>
+</tbody>
+</table>
+<p><strong> ▶&nbsp; コードの動作確認</strong></p>
+<ul>
+<li>ビルドに成功したとしても，実際にインストール可能であるとは限らない</li>
+<li>PyPIなどでパッケージ公開したときに，モジュール不足や依存関係が壊れたディストリビューションをアップロードしてしまうリスクがある</li>
+</ul>
+</section>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li><a href="https://blog.ionelmc.ro/2014/05/25/python-packaging/#the-structure%3E">Packaging a python library</a></li>
+<li><a href="https://docs.pytest.org/en/latest/explanation/goodpractices.html#choosing-a-test-layout-import-rules">pytest documentation &gt; Good Integration Practices</a></li>
+<li><a href="https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/">Python Packaging User Guide &gt; src layout vs flat layout</a></li>
+</ul>
+
+
+</section>
+
+ ]]></description>
+  <guid>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/python-packaging-guide/src-layout-vs-flat-layout.html</guid>
+  <pubDate>Fri, 29 Nov 2024 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>1  uv walk-through</title>
   <dc:creator>Ryo Nakagami</dc:creator>

@@ -105,6 +105,83 @@
     ]
   },
   {
+    "objectID": "posts/python-packaging-guide/src-layout-vs-flat-layout.html",
+    "href": "posts/python-packaging-guide/src-layout-vs-flat-layout.html",
+    "title": "2  src layout vs flat layout",
+    "section": "",
+    "text": "src layoutと flat layout\n▶  Key Takeaways",
+    "crumbs": [
+      "Pythonパッケージ作成",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>src layout vs flat layout</span>"
+    ]
+  },
+  {
+    "objectID": "posts/python-packaging-guide/src-layout-vs-flat-layout.html#src-layoutと-flat-layout",
+    "href": "posts/python-packaging-guide/src-layout-vs-flat-layout.html#src-layoutと-flat-layout",
+    "title": "2  src layout vs flat layout",
+    "section": "",
+    "text": "src/以下にImport Packagesを配置するsrc layoutが一般的に推奨されている\n個人用 or クイックにプロトタイプを作成したい場合はflat layoutを利用しても良いと思いますが，パッケージ周りの利点を考えると基本としてはsrc layoutの利用が推奨されます\n\n\nsrc layoutflat layout\n\n\n\nImport Package(package_layout_test)をsrc/以下の格納するスタイル\n\n.\n├── README.md\n├── pyproject.toml\n├── poetry.lock\n├── src/\n│    └── package_layout_test/\n│       ├── __init__.py\n│       └── module.py\n└── tests/\n    └── check_instance_setup.py\nPoetryで用いて開発する場合は，以下のように\npackages = [{ include = \"*\", from = \"src\" }]\nを指定することで開発中のPATH及びImport Packageを明示するようにしています．\n\n\npyproject.toml\n\n[tool.poetry]\nname = \"package-layout-test\"\nversion = \"0.1.0\"\ndescription = \"for package install test\"\nauthors = [\"RyoNak &lt;nakagamiryo0901@gmail.com&gt;\"]\nlicense = \"MIT\"\nreadme = \"README.md\" \npackages = [{ include = \"*\", from = \"src\" }]\npackage-mode = true\n\n\n\n\nImport Packageや設定ファイルをすべてプロジェクトのルート直下に配置するスタイル\n\n.\n├── README.md\n├── pyproject.toml\n├── poetry.lock\n├── package_layout_test/\n│   ├── __init__.py\n│   └── module.py\n└── tests/\n    └── check_instance_setup.py\nPoetryで用いて開発する場合は，以下のように\npackages = [{ include = \"package_layout_test\"}]\nを指定することで開発中のPATH及びImport Packageを明示するようにしています．\n\n\npyproject.toml\n\n[tool.poetry]\nname = \"package-layout-test\"\nversion = \"0.1.0\"\ndescription = \"for package install test\"\nauthors = [\"RyoNak &lt;nakagamiryo0901@gmail.com&gt;\"]\nlicense = \"MIT\"\nreadme = \"README.md\" \npackages = [{ include = \"package_layout_test\"}]\npackage-mode = true\n\n\n\n\n\nlayout構成の違いに起因する挙動の差\n ▶  Comparison\n\n\n\n\n\n\n\n\n\nsrc layout\nflat layout\n\n\n\n\nコードの動作確認\ninstall時にコードが動作するかどうか確認が入る\ninstall時に動作確認されない\n\n\nImport挙動\ninstallされたパッケージの使用を保証する\nビルド時に誤って開発中のコードが混入される可能性がある\n\n\nメンテナンス性\n設定ファイルとパッケージソースコードの階層が異なり管理しやすい\nプロジェクトが大きくなるにつれて，構成が複雑になる傾向がある．設定ファイルとの区別が分かりづらくなる\n\n\n\n ▶  コードの動作確認\n\nビルドに成功したとしても，実際にインストール可能であるとは限らない\nPyPIなどでパッケージ公開したときに，モジュール不足や依存関係が壊れたディストリビューションをアップロードしてしまうリスクがある",
+    "crumbs": [
+      "Pythonパッケージ作成",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>src layout vs flat layout</span>"
+    ]
+  },
+  {
+    "objectID": "posts/python-packaging-guide/src-layout-vs-flat-layout.html#references",
+    "href": "posts/python-packaging-guide/src-layout-vs-flat-layout.html#references",
+    "title": "2  src layout vs flat layout",
+    "section": "References",
+    "text": "References\n\nPackaging a python library\npytest documentation &gt; Good Integration Practices\nPython Packaging User Guide &gt; src layout vs flat layout",
+    "crumbs": [
+      "Pythonパッケージ作成",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>src layout vs flat layout</span>"
+    ]
+  },
+  {
+    "objectID": "posts/python-packaging-guide/versioning.html",
+    "href": "posts/python-packaging-guide/versioning.html",
+    "title": "3  versioning policy",
+    "section": "",
+    "text": "Versioning policy\nソースコードを変更すると，昔使えたmethodが使えなくなったり，他のパッケージとの互換性問題から動作しなくなったりする可能性があります． パッケージユーザーがプログラム動作や分析の再現性保証ができるように，開発者はパッケージの各ユニークな状態にユニークなバージョン番号を割り当て， それぞれの新しいバージョンを独立してリリースすることが求められます．\n▶  versioningのメリット\nmypackageという新しいパッケージを開発したとします．このパッケージは，Agitoというパッケージを利用しており， また Agito 3.0.0 で追加された機能を利用しているとします．このとき，mypackageを利用するプロジェクトでは， &lt; 3.0.0のAgitoが利用できないことになります．\n適切なversioning policyを用いてれば，pyproject.tomlなどの開発環境設定ファイルに\nと記載することで依存関係管理することができるようになります．",
+    "crumbs": [
+      "Pythonパッケージ作成",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>versioning policy</span>"
+    ]
+  },
+  {
+    "objectID": "posts/python-packaging-guide/versioning.html#versioning-policy",
+    "href": "posts/python-packaging-guide/versioning.html#versioning-policy",
+    "title": "3  versioning policy",
+    "section": "",
+    "text": "Def: Versioning \n\nVersioningとは，パッケージの異なるバージョンにユニークな識別子を追加するプロセスのこと\n多くのPython packageではsemantic versioningが用いられる\n\n\n\n\n\nパッケージユーザーが特定のversionのパッケージを指定してインストールできるようになる\nversioning infoを通して，バグ修正や新機能追加などパッケージの変更内容をユーザーに伝えることができる\n依存関係管理を容易にする\n\n\n\ndependencies = [\n    \"Agito&gt;=3.0.0,&lt;4.0.0\",\n]\n\n\nVersion numbering\n\n📘 Summary \n\nsemantic versioningに従ったversion numberは MAJOR.MINOR.PATCH の３つのint &gt; 0から構成される\nMAJOR: 後方互換性のない変更を入れた場合\nMINOR: 後方互換性のあるenhancementを入れた場合\nPATCH: 後方互換性のあるBUG FIXを入れた場合\nversioningされたパッケージがリリースされたされた場合，そのバージョンの内容を変更してはならない．変更を加える場合は，必ず新しいバージョンとしてリリースすること\n1.0.0はパッケージの最初の安定版リリースに使用される\n\n\nsemantic versioningのVersion numberingをここでは取り扱います． 一般的には，ソフトウェアの最初のバージョンは通常 0.1.0 から始まり，開発進捗/リリースに合わせてMAJOR.MINOR.PATCHのインクリメントが行われます． version numberを増加 = インクリメントさせることを，version bumpingと呼びます．\n ▶  Patch release (0.1.0 → 0.1.1)\nPatch releaseは後方互換性のあるBUG FIXを入れた場合に行われます．後方互換性とは，パッケージバージョンをアップグレードしても， 以前に記述したコードがそのまま動作することを意味します，\nユーザー目線で操作性に影響を与えないような，内部的なバグ変更がPatch releaseの対象となります．\n ▶  Minor release (0.1.0 -&gt; 0.2.0)\nMinor releaseは，大規模なバグ修正や後方互換性を保ちながら追加される新機能（例: 新しいmethodの追加）を加えた場合に行われます． Minor releaseに伴うversion bumpingがなされる際，PATCH は 0 に戻る必要があります．\n ▶  Major release (0.1.0 -&gt; 1.0.0)\n1.0.0はパッケージの最初の安定版リリースに使用されます．その後，後方互換性のない変更や多くのユーザーに影響を与える変更が行われた場合に， Major releaseが行われます．後方互換性のない変更は breaking changes と呼ばれます．\nパッケージ内のモジュール名を変更することはbreaking changesの一例です．この場合，ユーザーが新しいパッケージにアップグレードすると， 古いモジュール名を使用していたコードが動作しなくなり，コードを修正する必要が生じます．",
+    "crumbs": [
+      "Pythonパッケージ作成",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>versioning policy</span>"
+    ]
+  },
+  {
+    "objectID": "posts/python-packaging-guide/versioning.html#python-packageでの実装",
+    "href": "posts/python-packaging-guide/versioning.html#python-packageでの実装",
+    "title": "3  versioning policy",
+    "section": "Python packageでの実装",
+    "text": "Python packageでの実装",
+    "crumbs": [
+      "Pythonパッケージ作成",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>versioning policy</span>"
+    ]
+  },
+  {
+    "objectID": "posts/python-packaging-guide/versioning.html#references",
+    "href": "posts/python-packaging-guide/versioning.html#references",
+    "title": "3  versioning policy",
+    "section": "References",
+    "text": "References\n\nsemantic versioning",
+    "crumbs": [
+      "Pythonパッケージ作成",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>versioning policy</span>"
+    ]
+  },
+  {
     "objectID": "posts/pytest101/chapter_header.html",
     "href": "posts/pytest101/chapter_header.html",
     "title": "はじめてのpytest",
