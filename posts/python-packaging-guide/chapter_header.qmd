@@ -1,0 +1,13 @@
+---
+title: "Pythonパッケージ作成"
+author: "Ryo Nakagami"
+date: "2024-11-29"
+date-modified: last-modified
+number_sections: false
+code-fold: true
+comments:
+    utterances:
+         repo: RyoNakagami/statistics-for-regression-monkey
+         label: discussion
+engine: knitr
+---

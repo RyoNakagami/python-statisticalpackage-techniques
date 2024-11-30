@@ -1,0 +1,97 @@
+---
+title: "versioning policy"
+author: "Ryo Nakagami"
+date: "2024-11-30"
+date-modified: last-modified
+number_sections: false
+code-fold: true
+comments:
+    utterances:
+         repo: RyoNakagami/statistics-for-regression-monkey
+         label: discussion
+engine: knitr
+---
+
+## Versioning policy
+
+<div class="blog-custom-border">
+<strong>Def: Versioning</strong> <br>
+
+- Versioningとは，パッケージの異なるバージョンにユニークな識別子を追加するプロセスのこと
+- 多くのPython packageでは[semantic versioning](https://semver.org/)が用いられる
+
+</div>
+
+
+
+ソースコードを変更すると，昔使えたmethodが使えなくなったり，他のパッケージとの互換性問題から動作しなくなったりする可能性があります．
+パッケージユーザーがプログラム動作や分析の再現性保証ができるように，開発者はパッケージの各ユニークな状態にユニークなバージョン番号を割り当て，
+それぞれの新しいバージョンを独立してリリースすることが求められます．
+
+<strong > &#9654;&nbsp; versioningのメリット</strong>
+
+- パッケージユーザーが特定のversionのパッケージを指定してインストールできるようになる
+- versioning infoを通して，バグ修正や新機能追加などパッケージの変更内容をユーザーに伝えることができる
+- 依存関係管理を容易にする
+
+`mypackage`という新しいパッケージを開発したとします．このパッケージは，`Agito`というパッケージを利用しており，
+また `Agito 3.0.0` で追加された機能を利用しているとします．このとき，`mypackage`を利用するプロジェクトでは，
+`< 3.0.0`の`Agito`が利用できないことになります．
+
+適切なversioning policyを用いてれば，`pyproject.toml`などの開発環境設定ファイルに
+
+```{.toml}
+dependencies = [
+    "Agito>=3.0.0,<4.0.0",
+]
+```
+
+と記載することで依存関係管理することができるようになります．
+
+### Version numbering
+
+<div class="blog-custom-border">
+<strong>📘 Summary</strong> <br>
+
+- semantic versioningに従ったversion numberは `MAJOR.MINOR.PATCH` の３つのint > 0から構成される
+- `MAJOR`: 後方互換性のない変更を入れた場合 
+- `MINOR`: 後方互換性のあるenhancementを入れた場合
+- `PATCH`: 後方互換性のあるBUG FIXを入れた場合
+- versioningされたパッケージがリリースされたされた場合，**そのバージョンの内容を変更してはならない**．変更を加える場合は，必ず新しいバージョンとしてリリースすること
+- `1.0.0`はパッケージの最初の安定版リリースに使用される
+
+</div>
+
+
+[semantic versioning](https://semver.org/)のVersion numberingをここでは取り扱います．
+一般的には，ソフトウェアの最初のバージョンは通常 `0.1.0` から始まり，開発進捗/リリースに合わせて`MAJOR.MINOR.PATCH`のインクリメントが行われます．
+ version numberを増加 = インクリメントさせることを，version bumpingと呼びます．
+
+<strong > &#9654;&nbsp; <u>Patch release (0.1.0 → 0.1.1)</u></strong>
+
+Patch releaseは後方互換性のあるBUG FIXを入れた場合に行われます．後方互換性とは，パッケージバージョンをアップグレードしても，
+以前に記述したコードがそのまま動作することを意味します，
+
+ユーザー目線で操作性に影響を与えないような，内部的なバグ変更がPatch releaseの対象となります．
+
+<strong > &#9654;&nbsp; <u>Minor release (0.1.0 -> 0.2.0)</u></strong>
+
+Minor releaseは，大規模なバグ修正や後方互換性を保ちながら追加される新機能（例: 新しいmethodの追加）を加えた場合に行われます．
+Minor releaseに伴うversion bumpingがなされる際，`PATCH` は `0` に戻る必要があります．
+
+<strong > &#9654;&nbsp; <u>Major release (0.1.0 -> 1.0.0)</u></strong>
+
+`1.0.0`はパッケージの最初の安定版リリースに使用されます．その後，後方互換性のない変更や多くのユーザーに影響を与える変更が行われた場合に，
+Major releaseが行われます．後方互換性のない変更は **breaking changes** と呼ばれます．
+
+パッケージ内のモジュール名を変更することはbreaking changesの一例です．この場合，ユーザーが新しいパッケージにアップグレードすると，
+古いモジュール名を使用していたコードが動作しなくなり，コードを修正する必要が生じます．
+
+
+## Python packageでの実装
+
+
+
+References
+----------
+- [semantic versioning](https://semver.org/)
