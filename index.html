@@ -87,8 +87,6 @@ div.csl-indent {
 <meta name="quarto:offset" content="./">
 <link href="./posts/uv101/chapter_header.html" rel="next">
 <link href="././img/favicon.ico" rel="icon">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -127,35 +125,6 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <!-- Google Tag Manager -->
 <!-- <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -167,37 +136,8 @@ div.csl-indent {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&amp;display=swap" rel="stylesheet">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="alternate" type="application/rss+xml" title="Python package building techniques for regmonkeys" href="index.xml" data-external="1"></head>
+</head>
 
 <body class="nav-sidebar floating">
 
@@ -432,7 +372,7 @@ window.Quarto = {
 <li>分析コードは<a href="repository url">Repository</a>のqmdファイルがそのままソースコードとなっています</li>
 </ul>
 <p>参考として以下のようにコードブロックと合わせて出力されます．</p>
-<div id="f256c53d" class="cell" data-execution_count="1">
+<div id="93ebcf36" class="cell" data-execution_count="1">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Hallo World"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -457,213 +397,10 @@ window.Quarto = {
 </div>
 
 
-
 </section>
 </section>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1733184000000" data-listing-file-modified-sort="1733738534281" data-listing-date-modified-sort="1733738534000" data-listing-reading-time-sort="2" data-listing-word-count-sort="258">
-<div class="thumbnail">
-<p><a href="./posts/GitHubFAQ/Resource-not-accessible-by-integration.html" class="no-external"></a></p><a href="./posts/GitHubFAQ/Resource-not-accessible-by-integration.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/GitHubFAQ/Resource-not-accessible-by-integration.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/GitHubFAQ/Resource-not-accessible-by-integration.html" class="no-external">Resource not accessible by integration Error</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/GitHubFAQ/Resource-not-accessible-by-integration.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/GitHubFAQ/Resource-not-accessible-by-integration.html" class="no-external"><code>Resource not accessible by integration</code> error とは，文字通り「integration時にリソースにアクセスできない」ことを指しています． つまり，ワークフローが特定のリソース（リポジトリ、シークレット、環境など）にアクセスするための必要な権限を持っていないのが原因となります，</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/GitHubFAQ/Resource-not-accessible-by-integration.html" class="no-external">
-<div class="listing-date">
-2024-12-03
-</div>
-<div class="listing-author">
-Ryo Nakagami
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1732924800000" data-listing-file-modified-sort="1733738534281" data-listing-date-modified-sort="1733738534000" data-listing-reading-time-sort="3" data-listing-word-count-sort="521">
-<div class="thumbnail">
-<p><a href="./posts/python-packaging-guide/versioning.html" class="no-external"></a></p><a href="./posts/python-packaging-guide/versioning.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/python-packaging-guide/versioning.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/python-packaging-guide/versioning.html" class="no-external">versioning policy</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/python-packaging-guide/versioning.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/python-packaging-guide/versioning.html" class="no-external"><strong>Def: Versioning</strong> <br></a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/python-packaging-guide/versioning.html" class="no-external">
-<div class="listing-date">
-2024-11-30
-</div>
-<div class="listing-author">
-Ryo Nakagami
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1732838400000" data-listing-file-modified-sort="1733738534281" data-listing-date-modified-sort="1733738534000" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
-<div class="thumbnail">
-<p><a href="./posts/python-packaging-guide/chapter_header.html" class="no-external"></a></p><a href="./posts/python-packaging-guide/chapter_header.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/python-packaging-guide/chapter_header.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/python-packaging-guide/chapter_header.html" class="no-external">Pythonパッケージ作成</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/python-packaging-guide/chapter_header.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/python-packaging-guide/chapter_header.html" class="no-external"></a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/python-packaging-guide/chapter_header.html" class="no-external">
-<div class="listing-date">
-2024-11-29
-</div>
-<div class="listing-author">
-Ryo Nakagami
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1732838400000" data-listing-file-modified-sort="1733738534281" data-listing-date-modified-sort="1733738534000" data-listing-reading-time-sort="1" data-listing-word-count-sort="174">
-<div class="thumbnail">
-<p><a href="./posts/python-packaging-guide/src-layout-vs-flat-layout.html" class="no-external"></a></p><a href="./posts/python-packaging-guide/src-layout-vs-flat-layout.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/python-packaging-guide/src-layout-vs-flat-layout.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/python-packaging-guide/src-layout-vs-flat-layout.html" class="no-external">src layout vs flat layout</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/python-packaging-guide/src-layout-vs-flat-layout.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/python-packaging-guide/src-layout-vs-flat-layout.html" class="no-external"><strong> ▶&nbsp; Key Takeaways</strong></a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/python-packaging-guide/src-layout-vs-flat-layout.html" class="no-external">
-<div class="listing-date">
-2024-11-29
-</div>
-<div class="listing-author">
-Ryo Nakagami
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-listing-date-sort="1732233600000" data-listing-file-modified-sort="1733738534281" data-listing-date-modified-sort="1733738534000" data-listing-reading-time-sort="5" data-listing-word-count-sort="930">
-<div class="thumbnail">
-<p><a href="./posts/uv101/getting-started-with-uv.html" class="no-external"></a></p><a href="./posts/uv101/getting-started-with-uv.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/uv101/getting-started-with-uv.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/uv101/getting-started-with-uv.html" class="no-external">uv walk-through</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/uv101/getting-started-with-uv.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/uv101/getting-started-with-uv.html" class="no-external">uvではprojectで利用するpython versionを<code>uv</code>コマンドを用いて，インストール及び指定することができます．</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/uv101/getting-started-with-uv.html" class="no-external">
-<div class="listing-date">
-2024-11-22
-</div>
-<div class="listing-author">
-Ryo Nakagami
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-listing-date-sort="1732147200000" data-listing-file-modified-sort="1733738534281" data-listing-date-modified-sort="1733738534000" data-listing-reading-time-sort="1" data-listing-word-count-sort="157">
-<div class="thumbnail">
-<p><a href="./posts/uv101/chapter_header.html" class="no-external"></a></p><a href="./posts/uv101/chapter_header.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/uv101/chapter_header.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/uv101/chapter_header.html" class="no-external">はじめてのuv</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/uv101/chapter_header.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/uv101/chapter_header.html" class="no-external">uvとはRustで書かれたPython package/project managerのことです．</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/uv101/chapter_header.html" class="no-external">
-<div class="listing-date">
-2024-11-21
-</div>
-<div class="listing-author">
-Ryo Nakagami
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-listing-date-sort="1731283200000" data-listing-file-modified-sort="1733738534281" data-listing-date-modified-sort="1733738534000" data-listing-reading-time-sort="2" data-listing-word-count-sort="214">
-<div class="thumbnail">
-<p><a href="./posts/pytest101/chapter_header.html" class="no-external"></a></p><a href="./posts/pytest101/chapter_header.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/pytest101/chapter_header.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/pytest101/chapter_header.html" class="no-external">はじめてのpytest</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/pytest101/chapter_header.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/pytest101/chapter_header.html" class="no-external">Pythonが提供するユニットテストフレームワークとして, <code>unittest</code>がありますが，<code>unittest</code>と比べ<code>pytest</code>は以下のようなメリットがあります．</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/pytest101/chapter_header.html" class="no-external">
-<div class="listing-date">
-2024-11-11
-</div>
-<div class="listing-author">
-Ryo Nakagami
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script>
    document.querySelectorAll('.custom_problem .theorem-title').forEach((title) => {
        let modName = title.innerHTML;
