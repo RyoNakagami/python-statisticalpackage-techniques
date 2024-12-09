@@ -456,6 +456,184 @@ background-color: null;
 font-style: inherit;">'requests'</span> package is: 2.28.1</span></code></pre></div>
 </div>
 </section>
+<section id="class.show_version-継承を用いてclassからversion情報を表示する" class="level3">
+<h3 class="anchored" data-anchor-id="class.show_version-継承を用いてclassからversion情報を表示する"><code>Class.show_version()</code>: 継承を用いてClassからversion情報を表示する</h3>
+<p>個人のプラクティスとなりますが，パッケージ開発にてClass開発をする場合，<code>BaseMetaInfo</code>クラスを定義 &amp; 継承することで メインのClassから<code>show_version()</code> methodを叩くことでversion infoを実行環境と合わせて確認できるようにしています．</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> importlib.metadata</span>
+<span id="cb7-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> os</span>
+<span id="cb7-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> platform</span>
+<span id="cb7-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pprint</span>
+<span id="cb7-5"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> sys</span>
+<span id="cb7-6"></span>
+<span id="cb7-7"></span>
+<span id="cb7-8"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> BaseMetaInfo:</span>
+<span id="cb7-9">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@classmethod</span></span>
+<span id="cb7-10">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> show_version(cls):</span>
+<span id="cb7-11">        cls.class_name <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"synth_coremodel"</span></span>
+<span id="cb7-12">        uname_result <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> platform.uname()</span>
+<span id="cb7-13">        version_info <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> OrderedDict(</span>
+<span id="cb7-14">            {</span>
+<span id="cb7-15">                cls.class_name: importlib.metadata.version(cls.class_name),</span>
+<span id="cb7-16">                <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"python-version"</span>: <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"."</span>.join([<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>(i) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> sys.version_info]),</span>
+<span id="cb7-17">                <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"OS"</span>: uname_result.system,</span>
+<span id="cb7-18">                <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"OS-release"</span>: uname_result.release,</span>
+<span id="cb7-19">                <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"processor"</span>: uname_result.processor,</span>
+<span id="cb7-20">                <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"number of available cpu"</span>: os.cpu_count(),</span>
+<span id="cb7-21">            }</span>
+<span id="cb7-22">        )</span>
+<span id="cb7-23">        pprint.pprint(version_info)</span></code></pre></div>
+<p>例として，<code>regmonkey_analysis</code>パッケージで<code>LinearEstimator</code>というClassを実装した場合，</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> regmonkey_analysis <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> LinearEstimator</span>
+<span id="cb8-2">LinearEstimator.show_version()</span></code></pre></div>
+<p><strong> OutPut</strong></p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">OrderedDict</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">[</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'regmonkey_analysis'</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'6.1.2'</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb9-2">             <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'python-version'</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'3.11.8.final.0'</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb9-3">             <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'OS'</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Linux'</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb9-4">             <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'OS-release'</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'6.8.0-49-generic'</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb9-5">             <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'processor'</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'x86_64'</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb9-6">             <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'number of available cpu'</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">,</span> 32<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">]</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span></span></code></pre></div>
+<p>と表示できるようにしています</p>
+</section>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
