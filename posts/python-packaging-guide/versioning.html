@@ -236,6 +236,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <span class="sidebar-item-text sidebar-link text-start">
  <span class="menu-text">はじめてのpytest</span></span>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/GitHubFAQ/Resource-not-accessible-by-integration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Resource not accessible by integration Error</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -250,7 +267,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#version-numbering" id="toc-version-numbering" class="nav-link" data-scroll-target="#version-numbering">Version numbering</a></li>
   </ul></li>
-  <li><a href="#python-packageでの実装" id="toc-python-packageでの実装" class="nav-link" data-scroll-target="#python-packageでの実装">Python packageでの実装</a></li>
+  <li><a href="#python-packageでの実装" id="toc-python-packageでの実装" class="nav-link" data-scroll-target="#python-packageでの実装">Python packageでの実装</a>
+  <ul class="collapse">
+  <li><a href="#非推奨-__init__.pyでのハードコーディング" id="toc-非推奨-__init__.pyでのハードコーディング" class="nav-link" data-scroll-target="#非推奨-__init__.pyでのハードコーディング">非推奨: <code>__init__.py</code>でのハードコーディング</a></li>
+  <li><a href="#推奨-pyproject.tomlによる管理" id="toc-推奨-pyproject.tomlによる管理" class="nav-link" data-scroll-target="#推奨-pyproject.tomlによる管理">推奨: <code>pyproject.toml</code>による管理</a></li>
+  </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/RyoNakagami/python-statisticalpackage-techniques/edit/main/posts/python-packaging-guide/versioning.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/RyoNakagami/python-statisticalpackage-techniques/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -284,7 +305,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2024-11-30</p>
+      <p class="date-modified">2024-12-09</p>
     </div>
   </div>
     
@@ -332,7 +353,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><a href="https://semver.org/">semantic versioning</a>のVersion numberingをここでは取り扱います． 一般的には，ソフトウェアの最初のバージョンは通常 <code>0.1.0</code> から始まり，開発進捗/リリースに合わせて<code>MAJOR.MINOR.PATCH</code>のインクリメントが行われます． version numberを増加 = インクリメントさせることを，version bumpingと呼びます．</p>
 <p><strong> ▶&nbsp; <u>Patch release (0.1.0 → 0.1.1)</u></strong></p>
-<p>Patch releaseは後方互換性のあるBUG FIXを入れた場合に行われます．後方互換性とは，パッケージバージョンをアップグレードしても， 以前に記述したコードがそのまま動作することを意味します，</p>
+<p>Patch releaseは後方互換性のあるBUG FIXを入れた場合に行われます．後方互換性とは，パッケージバージョンをアップグレードしても， 以前に記述したコードがそのまま動作することを意味します．</p>
 <p>ユーザー目線で操作性に影響を与えないような，内部的なバグ変更がPatch releaseの対象となります．</p>
 <p><strong> ▶&nbsp; <u>Minor release (0.1.0 -&gt; 0.2.0)</u></strong></p>
 <p>Minor releaseは，大規模なバグ修正や後方互換性を保ちながら追加される新機能（例: 新しいmethodの追加）を加えた場合に行われます． Minor releaseに伴うversion bumpingがなされる際，<code>PATCH</code> は <code>0</code> に戻る必要があります．</p>
@@ -343,11 +364,78 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="python-packageでの実装" class="level2">
 <h2 class="anchored" data-anchor-id="python-packageでの実装">Python packageでの実装</h2>
+<p><a href="https://packaging.python.org/en/latest/discussions/single-source-version/#single-source-version">Python Packaging User Guide &gt; Single-sourcing the Project Version</a> にて</p>
+<blockquote class="blockquote">
+<p>Many Python distribution packages publish a single Python import package where it is desired that the runtime <strong>version</strong> attribute on the import package report the same version specifier as <code>importlib.metadata.version()</code> reports for the distribution package</p>
+</blockquote>
+<p>つまり，</p>
+<ul>
+<li>package versionは <code>__version__</code> attributeで参照できるようにするのが望ましい</li>
+<li><code>__version__</code> attributeの内容は <code>importlib.metadata.version()</code> と一致するのが望ましい（つまり，<code>import_name.__version__</code>, <code>importlib.metadata.version("dist-name")</code>が一致する）</li>
+</ul>
+<p>とされています．しかし，git/GitHubを用いた開発ではversionをgit tagという形で格納していたりしますし，Poetryなどのpackage-management toolを用いている場合は <code>pyproject.toml</code>に記載されていたりします．これらをより考えるべき問題は，<strong>version情報を格納したdata entryをどこにすべきなのか</strong>，ということになります．</p>
+<section id="非推奨-__init__.pyでのハードコーディング" class="level3">
+<h3 class="anchored" data-anchor-id="非推奨-__init__.pyでのハードコーディング">非推奨: <code>__init__.py</code>でのハードコーディング</h3>
+<p><code>transformer</code>, <code>QuantEconpy</code>, <code>sckit-learn</code>などでは，ソースコード格納ディレクトリ直下の <code>__init__.py</code> に</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>__init__.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb2" data-filename="__init__.py"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>__version__ <span class="op">=</span> <span class="st">"1.7.dev0"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>といった形式でversion情報が記載されています．この方法は，<strong>現在では非推奨</strong>とされています．</p>
+<p><strong> ▶&nbsp; 非推奨の理由</strong></p>
+<ul>
+<li>パッケージのバージョンを更新するたびに，<code>__init__.py</code>を手動で変更する必要があり，変更し忘れが発生しやすい</li>
+<li>バージョン情報を<code>__init__.py</code>に直接記述していると，ビルドツールやCI/CDパイプラインでのバージョン管理や更新が難しくなる</li>
+</ul>
+</section>
+<section id="推奨-pyproject.tomlによる管理" class="level3">
+<h3 class="anchored" data-anchor-id="推奨-pyproject.tomlによる管理">推奨: <code>pyproject.toml</code>による管理</h3>
+<p><a href="https://peps.python.org/pep-0621/#version">PEP 621</a>で紹介されているように，現在では<code>pyproject.toml</code>を使ったメタデータ管理が推奨されます． ポイントは，</p>
+<ul>
+<li>version情報はprojectメタ情報を記載する<code>pyproject.toml</code>で取り扱う</li>
+<li><code>__version__</code> attributeは<code>pyproject.toml</code>に記載されたversion情報を参照するようにする</li>
+</ul>
+<p>この場合，<code>pyproject.toml</code>, <code>__init__.py</code> にそれぞれのラインを記載します</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>pyproject.toml</strong></pre>
+</div>
+<div class="sourceCode" id="cb3" data-filename="pyproject.toml"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[project]</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">name</span> <span class="op">=</span> <span class="st">"package_name"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="dt">version</span> <span class="op">=</span> <span class="st">"1.0.0"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>python runtime中でも<code>__version__</code>attribute経由で確認できるように</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>__init__.py__</strong></pre>
+</div>
+<div class="sourceCode" id="cb4" data-filename="__init__.py__"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> importlib.metadata <span class="im">import</span> version</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>__version__ <span class="op">=</span> version(<span class="st">"package_name"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>も設定します．<code>importlib.metadata</code>はパッケージメタ情報についてのインターフェースを提供するモジュールです(Python 3.8以降に導入)． package versionを取得したい場合は，versionを取得したいパッケージ名を<code>importlib.metadata.version()</code>の引数に設定すると， <code>METADATA</code>ファイルのversion fieldよりversion infoを取得してくれます．</p>
+<p><code>METADATA</code>ファイルは，build toolによって異なりますが，一般的には<code>&lt;package_name&gt;.&lt;version&gt;.dist-info</code>に格納されています． <code>&lt;package_name&gt;.&lt;version&gt;.dist-info</code>ディレクトリ内の <code>METADATA</code> ファイルは， パッケージがビルドされてインストールされる際に <code>pyproject.toml</code>（およびその他のビルド構成ファイル）から生成されるという関係性があります．</p>
+<p>なので，<code>importlib.metadata.version()</code> は <code>pyproject.toml</code> の内容を参照していると理解して良いと思います．</p>
+<div id="exm-" class="custom_problem theorem example">
+<p><span class="theorem-title"><strong>Example 3.1</strong></span> <strong>: <code>importlib.metadata</code>によりversion info取得</strong> <br></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> importlib.metadata <span class="im">import</span> version</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the version of a package (e.g., 'requests')</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>package_version <span class="op">=</span> version(<span class="st">'requests'</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The version of the 'requests' package is: </span><span class="sc">{</span>package_version<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong> OutPut</strong></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> version of the <span class="st">'requests'</span> package is: 2.28.1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
 <ul>
 <li><a href="https://semver.org/">semantic versioning</a></li>
+<li><a href="https://packaging.python.org/en/latest/discussions/single-source-version/#single-source-version">Python Packaging User Guide &gt; Single-sourcing the Project Version</a></li>
+<li><a href="https://peps.python.org/pep-0621/#version">PEP 621</a></li>
 </ul>
 
 

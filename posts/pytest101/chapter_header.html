@@ -66,6 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
+<link href="../../posts/GitHubFAQ/Resource-not-accessible-by-integration.html" rel="next">
 <link href="../../posts/python-packaging-guide/versioning.html" rel="prev">
 <link href="../.././img/favicon.ico" rel="icon">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
@@ -235,6 +236,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <span class="sidebar-item-text sidebar-link text-start">
  <span class="menu-text">はじめてのpytest</span></span>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/GitHubFAQ/Resource-not-accessible-by-integration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Resource not accessible by integration Error</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -283,7 +301,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2024-11-30</p>
+      <p class="date-modified">2024-12-09</p>
     </div>
   </div>
     
@@ -328,11 +346,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pytest</span> <span class="at">-v</span> ./pytest_scripts/test_script_001.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>============================= test session starts ==============================
-platform linux -- Python 3.12.7, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.12.7/x64/bin/python
+platform linux -- Python 3.12.7, pytest-8.3.4, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.12.7/x64/bin/python
 cachedir: .pytest_cache
 rootdir: /home/runner/work/python-statisticalpackage-techniques/python-statisticalpackage-techniques
 configfile: pyproject.toml
-plugins: anyio-4.6.2.post1
+plugins: anyio-4.7.0
 collecting ... collected 2 items
 
 pytest_scripts/test_script_001.py::test_passing PASSED                   [ 50%]
@@ -356,11 +374,11 @@ pytest_scripts/test_script_001.py::test_passing2 PASSED                  [100%]
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pytest</span> <span class="at">-v</span> ./pytest_scripts/test_script_002.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>============================= test session starts ==============================
-platform linux -- Python 3.12.7, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.12.7/x64/bin/python
+platform linux -- Python 3.12.7, pytest-8.3.4, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.12.7/x64/bin/python
 cachedir: .pytest_cache
 rootdir: /home/runner/work/python-statisticalpackage-techniques/python-statisticalpackage-techniques
 configfile: pyproject.toml
-plugins: anyio-4.6.2.post1
+plugins: anyio-4.7.0
 collecting ... collected 1 item
 
 pytest_scripts/test_script_002.py::test_failing FAILED                   [100%]
@@ -405,10 +423,10 @@ FAILED pytest_scripts/test_script_002.py::test_failing - assert (1, 2) == (1, 1)
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pytest</span> <span class="at">--tb</span><span class="op">=</span>no ./pytest_scripts/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>============================= test session starts ==============================
-platform linux -- Python 3.12.7, pytest-8.3.3, pluggy-1.5.0
+platform linux -- Python 3.12.7, pytest-8.3.4, pluggy-1.5.0
 rootdir: /home/runner/work/python-statisticalpackage-techniques/python-statisticalpackage-techniques
 configfile: pyproject.toml
-plugins: anyio-4.6.2.post1
+plugins: anyio-4.7.0
 collected 3 items
 
 pytest_scripts/test_script_001.py ..                                     [ 66%]
@@ -1103,6 +1121,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../../posts/GitHubFAQ/Resource-not-accessible-by-integration.html" class="pagination-link" aria-label="Resource not accessible by integration Error">
+        <span class="nav-page-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Resource not accessible by integration Error</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

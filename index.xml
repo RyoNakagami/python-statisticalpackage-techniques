@@ -10,7 +10,267 @@
 <atom:link href="https://ryonakagami.github.io/python-statisticalpackage-techniques/index.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.6.39</generator>
-<lastBuildDate>Sat, 30 Nov 2024 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 03 Dec 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Appendix A — Resource not accessible by integration Error</title>
+  <dc:creator>Ryo Nakagami</dc:creator>
+  <link>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/GitHubFAQ/Resource-not-accessible-by-integration.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="github-actionsにおけるresource-not-accessible-by-integration-error" class="level2">
+<h2 class="anchored" data-anchor-id="github-actionsにおけるresource-not-accessible-by-integration-error">GitHub ActionsにおけるResource not accessible by integration Error</h2>
+<p><code>Resource not accessible by integration</code> error とは，文字通り「integration時にリソースにアクセスできない」ことを指しています． つまり，ワークフローが特定のリソース（リポジトリ、シークレット、環境など）にアクセスするための必要な権限を持っていないのが原因となります，</p>
+<section id="solutions-1-secrets.github_token-のpermission範囲変更" class="level3">
+<h3 class="anchored" data-anchor-id="solutions-1-secrets.github_token-のpermission範囲変更">Solutions 1: <code>secrets.GITHUB_TOKEN</code> のPermission範囲変更</h3>
+<p><code>${{ secrets.GITHUB_TOKEN }}</code>のデフォルトPermissionは，該当するリポジトリの <code>Settings &gt; Actions &gt; General &gt; Workflow permissions</code> にて定められています．</p>
+<ul>
+<li><code>Read and write permissions</code></li>
+<li><code>Reead repository contents permission</code></li>
+</ul>
+<p>の２つのレベルが選択できます．ワークフロー内容に合わせて設定しますが，Git tag運用に合わせたRelease noteの自動作成の場合は前者を選択する必要があります．</p>
+<div id="exm-gittag" class="custom_problem theorem example">
+<p><span class="theorem-title"><strong>Example A.1</strong></span> <strong>: git tagに応じたrelease note作成ワークフロー</strong> <br></p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> git tag version update</span></span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">on</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-4"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pull_request</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-5"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">branches</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-6"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> main</span></span>
+<span id="cb1-7"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> master</span></span>
+<span id="cb1-8"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">types</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-9"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> closed</span></span>
+<span id="cb1-10"></span>
+<span id="cb1-11"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">jobs</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-12"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">build</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-13"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">if</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> github.event.pull_request.merged == true</span></span>
+<span id="cb1-14"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">runs-on</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> ubuntu-latest</span></span>
+<span id="cb1-15"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">steps</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-16"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> Checkout main branch</span></span>
+<span id="cb1-17"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">uses</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> actions/checkout@v4</span></span>
+<span id="cb1-18"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">with</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-19"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">          </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ref</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> main</span></span>
+<span id="cb1-20"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">          </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fetch-depth</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb1-21"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> Extract PR Comment</span></span>
+<span id="cb1-22"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">id</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> pr_comment</span></span>
+<span id="cb1-23"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">        run</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">: </span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">|</span></span>
+<span id="cb1-24">          TAG=$(echo "$PULL_REQUEST_BODY" | grep -Po '(?&lt;=tag: )v\.\d+\.\d+\.\d+')</span>
+<span id="cb1-25">          if [ -n "$TAG" ]; then</span>
+<span id="cb1-26">            gh release create $TAG --generate-notes</span>
+<span id="cb1-27">          fi</span>
+<span id="cb1-28"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">env</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-29"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">          </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">GH_TOKEN</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> ${{ github.token }}</span></span>
+<span id="cb1-30"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">          </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">PULL_REQUEST_BODY</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"${{ github.event.pull_request.body }}"</span></span></code></pre></div>
+</div>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <guid>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/GitHubFAQ/Resource-not-accessible-by-integration.html</guid>
+  <pubDate>Tue, 03 Dec 2024 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>3  versioning policy</title>
   <dc:creator>Ryo Nakagami</dc:creator>
@@ -69,7 +329,7 @@ font-style: inherit;">]</span></span></code></pre></div>
 </div>
 <p><a href="https://semver.org/">semantic versioning</a>のVersion numberingをここでは取り扱います． 一般的には，ソフトウェアの最初のバージョンは通常 <code>0.1.0</code> から始まり，開発進捗/リリースに合わせて<code>MAJOR.MINOR.PATCH</code>のインクリメントが行われます． version numberを増加 = インクリメントさせることを，version bumpingと呼びます．</p>
 <p><strong> ▶&nbsp; <u>Patch release (0.1.0 → 0.1.1)</u></strong></p>
-<p>Patch releaseは後方互換性のあるBUG FIXを入れた場合に行われます．後方互換性とは，パッケージバージョンをアップグレードしても， 以前に記述したコードがそのまま動作することを意味します，</p>
+<p>Patch releaseは後方互換性のあるBUG FIXを入れた場合に行われます．後方互換性とは，パッケージバージョンをアップグレードしても， 以前に記述したコードがそのまま動作することを意味します．</p>
 <p>ユーザー目線で操作性に影響を与えないような，内部的なバグ変更がPatch releaseの対象となります．</p>
 <p><strong> ▶&nbsp; <u>Minor release (0.1.0 -&gt; 0.2.0)</u></strong></p>
 <p>Minor releaseは，大規模なバグ修正や後方互換性を保ちながら追加される新機能（例: 新しいmethodの追加）を加えた場合に行われます． Minor releaseに伴うversion bumpingがなされる際，<code>PATCH</code> は <code>0</code> に戻る必要があります．</p>
@@ -80,11 +340,129 @@ font-style: inherit;">]</span></span></code></pre></div>
 </section>
 <section id="python-packageでの実装" class="level2">
 <h2 class="anchored" data-anchor-id="python-packageでの実装">Python packageでの実装</h2>
+<p><a href="https://packaging.python.org/en/latest/discussions/single-source-version/#single-source-version">Python Packaging User Guide &gt; Single-sourcing the Project Version</a> にて</p>
+<blockquote class="blockquote">
+<p>Many Python distribution packages publish a single Python import package where it is desired that the runtime <strong>version</strong> attribute on the import package report the same version specifier as <code>importlib.metadata.version()</code> reports for the distribution package</p>
+</blockquote>
+<p>つまり，</p>
+<ul>
+<li>package versionは <code>__version__</code> attributeで参照できるようにするのが望ましい</li>
+<li><code>__version__</code> attributeの内容は <code>importlib.metadata.version()</code> と一致するのが望ましい（つまり，<code>import_name.__version__</code>, <code>importlib.metadata.version("dist-name")</code>が一致する）</li>
+</ul>
+<p>とされています．しかし，git/GitHubを用いた開発ではversionをgit tagという形で格納していたりしますし，Poetryなどのpackage-management toolを用いている場合は <code>pyproject.toml</code>に記載されていたりします．これらをより考えるべき問題は，<strong>version情報を格納したdata entryをどこにすべきなのか</strong>，ということになります．</p>
+<section id="非推奨-__init__.pyでのハードコーディング" class="level3">
+<h3 class="anchored" data-anchor-id="非推奨-__init__.pyでのハードコーディング">非推奨: <code>__init__.py</code>でのハードコーディング</h3>
+<p><code>transformer</code>, <code>QuantEconpy</code>, <code>sckit-learn</code>などでは，ソースコード格納ディレクトリ直下の <code>__init__.py</code> に</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>__init__.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb2" data-filename="__init__.py" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb2-1">__version__ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"1.7.dev0"</span></span></code></pre></div>
+</div>
+<p>といった形式でversion情報が記載されています．この方法は，<strong>現在では非推奨</strong>とされています．</p>
+<p><strong> ▶&nbsp; 非推奨の理由</strong></p>
+<ul>
+<li>パッケージのバージョンを更新するたびに，<code>__init__.py</code>を手動で変更する必要があり，変更し忘れが発生しやすい</li>
+<li>バージョン情報を<code>__init__.py</code>に直接記述していると，ビルドツールやCI/CDパイプラインでのバージョン管理や更新が難しくなる</li>
+</ul>
+</section>
+<section id="推奨-pyproject.tomlによる管理" class="level3">
+<h3 class="anchored" data-anchor-id="推奨-pyproject.tomlによる管理">推奨: <code>pyproject.toml</code>による管理</h3>
+<p><a href="https://peps.python.org/pep-0621/#version">PEP 621</a>で紹介されているように，現在では<code>pyproject.toml</code>を使ったメタデータ管理が推奨されます． ポイントは，</p>
+<ul>
+<li>version情報はprojectメタ情報を記載する<code>pyproject.toml</code>で取り扱う</li>
+<li><code>__version__</code> attributeは<code>pyproject.toml</code>に記載されたversion情報を参照するようにする</li>
+</ul>
+<p>この場合，<code>pyproject.toml</code>, <code>__init__.py</code> にそれぞれのラインを記載します</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>pyproject.toml</strong></pre>
+</div>
+<div class="sourceCode" id="cb3" data-filename="pyproject.toml" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb3-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[project]</span></span>
+<span id="cb3-2"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">name</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"package_name"</span></span>
+<span id="cb3-3"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">version</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"1.0.0"</span></span></code></pre></div>
+</div>
+<p>python runtime中でも<code>__version__</code>attribute経由で確認できるように</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>__init__.py__</strong></pre>
+</div>
+<div class="sourceCode" id="cb4" data-filename="__init__.py__" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> importlib.metadata <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> version</span>
+<span id="cb4-2"></span>
+<span id="cb4-3">__version__ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> version(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"package_name"</span>)</span></code></pre></div>
+</div>
+<p>も設定します．<code>importlib.metadata</code>はパッケージメタ情報についてのインターフェースを提供するモジュールです(Python 3.8以降に導入)． package versionを取得したい場合は，versionを取得したいパッケージ名を<code>importlib.metadata.version()</code>の引数に設定すると， <code>METADATA</code>ファイルのversion fieldよりversion infoを取得してくれます．</p>
+<p><code>METADATA</code>ファイルは，build toolによって異なりますが，一般的には<code>&lt;package_name&gt;.&lt;version&gt;.dist-info</code>に格納されています． <code>&lt;package_name&gt;.&lt;version&gt;.dist-info</code>ディレクトリ内の <code>METADATA</code> ファイルは， パッケージがビルドされてインストールされる際に <code>pyproject.toml</code>（およびその他のビルド構成ファイル）から生成されるという関係性があります．</p>
+<p>なので，<code>importlib.metadata.version()</code> は <code>pyproject.toml</code> の内容を参照していると理解して良いと思います．</p>
+<div id="exm-" class="custom_problem theorem example">
+<p><span class="theorem-title"><strong>Example 3.1</strong></span> <strong>: <code>importlib.metadata</code>によりversion info取得</strong> <br></p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode py code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> importlib.metadata <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> version</span>
+<span id="cb5-2"></span>
+<span id="cb5-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Get the version of a package (e.g., 'requests')</span></span>
+<span id="cb5-4">package_version <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> version(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'requests'</span>)</span>
+<span id="cb5-5"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"The version of the 'requests' package is: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>package_version<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div>
+<p><strong> OutPut</strong></p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">The</span> version of the <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'requests'</span> package is: 2.28.1</span></code></pre></div>
+</div>
+</section>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
 <ul>
 <li><a href="https://semver.org/">semantic versioning</a></li>
+<li><a href="https://packaging.python.org/en/latest/discussions/single-source-version/#single-source-version">Python Packaging User Guide &gt; Single-sourcing the Project Version</a></li>
+<li><a href="https://peps.python.org/pep-0621/#version">PEP 621</a></li>
 </ul>
 
 
@@ -1650,11 +2028,11 @@ background-color: null;
 font-style: inherit;">-v</span> ./pytest_scripts/test_script_001.py</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>============================= test session starts ==============================
-platform linux -- Python 3.12.7, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.12.7/x64/bin/python
+platform linux -- Python 3.12.7, pytest-8.3.4, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.12.7/x64/bin/python
 cachedir: .pytest_cache
 rootdir: /home/runner/work/python-statisticalpackage-techniques/python-statisticalpackage-techniques
 configfile: pyproject.toml
-plugins: anyio-4.6.2.post1
+plugins: anyio-4.7.0
 collecting ... collected 2 items
 
 pytest_scripts/test_script_001.py::test_passing PASSED                   [ 50%]
@@ -1698,11 +2076,11 @@ background-color: null;
 font-style: inherit;">-v</span> ./pytest_scripts/test_script_002.py</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>============================= test session starts ==============================
-platform linux -- Python 3.12.7, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.12.7/x64/bin/python
+platform linux -- Python 3.12.7, pytest-8.3.4, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.12.7/x64/bin/python
 cachedir: .pytest_cache
 rootdir: /home/runner/work/python-statisticalpackage-techniques/python-statisticalpackage-techniques
 configfile: pyproject.toml
-plugins: anyio-4.6.2.post1
+plugins: anyio-4.7.0
 collecting ... collected 1 item
 
 pytest_scripts/test_script_002.py::test_failing FAILED                   [100%]
@@ -1753,10 +2131,10 @@ background-color: null;
 font-style: inherit;">=</span>no ./pytest_scripts/</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>============================= test session starts ==============================
-platform linux -- Python 3.12.7, pytest-8.3.3, pluggy-1.5.0
+platform linux -- Python 3.12.7, pytest-8.3.4, pluggy-1.5.0
 rootdir: /home/runner/work/python-statisticalpackage-techniques/python-statisticalpackage-techniques
 configfile: pyproject.toml
-plugins: anyio-4.6.2.post1
+plugins: anyio-4.7.0
 collected 3 items
 
 pytest_scripts/test_script_001.py ..                                     [ 66%]

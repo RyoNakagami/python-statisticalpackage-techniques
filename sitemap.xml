@@ -2,30 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ryonakagami.github.io/python-statisticalpackage-techniques/index.html</loc>
-    <lastmod>2024-11-30T09:52:36.818Z</lastmod>
+    <lastmod>2024-12-09T09:40:28.957Z</lastmod>
   </url>
   <url>
     <loc>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/uv101/chapter_header.html</loc>
-    <lastmod>2024-11-30T09:52:36.818Z</lastmod>
+    <lastmod>2024-12-09T09:40:28.957Z</lastmod>
   </url>
   <url>
     <loc>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/uv101/getting-started-with-uv.html</loc>
-    <lastmod>2024-11-30T09:52:36.818Z</lastmod>
+    <lastmod>2024-12-09T09:40:28.957Z</lastmod>
   </url>
   <url>
     <loc>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/python-packaging-guide/chapter_header.html</loc>
-    <lastmod>2024-11-30T09:52:36.818Z</lastmod>
+    <lastmod>2024-12-09T09:40:28.957Z</lastmod>
   </url>
   <url>
     <loc>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/python-packaging-guide/src-layout-vs-flat-layout.html</loc>
-    <lastmod>2024-11-30T09:52:36.818Z</lastmod>
+    <lastmod>2024-12-09T09:40:28.957Z</lastmod>
   </url>
   <url>
     <loc>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/python-packaging-guide/versioning.html</loc>
-    <lastmod>2024-11-30T09:52:36.818Z</lastmod>
+    <lastmod>2024-12-09T09:40:28.957Z</lastmod>
   </url>
   <url>
     <loc>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/pytest101/chapter_header.html</loc>
-    <lastmod>2024-11-30T09:52:36.818Z</lastmod>
+    <lastmod>2024-12-09T09:40:28.957Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ryonakagami.github.io/python-statisticalpackage-techniques/posts/GitHubFAQ/Resource-not-accessible-by-integration.html</loc>
+    <lastmod>2024-12-09T09:40:28.957Z</lastmod>
   </url>
 </urlset>
