@@ -66,8 +66,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../posts/GitHubFAQ/Resource-not-accessible-by-integration.html" rel="next">
-<link href="../../posts/python-packaging-guide/versioning.html" rel="prev">
+<link href="../../posts/GitHubFAQ/chapter_header.html" rel="next">
+<link href="../../posts/python-packaging-guide/gittag_versioning.html" rel="prev">
 <link href="../.././img/favicon.ico" rel="icon">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
@@ -78,8 +78,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-55725599aa3e48df258510ee62625c7f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-56481e330a13435ccd523f0d3aaf6cf6.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-c1125b47291137879a1df344a2466a93.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-710e2c34a5053144c91d9424d45155ed.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -230,6 +230,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">versioning policy</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/python-packaging-guide/gittag_versioning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">versioning with GitHub Actions</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -238,8 +244,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
+            <a href="../../posts/GitHubFAQ/chapter_header.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Git and GitHub FAQ</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -248,7 +254,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../posts/GitHubFAQ/Resource-not-accessible-by-integration.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Resource not accessible by integration Error</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Resource not accessible by integration Error</span></span></a>
   </div>
 </li>
       </ul>
@@ -301,7 +307,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2024-12-09</p>
+      <p class="date-modified">2024-12-16</p>
     </div>
   </div>
     
@@ -345,18 +351,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pytest</span> <span class="at">-v</span> ./pytest_scripts/test_script_001.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>============================= test session starts ==============================
-platform linux -- Python 3.12.7, pytest-8.3.4, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.12.7/x64/bin/python
-cachedir: .pytest_cache
-rootdir: /home/runner/work/python-statisticalpackage-techniques/python-statisticalpackage-techniques
-configfile: pyproject.toml
-plugins: anyio-4.7.0
-collecting ... collected 2 items
-
-pytest_scripts/test_script_001.py::test_passing PASSED                   [ 50%]
-pytest_scripts/test_script_001.py::test_passing2 PASSED                  [100%]
-
-============================== 2 passed in 0.02s ===============================</code></pre>
+<pre><code>Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.12.8/x64/bin/pytest", line 5, in &lt;module&gt;
+    from pytest import console_main
+ModuleNotFoundError: No module named 'pytest'</code></pre>
 </div>
 </div>
 <p>上記の例では，</p>
@@ -373,79 +371,20 @@ pytest_scripts/test_script_001.py::test_passing2 PASSED                  [100%]
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pytest</span> <span class="at">-v</span> ./pytest_scripts/test_script_002.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>============================= test session starts ==============================
-platform linux -- Python 3.12.7, pytest-8.3.4, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.12.7/x64/bin/python
-cachedir: .pytest_cache
-rootdir: /home/runner/work/python-statisticalpackage-techniques/python-statisticalpackage-techniques
-configfile: pyproject.toml
-plugins: anyio-4.7.0
-collecting ... collected 1 item
-
-pytest_scripts/test_script_002.py::test_failing FAILED                   [100%]
-
-=================================== FAILURES ===================================
-_________________________________ test_failing _________________________________
-
-    def test_failing():
-&gt;       assert (1, 2) == (1, 1)
-E       assert (1, 2) == (1, 1)
-E         
-E         At index 1 diff: 2 != 1
-E         
-E         Full diff:
-E           (
-E               1,
-E         -     1,
-E         ?     ^
-E         +     2,
-E         ?     ^
-E           )
-
-pytest_scripts/test_script_002.py:2: AssertionError
-=========================== short test summary info ============================
-FAILED pytest_scripts/test_script_002.py::test_failing - assert (1, 2) == (1, 1)
-  
-  At index 1 diff: 2 != 1
-  
-  Full diff:
-    (
-        1,
-  -     1,
-  ?     ^
-  +     2,
-  ?     ^
-    )
-============================== 1 failed in 0.03s ===============================</code></pre>
+<pre><code>Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.12.8/x64/bin/pytest", line 5, in &lt;module&gt;
+    from pytest import console_main
+ModuleNotFoundError: No module named 'pytest'</code></pre>
 </div>
 </div>
 <p><code>At index 1 diff: 2 != 1</code> とあるように index 1が一致していないと教えてくれます．pytestが表示するテストが失敗した場所とその周囲のコードのセクションのことを<strong>トレースバック(traceback)</strong>と呼びます．これの表示をoffにしたい場合は</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pytest</span> <span class="at">--tb</span><span class="op">=</span>no ./pytest_scripts/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>============================= test session starts ==============================
-platform linux -- Python 3.12.7, pytest-8.3.4, pluggy-1.5.0
-rootdir: /home/runner/work/python-statisticalpackage-techniques/python-statisticalpackage-techniques
-configfile: pyproject.toml
-plugins: anyio-4.7.0
-collected 3 items
-
-pytest_scripts/test_script_001.py ..                                     [ 66%]
-pytest_scripts/test_script_002.py F                                      [100%]
-
-=========================== short test summary info ============================
-FAILED pytest_scripts/test_script_002.py::test_failing - assert (1, 2) == (1, 1)
-  
-  At index 1 diff: 2 != 1
-  
-  Full diff:
-    (
-        1,
-  -     1,
-  ?     ^
-  +     2,
-  ?     ^
-    )
-========================= 1 failed, 2 passed in 0.02s ==========================</code></pre>
+<pre><code>Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.12.8/x64/bin/pytest", line 5, in &lt;module&gt;
+    from pytest import console_main
+ModuleNotFoundError: No module named 'pytest'</code></pre>
 </div>
 </div>
 <section id="pytest-assert" class="level3">
@@ -1116,13 +1055,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../posts/python-packaging-guide/versioning.html" class="pagination-link" aria-label="versioning policy">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">versioning policy</span></span>
+      <a href="../../posts/python-packaging-guide/gittag_versioning.html" class="pagination-link" aria-label="versioning with GitHub Actions">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">versioning with GitHub Actions</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../posts/GitHubFAQ/Resource-not-accessible-by-integration.html" class="pagination-link" aria-label="Resource not accessible by integration Error">
-        <span class="nav-page-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Resource not accessible by integration Error</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../posts/GitHubFAQ/chapter_header.html" class="pagination-link" aria-label="Git and GitHub FAQ">
+        <span class="nav-page-text">Git and GitHub FAQ</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
