@@ -1,0 +1,220 @@
+---
+title: "versioning with GitHub Actions"
+author: "Ryo Nakagami"
+date: "2024-12-16"
+date-modified: last-modified
+number_sections: false
+code-fold: true
+comments:
+    utterances:
+         repo: RyoNakagami/statistics-for-regression-monkey
+         label: discussion
+engine: knitr
+---
+
+## Case 1: Poetry-managed Packageにおけるgit tag releaseの紹介
+
+パッケージ開発をしているGitHub repositoryにおいて，`main`へのPull Requestがmergedされたタイミングで`git tag`を作成するためのワークフローを紹介します．
+
+<div class="blog-custom-border">
+<strong>workflow descriptions</strong> <br>
+
+今回設定するworkflow `gittag-release.yml` は以下のような内容とします
+
+- **トリガータイミング**: 
+    - `main`へのPull RequestがmergedされたタイミングでGitHub Actionsがキックする
+- **git tagの参照先**: 
+    - `pyproject.toml`の`version`フィールドに記載されたsemantic versionをベースにgit tagを作成
+    - すでに同一のgit tagが作成されている場合は，`Tag v$PYPROJECT_VERSION already exists. No release needed.`というメッセージがGitHub Actions logに表示される
+    - `main`へのPull Request作成時点で`pyproject.toml`の`version`フィールドはアップデートされているとする
+- **Release note**:
+    - PRの内容をベースにリリースノートを作成する
+
+</div>
+
+
+### workflow file
+
+上記の動作条件を満たすGitHub Actions workflow設定例として以下です．
+
+```{.yaml filename='gittag-release.yml'}
+name: Git tag release of poetry-managed package
+
+on:
+  pull_request:
+    branches: 
+      - main
+    types:
+      - closed
+
+jobs:
+  release:
+    if: >
+        github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
+      
+      - name: Get Poetry version
+        run: poetry --version
+      
+      # Made use of $GITHUB_ENV to pass the variable cleanly to subsequent steps.
+      - name: Fetch version info from pyproject.toml
+        run: |
+          PYPROJECT_VERSION=$(poetry version --short)
+          echo "PYPROJECT_VERSION=$PYPROJECT_VERSION" >> $GITHUB_ENV
+          echo "The current pyproject version is v$PYPROJECT_VERSION"
+
+      
+      - name: Create Git Tag and GitHub release
+        run: |
+          TAG=$(git describe HEAD --tags --abbrev=0 2>/dev/null || echo "none")
+
+          if [[ "$TAG" != "v$PYPROJECT_VERSION" ]]; then
+            echo "Creating a new release with tag v$PYPROJECT_VERSION..."
+            gh release create "v"$PYPROJECT_VERSION --generate-notes
+          else
+            echo "Tag v$PYPROJECT_VERSION already exists. No release needed."
+          fi
+          
+        env:
+          GH_TOKEN: ${{ github.token }}
+```
+
+### `gittag-release.yml`の解説
+
+<strong > &#9654;&nbsp; `on` セクション</strong>
+
+```{.yml}
+on:
+  pull_request:
+    branches: 
+      - main
+    types:
+      - closed
+```
+
+で使用されている`on`はworkflowが開始するタイミングを記述するセクションとなります．`push`時のみというシングルイベントの場合は
+
+```{.yml}
+on: push
+```
+
+と記述しますが，`fork`と`push`という2つのタイミングでキックしたい場合は
+
+```{.yml}
+on: [push, fork]
+```
+
+と指定できます．今回は，
+
+- `main`へのPull RequestがmergedされたタイミングでGitHub Actionsがキックする
+
+というキック条件にしたいので，
+
+|条件|設定内容|
+|---|---|
+|`push`ではなく，`pull request` eventのタイミングでキック|`on: pull_request`と設定|
+|branchは`main`のみ|`branches:`で`main`のみを指定|
+|`PR`がclosedかつmergeされたタイミングでキックされる|`types: closed`を指定|
+
+`pull_request`や`push`といったeventに応じて設定できる`types`は異なってきます．`event`に応じた指定可能`types`は
+[GitHub Actions > Events that trigger workflows](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows)を参照してください．
+
+<strong > &#9654;&nbsp; Pull Request Mergedタイミングへの限定</strong>
+
+workflowのキックタイミングは `on: pull_requests`と`types: closed`で指定しましたが，これではPRがmergedされないでclosedされた場合も動いてしまいます．
+
+- `PR`がclosedかつmergeされたタイミングでキックされる
+
+ことを確保するためには，`jobs`セクションで条件を絞る必要があります．その設定箇所が以下となります．
+
+```{.yml}
+jobs:
+  release:
+    if: >
+        github.event.pull_request.merged == true
+```
+
+`if` セクションで`jobs`が実行される条件をより細かく指定することができます．今回はPR mergedのみとしたいので
+`github.event.pull_request.merged == true`と設定します，
+
+`if: >`は改行を許容する形での記述のため(=今回は可読性のため)に使用したSyntaxとなりますが，実質的には
+
+```{.yml}
+jobs
+  release:
+    if: github.event.pull_request.merged == true
+```
+
+でも同じ動作をします．
+
+<strong > &#9654;&nbsp; `fetch-depth`の設定</strong>
+
+`fetch-depth`はGitHub Actions workflowsがfetchするcommit logの数を指定する項目です．
+すべてのcommit logをfetchした上で`job`が動作する必要がある場合には，`featch-depth: 0`と設定します．
+
+基本的には，`featch-depth: 1`で十分ですが，過去のcommitを殺傷してchangelogを作成したい場合は`featch-depth: 0`と設定したりします．
+今回は，`gh release create --generate-notes`コマンドを用いて，last releaseから最新のreleaseまでの差分commitをベースにリリースノートを作成したいので
+`featch-depth: 0`と設定します．
+
+<strong > &#9654;&nbsp; `pyproject.toml`から最新のsemantic versionを取得</strong>
+
+` poetry version --short`コマンドは`pyproject.toml`のversion fieldを参照してsemantic versionを返すコマンドです．
+このコマンドを使用するため，jobsでpoetry setupを実行する必要があります．その設定箇所が以下です：
+
+```{.yml}
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
+```
+
+その後，`poetry version --short)`を実行します．このとき，以下のように `echo "PYPROJECT_VERSION=$PYPROJECT_VERSION" >> $GITHUB_ENV`を忘れずに設定してください．
+
+```{.yml}
+      # Made use of $GITHUB_ENV to pass the variable cleanly to subsequent steps.
+      - name: Fetch version info from pyproject.toml
+        run: |
+          PYPROJECT_VERSION=$(poetry version --short)
+          echo "PYPROJECT_VERSION=$PYPROJECT_VERSION" >> $GITHUB_ENV
+          echo "The current pyproject version is v$PYPROJECT_VERSION"
+```
+
+ワークフロージョブ内で環境変数を後続のステップで利用可能にするには，その環境変数を定義し，その値を`GITHUB_ENV`環境ファイルに書き込む必要があります．
+注意点として，デフォルトの環境変数である `GITHUB_*` や `RUNNER_*` の値を上書きすることはできません．
+
+
+<strong > &#9654;&nbsp; git tagの作成</strong>
+
+`GitHub CLI`コマンドの`gh release create <git-tag-version>`を用いることで
+
+- `<git-tag-version>`のgit tag作成 & GitHub上でのRelease
+- `--generate-notes`オプションを利用することで，最後のreleaseからのcommitをベースにrelease noteを作成してくれます
+
+このとき，GitHub repositoryへ直接git tagをpushする関係上，同一ステップ内部で
+
+```{.yml}
+      env:
+          GH_TOKEN: ${{ github.token }}
+```
+
+を設定する必要があります．`github.token`はデフォルトで設定されているpropertyで，リポジトリにインストールされた GitHub App の代わりに認証を受けるためのトークンです．
+デフォルト設定のまま実行してしまうと`Resource not accessible by integration error`に直面してしまいますが，[こちらのノートの設定](/posts/GitHubFAQ/Resource-not-accessible-by-integration.html)に従って
+該当レポジトリの`Workflow permissions`にて，
+
+- `Read and write permissions`
+
+のレベルを選択する必要がある点に注意してください．
+
+
+References
+----------
+- [GitHub Actions > Events that trigger workflows](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows)
+- [GitHub Actions > Setting an environment variable](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/workflow-commands-for-github-actions#setting-an-environment-variable)
+- [Poetry command > version](https://python-poetry.org/docs/cli/#version)

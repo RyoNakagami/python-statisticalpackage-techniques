@@ -17,7 +17,7 @@ engine: knitr
 `Resource not accessible by integration` error とは，文字通り「integration時にリソースにアクセスできない」ことを指しています．
 つまり，ワークフローが特定のリソース（リポジトリ、シークレット、環境など）にアクセスするための必要な権限を持っていないのが原因となります，
 
-### Solutions 1: `secrets.GITHUB_TOKEN` のPermission範囲変更
+### Solution: `secrets.GITHUB_TOKEN` のPermission範囲変更
 
 `${{ secrets.GITHUB_TOKEN }}`のデフォルトPermissionは，該当するリポジトリの `Settings > Actions > General > Workflow permissions`
 にて定められています．

@@ -45,10 +45,11 @@ book:
       chapters: 
         - posts/python-packaging-guide/src-layout-vs-flat-layout.qmd
         - posts/python-packaging-guide/versioning.qmd
+        - posts/python-packaging-guide/gittag_versioning.qmd
     - part: posts/pytest101/chapter_header.qmd
-
-  appendices: 
-    - posts/GitHubFAQ/Resource-not-accessible-by-integration.qmd
+    - part: posts/GitHubFAQ/chapter_header.qmd
+      chapters: 
+        - posts/GitHubFAQ/Resource-not-accessible-by-integration.qmd
 
 format:
   html:
