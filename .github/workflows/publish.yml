@@ -46,6 +46,14 @@ jobs:
         with:
           r-version: '4.2.0'
 
+      - name: Cache R package library
+        uses: actions/cache@v3
+        with:
+          path: ~/.R/packrat/lib
+          key: ${{ runner.os }}-R-${{ hashFiles('**/DESCRIPTION') }}
+          restore-keys: |
+            ${{ runner.os }}-R-
+
       - name: Install R Dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
