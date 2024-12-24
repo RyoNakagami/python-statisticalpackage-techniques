@@ -22,19 +22,15 @@ code-fold: true
 
 ### What is it about?
 
-統計分析用パッケージをPythonで作成する際に用いるテストフレームワーク `pytest` のまとめノートです．
+統計分析用パッケージをPythonで作成する場合のTips集です．カバーする主な内容は
 
-<strong > &#9654;&nbsp; プログラミング言語</strong>
+- テストフレームワーク `pytest`
+- `Git`/`GitHub`のワークフロー
+- package management tool `Poetry`, `UV`
 
-- 主にPython 3.11.8 + [poetry](https://python-poetry.org/) + `pytest` を用います
-- 分析コードは[Repository](<repository url>)のqmdファイルがそのままソースコードとなっています
+<strong > &#9654;&nbsp; 想定エディター</strong>
 
-参考として以下のようにコードブロックと合わせて出力されます．
-
-```{python}
-#| code-fold: show
-print("Hallo World")
-```
+- VSCodeをメインエディターとして開発する場合を想定しています
 
 ### Contributions
 
