@@ -22,40 +22,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 /* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
@@ -325,7 +291,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2024-12-16</p>
+      <p class="date-modified">2024-12-24</p>
     </div>
   </div>
     
@@ -371,22 +337,16 @@ div.csl-indent {
 </table>
 <section id="what-is-it-about" class="level3">
 <h3 class="anchored" data-anchor-id="what-is-it-about">What is it about?</h3>
-<p>統計分析用パッケージをPythonで作成する際に用いるテストフレームワーク <code>pytest</code> のまとめノートです．</p>
-<p><strong> ▶&nbsp; プログラミング言語</strong></p>
+<p>統計分析用パッケージをPythonで作成する場合のTips集です．カバーする主な内容は</p>
 <ul>
-<li>主にPython 3.11.8 + <a href="https://python-poetry.org/">poetry</a> + <code>pytest</code> を用います</li>
-<li>分析コードは<a href="repository url">Repository</a>のqmdファイルがそのままソースコードとなっています</li>
+<li>テストフレームワーク <code>pytest</code></li>
+<li><code>Git</code>/<code>GitHub</code>のワークフロー</li>
+<li>package management tool <code>Poetry</code>, <code>UV</code></li>
 </ul>
-<p>参考として以下のようにコードブロックと合わせて出力されます．</p>
-<div id="490ff85b" class="cell" data-execution_count="1">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Hallo World"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Hallo World</code></pre>
-</div>
-</div>
+<p><strong> ▶&nbsp; 想定エディター</strong></p>
+<ul>
+<li>VSCodeをメインエディターとして開発する場合を想定しています</li>
+</ul>
 </section>
 <section id="contributions" class="level3">
 <h3 class="anchored" data-anchor-id="contributions">Contributions</h3>
